@@ -5,3 +5,79 @@
 * {
   box-sizing: border-box;
 }
+
+.default-layout {
+  width: 1060px;
+  margin: 44px auto;
+  min-height: 100%;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.main-color {
+  color: #EE5460;
+}
+
+.secondary-color {
+  color: #9A9A9A;
+}
+
+input[type=text] {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-color: #9A9A9A
+}
+
+input[type=password] {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-color: #9A9A9A
+}
+
+input::placeholder {
+  color: #9A9A9A;
+}
+
+input[type=text]:focus {
+  border: none;
+  outline: none;
+  --tw-ring-color: #ffffff;
+  --tw-ring-shadow: none;
+}
+
+input[type=password]:focus {
+  border: none;
+  outline: none;
+  --tw-ring-color: #ffffff;
+  --tw-ring-shadow: none;
+}
+
+textarea {
+  outline: none;
+  border: none;
+  resize: none;
+}
+
+textarea[type=text]:focus {
+  border: none;
+  outline: none;
+  --tw-ring-color: #ffffff;
+  --tw-ring-shadow: none;
+}
+
+* {
+  scrollbar-width: none; /* Firefox 전용 */
+  -ms-overflow-style: none; /* IE & Edge 전용 */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import './App.css'
-import {Button} from "flowbite-react";
+import {Outlet} from "react-router-dom";
+import {Topbar} from "./common/Topbar.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-      <div className="App">
-          <Button color="blue">Flowbite React 버튼</Button>
+      <div className={"default-layout"}>
+          <Topbar></Topbar>
+          <Outlet/>
       </div>
   )
 }

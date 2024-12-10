@@ -10,10 +10,11 @@ const InputBox = ({name, placeholder, type="text"}) => {
                 padding: "8.84px, 0px, 8.84px, 9.83px",
                 paddingTop: "8.84px",
                 paddingLeft: "9.83px",
+                paddingRight: "9.83px",
                 paddingBottom: "8.84px",
                 borderRadius: "4.91px"
             }}>
-                <input placeholder={placeholder} type={type}/>
+                <input placeholder={placeholder} type={type} style={{width:'100%'}}/>
             </div>
 
         </div>

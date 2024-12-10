@@ -8,7 +8,11 @@ export default {
     flowbite.content()
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Pretendard', 'sans-serif'],
+      },
+    },
   },
   plugins: [
     flowbite.plugin()
