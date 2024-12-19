@@ -1,16 +1,21 @@
 import {useNavigate} from "react-router-dom";
-import kakao from "/public/logo/kakao.svg";
-import google from "/public/logo/google.svg";
-import naver from "/public/logo/naver.svg";
+import kakao from "/public/logo/kakaoC.svg";
+import google from "/public/logo/googleG.svg";
+import naver from "/public/logo/naverN.svg";
 import email from "/public/logo/email.svg";
+import Modal from "./Modal.jsx";
+import {useState} from "react";
 
-const Button = ({name, path,
+const Button = ({
+                    name, path,
                     nameColor = "#EE5460",
                     color = "#EE5460",
                     border = false,
                     borderColor = "#EE5460",
                     logo,
-                    width}) => {
+                    width,
+                    confirmMessage
+                }) => {
     const navigate = useNavigate();
 
     const logos = {
@@ -18,6 +23,17 @@ const Button = ({name, path,
         google: google,
         naver: naver,
         email: email
+    };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const confirmAction = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleConfirm = () => {
+        setIsModalOpen(false);
+        !!path && navigate(path);
     };
 
     return (
@@ -29,10 +45,19 @@ const Button = ({name, path,
                 ...(border && {border: `1px solid ${borderColor}`, color: nameColor}),
                 ...(width && {width: width})
             }}
-            onClick={() => navigate(path)}
+            onClick={() => {
+                !!confirmMessage ? confirmAction() : navigate(path);
+            }}
         >
-            {logo && logos[logo] && <img src={logos[logo]} alt={`${logo}-img`} className="mr-2" style={{height: "20px", width: "auto"}} />}
+            {logo && logos[logo] &&
+                <img src={logos[logo]} alt={`${logo}-img`} className="mr-2" style={{height: "20px", width: "auto"}}/>}
             {name}
+            {isModalOpen && (
+                <Modal
+                    confirmMessage={confirmMessage}
+                    onConfirm={handleConfirm}
+                />
+            )}
         </button>
     );
 };

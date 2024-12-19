@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Card = ({
                   username = "사용자",
-                  likestatus = "nonyum",
+                  likestatus = "offyum",
                   likes = 0,
                   title = "기본 제목",
                   image = "",

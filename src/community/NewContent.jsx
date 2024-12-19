@@ -2,6 +2,7 @@ import BadgeContainer from "../common/BadgeContainer.jsx";
 import Button from "../common/Button.jsx";
 
 const NewContent = () => {
+
     return (
         <div className={"flex justify-center mt-6"}>
 
@@ -60,7 +61,7 @@ const NewContent = () => {
                     <Button name={"식당 추가"} style={{width: "160px" }}/>
                 </div>
                 <div className={"flex justify-between"}>
-                    <Button name={"작성 취소"} color={"#9A9A9A"}/>
+                    <Button name={"작성 취소"} color={"#9A9A9A"} path={"/muamuc"} confirmMessage={"글 작성을 취소할까요?"}/>
                     <Button name={"작성 완료"}/>
                 </div>
             </div>
