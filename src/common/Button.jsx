@@ -14,7 +14,8 @@ const Button = ({
                     borderColor = "#EE5460",
                     logo,
                     width,
-                    confirmMessage
+                    confirmMessage,
+                    onClick
                 }) => {
     const navigate = useNavigate();
 
@@ -27,13 +28,21 @@ const Button = ({
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const confirmAction = () => {
-        setIsModalOpen(true);
-    };
+    // const confirmAction = () => {
+    //     setIsModalOpen(true);
+    // };
 
-    const handleConfirm = () => {
-        setIsModalOpen(false);
-        !!path && navigate(path);
+    // const handleConfirm = () => {
+    //     setIsModalOpen(false);
+    //     !!path && navigate(path);
+    // };
+    const handleClick = () => {
+        if (onClick) {
+            onClick(); // onClick 함수 실행
+        }
+        if (path) {
+            navigate(path); // path가 있으면 네비게이션
+        }
     };
 
     return (
@@ -45,19 +54,18 @@ const Button = ({
                 ...(border && {border: `1px solid ${borderColor}`, color: nameColor}),
                 ...(width && {width: width})
             }}
-            onClick={() => {
-                !!confirmMessage ? confirmAction() : navigate(path);
-            }}
+            onClick={handleClick}
         >
             {logo && logos[logo] &&
                 <img src={logos[logo]} alt={`${logo}-img`} className="mr-2" style={{height: "20px", width: "auto"}}/>}
             {name}
-            {isModalOpen && (
-                <Modal
-                    confirmMessage={confirmMessage}
-                    onConfirm={handleConfirm}
-                />
-            )}
+
+            {/*{isModalOpen && (*/}
+            {/*    <Modal*/}
+            {/*        confirmMessage={confirmMessage}*/}
+            {/*        onConfirm={handleConfirm}*/}
+            {/*    />*/}
+            {/*)}*/}
         </button>
     );
 };
