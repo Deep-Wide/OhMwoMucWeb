@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import Icon from "./Icon.jsx";
 import {TextBtn} from "./TextBtn.jsx";
-import Line from "./Line.jsx";
-import defaultImg from "/public/example/user/beager.png";
+import defaultImg from "/src/assets/example/user/beager.png";
+import InputComment from "./InputComment.jsx";
 
 
 const Accordion = ({items, kind}) => {
     const [activeIndex, setActiveIndex] = useState(null);
+    const [onInputComment, setOnInputComment] = useState(false);
+    const [onInputSubComment, setOnInputSubComment] = useState(false);
 
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -42,19 +44,27 @@ const Accordion = ({items, kind}) => {
         )
     }
 
+    const openSubComment = () => {
+        setOnInputSubComment(true)
+    }
+
+    const openComment = () => {
+        setOnInputComment(true)
+    }
+
     function ContentWrapper({info}) {
 
         function Content({comments, isSub = false}) {
 
             return (
-                <div style={{ width: "100%" }}>
+                <div style={{width: "100%"}}>
                     {/*<Line color={"#D9D9D9"} width={"416px"}/>*/}
 
                     {Array.isArray(comments) &&
                         (
                             comments.map((comment, index) => (
                                 <div key={index} className={"flex flex-col gap-y-2 mt-2"}
-                                    style={{...(isSub ? {paddingLeft: "20px" } : {paddingLeft: "0px" })}}>
+                                     style={{...(isSub ? {paddingLeft: "20px"} : {paddingLeft: "0px"})}}>
                                     <div className={"flex justify-start items-center"}>
                                         <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
                                         <span className={"text-ml"}> {comment.userName} </span>
@@ -63,9 +73,11 @@ const Accordion = ({items, kind}) => {
                                         {comment.comment}
                                     </div>
                                     <div className={"flex justify-between flex-row-reverse"}>
-                                        <TextBtn name={"신고하기"}/>
-                                        {!isSub && (<TextBtn name={"답글쓰기"}/>)}
+                                        <TextBtn name={"신고하기"} onClick={()=>{console.log("댓글쓰기")}}/>
+                                        {!isSub && (<TextBtn name={"답글쓰기"} onClick={openSubComment}/>)}
                                     </div>
+                                    {onInputSubComment && !isSub && <InputComment/>}
+                                    {/*<InputComment/>*/}
                                     <Content comments={comment.subComments} isSub={true}/>
                                 </div>
                             ))
@@ -121,7 +133,7 @@ const Accordion = ({items, kind}) => {
                             kind === "RestaurantInfo" ?
                                 <Icon className={"w-7 h-7 me-4 rounded-full"} icon={"onfork"}></Icon>
                                 :
-                                <TextBtn name={"댓글쓰기"} color={"#EE5460"}></TextBtn>
+                                <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={openComment}></TextBtn>
                         }
 
                     </div>

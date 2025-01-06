@@ -2,11 +2,14 @@ import Title from "../login/Title.jsx";
 import InputBox from "../login/InputBox.jsx";
 import Button from "../common/Button.jsx";
 import Line from "../common/Line.jsx";
-import kakao from "/public/logo/kakao.svg";
-import google from "/public/logo/google.svg";
-import naver from "/public/logo/naver.svg";
+import kakao from "/src/assets/logo/kakao.svg";
+import google from "/src/assets/logo/google.svg";
+import naver from "/src/assets/logo/naver.svg";
+import {useNavigate} from "react-router-dom";
 
 export default function Login() {
+
+    const navigate = useNavigate();
 
     return (
         <div className={"flex justify-center pt-11"}>
@@ -32,7 +35,9 @@ export default function Login() {
                         <img src={naver} alt="naver"/>
                     </div>
                 </div>
-                <Button name="회원가입" color={"white"} border={true} path={"/signup"}/>
+                <Button name="회원가입" color={"white"} border={true} navigate={() => {
+                    navigate("/signup")
+                }}/>
             </div>
         </div>
     )

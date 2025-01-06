@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import example1 from "/public/example/food/pig.png";
-import example2 from "/public/example/food/default.png";
-import example3 from "/public/example/food/food.jpeg";
+import example1 from "/src/assets/example/food/pig.png";
+import example2 from "/src/assets/example/food/default.png";
+import example3 from "/src/assets/example/food/food.jpeg";
 
 const FoodCarousel = () => {
 

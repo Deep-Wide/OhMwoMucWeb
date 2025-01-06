@@ -1,8 +1,8 @@
-import chat from "/public/emoji/chat.png"
-import nonyum from "/public/emoji/offyum.png"
-import onyum from "/public/emoji/onyum.png"
-import offfork from "/public/emoji/offfork.png"
-import onfork from "/public/emoji/onfork.png"
+import chat from "/src/assets/emoji/chat.svg"
+import nonyum from "/src/assets/emoji/offyum.png"
+import onyum from "/src/assets/emoji/onyum.png"
+import offfork from "/src/assets/emoji/offfork.png"
+import onfork from "/src/assets/emoji/onfork.png"
 
 
 const Icon = ({ icon, className, num = 0 }) => {

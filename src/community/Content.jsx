@@ -1,13 +1,8 @@
-import defaultImg from "/public/example/user/beager.png"
+import defaultImg from "/src/assets/example/user/beager.png"
 import FoodCarousel from "../common/FoodCarousel.jsx";
 import Accordion from "../common/Accordion.jsx";
 import Icon from "../common/Icon.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
-// import chat from "/public/emoji/chat.png"
-// import nonyum from "/public/emoji/offyum.png"
-// import onyum from "/public/emoji/onyum.png"
-// import offfork from "/public/emoji/offfork.png"
-// import onfork from "/public/emoji/onfork.png"
 
 const Content = ({
                      username = "사용자",
@@ -136,7 +131,7 @@ const Content = ({
                     <TextBtn name={"신고하기"}/>
                 </div>
                 <Accordion items={accordionItems} kind={"RestaurantInfo"}/>
-                <Accordion items={commentItems} />
+                <Accordion items={commentItems}/>
             </div>
         </div>
     )

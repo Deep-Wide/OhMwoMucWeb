@@ -1,21 +1,24 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import Icon from "../common/Icon.jsx";
 
 
-const Card = ({
+const MuamucCard = ({
                   username = "사용자",
-                  likestatus = "offyum",
+                  userImg = "/src/assets/example/user/beager.png",
+                  likeStatus = false,
                   likes = 0,
                   title = "기본 제목",
                   image = "",
                   content = "기본 내용",
                   fork = "offfork",
                   forks = 0,
+                  forkStatus = false,
                   comment = 0,
                   contentId
               }) => {
-const navigate = useNavigate();
+    const navigate = useNavigate();
     return (
-        <div className={"flex flex-col gap-3 items-center"} style={{
+        <div className={"flex flex-col items-center justify-around"} style={{
             width: "250px",
             height: "407px",
             borderWidth: "1.37px",
@@ -30,12 +33,11 @@ const navigate = useNavigate();
             <div className={"flex justify-between"}
                  style={{width: "100%"}}>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-10 h-10 me-4 rounded-full"} src={"./example/user/beager.png"}/>
+                    <img className={"w-10 h-10 me-4 rounded-full"} src={userImg}/>
                     <span className={"text-ml"}> {username} </span>
                 </div>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-10 h-10 me-4 rounded-full"} src={`./emoji/${likestatus}.png`}/>
-                    <span> {likes} </span>
+                    <Icon className={"w-10 h-10 me-4 rounded-full"} icon={likeStatus ? "onyum" : "nonyum"} num={likes}/>
                 </div>
             </div>
             <div style={{width: "100%"}}>
@@ -56,17 +58,14 @@ const navigate = useNavigate();
             <div className={"flex justify-between"}
                  style={{width: "169px"}}>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-7 h-7 me-4 rounded-full"} src={`./emoji/${fork}.png`}/>
-                    <span> {forks} </span>
+                    <Icon className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>
                 </div>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-54 h-54 me-4 rounded-full"} src={`./emoji/chat.png`}/>
-                    <span> {comment} </span>
+                    <Icon className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={comment}/>
                 </div>
             </div>
 
-        </div>
-    )
+        </div>)
 }
 
-export default Card;
+export default MuamucCard;
