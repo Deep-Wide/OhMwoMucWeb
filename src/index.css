@@ -42,6 +42,38 @@ input[type=password] {
   font-color: #9A9A9A
 }
 
+input[type=radio]:focus {
+  outline: none;
+  box-shadow: none;
+  background-color: #EE5460;
+}
+
+input[type=radio]:checked {
+  outline: none;
+  box-shadow: none;
+  background-color: #EE5460;
+}
+
+label {
+  color: #9A9A9A; /* 기본 색상 */
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label {
+  color: #EE5460; /* 선택된 라벨 색상 */
+}
+
+input[type=checkbox]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+input[type="checkbox"]:checked {
+  outline: none;
+  box-shadow: none;
+  background-color: #EE5460;
+}
+
 input::placeholder {
   color: #9A9A9A;
 }
