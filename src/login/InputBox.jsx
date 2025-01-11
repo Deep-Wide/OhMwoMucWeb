@@ -1,4 +1,4 @@
-const InputBox = ({name, placeholder, type="text", id}) => {
+const InputBox = ({name, placeholder, type="text", id, onKeyPress}) => {
     return (
         <div>
             <div className={`font-semibold main-color text-lg`}>
@@ -14,7 +14,7 @@ const InputBox = ({name, placeholder, type="text", id}) => {
                 paddingBottom: "8.84px",
                 borderRadius: "4.91px"
             }}>
-                <input id = {id} placeholder={placeholder} type={type} style={{width:'100%'}}/>
+                <input id = {id} placeholder={placeholder} type={type} style={{width:'100%'}} autoComplete={"off"} onKeyDown={onKeyPress}/>
             </div>
 
         </div>

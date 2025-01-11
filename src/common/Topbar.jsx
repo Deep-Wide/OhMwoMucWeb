@@ -2,8 +2,15 @@
 
 
 import {Link} from "react-router-dom";
+import {UserContext} from "../context/UserContext.js";
+import {useContext, useState} from "react";
 
 export function Topbar() {
+
+    const {loginUser, dispatch} = useContext(UserContext);
+
+    console.log("@@@@@@@: ",loginUser?.nickname)
+
     return (<nav className="bg-white border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -41,9 +48,9 @@ export function Topbar() {
                             </a>
                         </li>
                         <li>
-                            <Link to = "/muamuc"
-                               className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold main-color"
-                               aria-current="page">
+                            <Link to="/muamuc"
+                                  className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold main-color"
+                                  aria-current="page">
                                 뭐먹뭐먹
                             </Link>
                         </li>
@@ -55,11 +62,12 @@ export function Topbar() {
                             </a>
                         </li>
                         <li>
-                            <Link to = "/login"
-                               className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"
-                               aria-current="page">
+                            <Link to={!!loginUser?.nickname ? "/mypage" : "/login"}
+                                  className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"
+                                  aria-current="page">
                                 마이페이지
                             </Link>
+
                         </li>
                     </ul>
                 </div>

@@ -8,6 +8,7 @@ import Login from "../pages/Login.jsx";
 import Signup from "../login/Signup.jsx";
 import Email from "../login/Email.jsx";
 import Information from "../login/Information.jsx";
+import Logout from "../pages/Logout.jsx";
 
 export default function Router() {
 
@@ -15,6 +16,7 @@ export default function Router() {
         <Routes>
             <Route path="/" element={<App/>}>
                 <Route path={"login"} element={<Login />}/>
+                <Route path={"/mypage"} element={<Logout />}/>
                 <Route path="/signup">
                     <Route path="/signup" element={<Signup />}/>
                     <Route path="/signup/email" element={<Email />}/>
