@@ -2,6 +2,10 @@ import Title from "../login/Title.jsx";
 import InputBox from "../login/InputBox.jsx";
 import Button from "../common/Button.jsx";
 import Line from "../common/Line.jsx";
+import kakao from "/src/assets/logo/kakao.svg";
+import google from "/src/assets/logo/google.svg";
+import naver from "/src/assets/logo/naver.svg";
+import {useNavigate} from "react-router-dom";
 import kakao from "/public/logo/kakao.svg";
 import google from "/public/logo/google.svg";
 import naver from "/public/logo/naver.svg";
@@ -13,6 +17,8 @@ import {UserContext} from "../context/UserContext.js";
 
 
 export default function Login() {
+
+    const navigate = useNavigate();
 
     const navigate = useNavigate();
 
@@ -83,7 +89,9 @@ export default function Login() {
                         <img src={naver} alt="naver"/>
                     </div>
                 </div>
-                <Button name="회원가입" color={"white"} border={true} path={"/signup"}/>
+                <Button name="회원가입" color={"white"} border={true} navigate={() => {
+                    navigate("/signup")
+                }}/>
             </div>
         </div>
     )
