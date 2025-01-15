@@ -6,19 +6,13 @@ import kakao from "/src/assets/logo/kakao.svg";
 import google from "/src/assets/logo/google.svg";
 import naver from "/src/assets/logo/naver.svg";
 import {useNavigate} from "react-router-dom";
-import kakao from "/public/logo/kakao.svg";
-import google from "/public/logo/google.svg";
-import naver from "/public/logo/naver.svg";
 import {fetchPostLogin} from "../service/LoginService.js";
 import Toast from "../common/Toast.jsx";
 import {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {UserContext} from "../context/UserContext.js";
 
 
 export default function Login() {
-
-    const navigate = useNavigate();
 
     const navigate = useNavigate();
 
