@@ -9,7 +9,7 @@ const LineInput = ({placeholder, textSize = "text-base", type = "text", onChange
                  width: "100%"
              }}>
             <input id={id} className={`${textSize} main-color`} type={type} placeholder={placeholder}
-                   style={{width: "100%"}} onChange={onChange}/>
+                   style={{width: "100%"}} onChange={onChange} autoComplete="off"/>
         </div>
     )
 }

@@ -1,14 +1,17 @@
 import BadgeContainer from "../common/BadgeContainer.jsx";
 import Button from "../common/Button.jsx";
-import {useState} from "react";
+import {useState, useContext} from "react";
 import CommonModal from "../common/CommonModal.jsx";
 import {useNavigate} from "react-router-dom";
 import AlertModal from "../common/AlertModal.jsx";
 import CloseCircle from "/src/assets/icon/close-circle.svg";
 import LineInput from "../common/LineInput.jsx";
+import {fetchPostCreateMuamuc} from "../service/MuamucService.js"
+import {UserContext} from "../context/UserContext.js";
 
 const NewContent = () => {
     const [tagName, setTagName] = useState("글 태그 선택");
+    const [tagId, setTagId] = useState(0);
     const [tagNameColor, setTagNameColor] = useState("secondary-color");
     const [isOpenAddRestaurantModal, setIsOpenAddRestaurantModal] = useState(false);
     const [isOpenAlertModal, setIsOpenAlertModal] = useState(false);
@@ -20,9 +23,12 @@ const NewContent = () => {
     const [menuIds, setMenuIds] = useState([]);
     const [menuInputs, setMenuInputs] = useState([]);
     const navigate = useNavigate();
+    const {loginUser} = useContext(UserContext)
 
 
     const createNewContent = () => {
+        const muamucTitle = document.getElementById("muamuc_title")
+        const muamucDescription = document.getElementById("muamuc_description")
 
         const validateElement = () => {
 
@@ -35,8 +41,7 @@ const NewContent = () => {
             }
 
             // console.log("tagName: ", tagName)
-            const muamucTitle = document.getElementById("muamuc_title")
-            const muamucDescription = document.getElementById("muamuc_description")
+
 
             if (tagName.includes("글 태그")) {
                 setValidateModal("글 태그를 선택해주세요", () => {
@@ -53,7 +58,9 @@ const NewContent = () => {
             }
         }
 
+        console.log("loginUser: ", loginUser)
         validateElement()
+        fetchPostCreateMuamuc(tagId, muamucTitle.value, muamucDescription.value, loginUser.id);
 
     }
 
@@ -250,7 +257,7 @@ const NewContent = () => {
                         <span className={"main-color"}>#</span>
                         <span className={tagNameColor}>{tagName}</span>
                     </div>
-                    <BadgeContainer setBadgeName={setTagName} setBadgeNameColor={setTagNameColor}/>
+                    <BadgeContainer setBadgeName={setTagName} setTagId={setTagId} setBadgeNameColor={setTagNameColor}/>
                 </div>
 
                 <LineInput id={"muamuc_title"} placeholder={"게시물 제목 입력"} textSize={"text-lg"}/>

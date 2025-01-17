@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Badge from "./Badge";
-const BadgeContainer = ({setBadgeName, setBadgeNameColor}) => {
+const BadgeContainer = ({setBadgeName, setBadgeNameColor, setTagId}) => {
 
     const [selectedBadge, setSelectedBadge] = useState(null);
 
     const handleBadgeClick = (index) => {
         setSelectedBadge(index);
         setBadgeName(badgeNames[index]);
+        setTagId(index)
         setBadgeNameColor("main-color");
     }
 
