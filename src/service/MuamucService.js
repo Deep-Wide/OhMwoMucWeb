@@ -19,3 +19,10 @@ export const fetchPostCreateMuamuc = (tag_id, title, content, writer_id) => {
             'Content-Type': 'application/json',  // JSON 데이터를 보내므로, Content-Type을 application/json으로 설정
         }, body: JSON.stringify(data)})
 }
+
+export const fetchGetMuamucList = (tag_id, searchKeyword) => {
+    let requestUrl = `${serverHost}/api/muamuc?tag=${tag_id}`;
+    searchKeyword && requestUrl.concat(`/searchKeyword=${searchKeyword}`)
+    console.log("requestUrl: ", requestUrl)
+    return fetchGet(requestUrl);
+}

@@ -1,4 +1,4 @@
-const Tag = ({name, isSelected = false, onClick}) => {
+const Tag = ({name, isSelected , onClick}) => {
 
     const selectedTheme = "font-bold text-xl main-color"
     const nonSelectedTheme = "font-semibold text-xl secondary-color"

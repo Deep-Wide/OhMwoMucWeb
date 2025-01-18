@@ -4,7 +4,7 @@ import Icon from "../common/Icon.jsx";
 
 const MuamucCard = ({
                   username = "사용자",
-                  userImg = "/src/assets/example/user/beager.png",
+                  userImg = "/src/assets/icon/default-profile.svg",
                   likeStatus = false,
                   likes = 0,
                   title = "기본 제목",

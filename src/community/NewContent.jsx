@@ -60,8 +60,8 @@ const NewContent = () => {
 
         console.log("loginUser: ", loginUser)
         validateElement()
-        fetchPostCreateMuamuc(tagId, muamucTitle.value, muamucDescription.value, loginUser.id);
-
+        fetchPostCreateMuamuc(tagId, muamucTitle.value, muamucDescription.value, loginUser.id)
+        navigate("/muamuc")
     }
 
     const addRestaurantModalBody = () => {
