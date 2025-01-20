@@ -67,7 +67,7 @@ export default function Login() {
                     <InputBox name={"이메일"} placeholder={"이메일 입력"} id="emailInput" onKeyPress={onPressEnterKey}/>
                     <InputBox name={"비밀번호"} placeholder={"비밀번호 입력"} type={"password"} id="passwordInput" onKeyPress={onPressEnterKey}/>
                 </div>
-                <Button name="로그인" onClick={onClickLoginBtn} />
+                <Button name="로그인" onBtnClick={onClickLoginBtn} />
                 <Line/>
                 <div>
                     <div className={"font-light flex justify-center"}>
