@@ -3,20 +3,23 @@ import Icon from "../common/Icon.jsx";
 
 
 const MuamucCard = ({
-                  username = "사용자",
-                  userImg = "/src/assets/icon/default-profile.svg",
-                  likeStatus = false,
-                  likes = 0,
-                  title = "기본 제목",
-                  image = "",
-                  content = "기본 내용",
-                  fork = "offfork",
-                  forks = 0,
-                  forkStatus = false,
-                  comment = 0,
-                  contentId
-              }) => {
+                        username = "사용자",
+                        userImg = "/src/assets/icon/default-profile.svg",
+                        likeStatus = false,
+                        likes = 0,
+                        title = "기본 제목",
+                        image = "",
+                        content = "기본 내용",
+                        fork = "offfork",
+                        forks = 0,
+                        forkStatus = false,
+                        comment = 0,
+                        muamucId
+                    }) => {
     const navigate = useNavigate();
+
+
+    console.log("muamucID:: ", muamucId)
     return (
         <div className={"flex flex-col items-center justify-around"} style={{
             width: "250px",
@@ -42,11 +45,11 @@ const MuamucCard = ({
             </div>
             <div style={{width: "100%"}}>
                 <span className={"text-lg font-semibold flex cursor-pointer"}
-                      onClick={() => navigate(`./content`)}> {title} </span>
+                      onClick={() => navigate(`./content/${muamucId}`)}> {title} </span>
             </div>
             <div className="flex flex-col justify-center cursor-pointer"
                  style={{height: "206px"}}
-                 onClick={() => navigate(`./content`)}>
+                 onClick={() => navigate(`./content/${muamucId}`)}>
                 <div style={{width: "202px"}}>
                     <img className="w-auto h-auto" src={`${image}`} alt=""/>
                 </div>

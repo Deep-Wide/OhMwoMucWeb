@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Badge from "./Badge";
-const BadgeContainer = ({setBadgeName, setBadgeNameColor, setTagId}) => {
+const BadgeContainer = ({setBadgeName, setBadgeNameColor, setTagId, originId = null}) => {
+// const BadgeContainer = ({ badgeId, onChange }) => {
 
     const [selectedBadge, setSelectedBadge] = useState(null);
 
@@ -14,6 +15,14 @@ const BadgeContainer = ({setBadgeName, setBadgeNameColor, setTagId}) => {
     const badgeNames = [
         "오점먹", "오저먹", "오점뭐", "오저뭐", "다이어트", "식당추천", "혼밥", "혼술"
     ]
+
+    // if (originId !== null) {
+    //     handleBadgeClick(originId);
+    // }
+    useEffect(() => {
+        handleBadgeClick(originId);
+    }, [originId]);
+
 
     return (
         <div

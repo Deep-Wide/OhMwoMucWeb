@@ -1,15 +1,16 @@
 import BadgeContainer from "../common/BadgeContainer.jsx";
 import Button from "../common/Button.jsx";
-import {useState, useContext} from "react";
+import {useState, useContext, useLayoutEffect} from "react";
 import CommonModal from "../common/CommonModal.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import AlertModal from "../common/AlertModal.jsx";
 import CloseCircle from "/src/assets/icon/close-circle.svg";
 import LineInput from "../common/LineInput.jsx";
-import {fetchPostCreateMuamuc} from "../service/MuamucService.js"
+import {fetchGetMuamuc, fetchPostCreateMuamuc, fetchPutMuamuc} from "../service/MuamucService.js"
 import {UserContext} from "../context/UserContext.js";
+import {MuamuctListContext} from "../context/MuamucContext.js";
 
-const NewContent = () => {
+const NewContent = ({isUpdate = false}) => {
     const [tagName, setTagName] = useState("글 태그 선택");
     const [tagId, setTagId] = useState(0);
     const [tagNameColor, setTagNameColor] = useState("secondary-color");
@@ -24,44 +25,105 @@ const NewContent = () => {
     const [menuInputs, setMenuInputs] = useState([]);
     const navigate = useNavigate();
     const {loginUser} = useContext(UserContext)
+    const {id} = useParams()
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const muamucTitle = document.getElementById("muamuc_title")
+    const muamucDescription = document.getElementById("muamuc_description")
+    const {dispatch} = useContext(MuamuctListContext)
 
+    const getMuamuc = () => {
+        validateElement()
 
-    const createNewContent = () => {
-        const muamucTitle = document.getElementById("muamuc_title")
-        const muamucDescription = document.getElementById("muamuc_description")
-
-        const validateElement = () => {
-
-            const setValidateModal = (message, func) => {
-                setAlertModalMessage(message)
-                setIsOpenAlertModal(true)
-                setAlertModalConfirmFunc(() => () => {
-                    func()
-                })
-            }
-
-            // console.log("tagName: ", tagName)
-
-
-            if (tagName.includes("글 태그")) {
-                setValidateModal("글 태그를 선택해주세요", () => {
-                    setTagName("글 태그를 선택해주세요")
-                })
-            } else if (muamucTitle?.value.trim() === "") {
-                setValidateModal("글 제목을 입력해주세요", () => {
-                    muamucTitle.focus()
-                })
-            } else if (muamucDescription?.value.trim() === "") {
-                setValidateModal("글 내용을 작성해주세요", () => {
-                    muamucDescription.focus()
-                })
-            }
+        const data = {
+            tagId: tagId,
+            title: muamucTitle.value,
+            content: muamucDescription.value,
+            writerId: loginUser.id
         }
 
+        return data
+    }
+
+
+    const validateElement = () => {
+
+        const setValidateModal = (message, func) => {
+            setAlertModalMessage(message)
+            setIsOpenAlertModal(true)
+            setAlertModalConfirmFunc(() => () => {
+                func()
+            })
+        }
+
+        if (tagName.includes("글 태그")) {
+            setValidateModal("글 태그를 선택해주세요", () => {
+                setTagName("글 태그를 선택해주세요")
+            })
+        } else if (muamucTitle?.value.trim() === "") {
+            setValidateModal("글 제목을 입력해주세요", () => {
+                muamucTitle.focus()
+            })
+        } else if (muamucDescription?.value.trim() === "") {
+            setValidateModal("글 내용을 작성해주세요", () => {
+                muamucDescription.focus()
+            })
+        }
+    }
+
+    const createNewContent = async () => {
+
         console.log("loginUser: ", loginUser)
-        validateElement()
-        fetchPostCreateMuamuc(tagId, muamucTitle.value, muamucDescription.value, loginUser.id)
+        const {
+            isError,
+            data
+        } = await fetchPostCreateMuamuc(getMuamuc())
+        if (isError) {
+            alert(`${data.errorMessage}`)
+            return;
+        }
+        dispatch({
+            type: "addMuamuc",
+            payload: data
+        })
         navigate("/muamuc")
+    }
+
+    const setOriginContent = async () => {
+        const {isError, data} = await fetchGetMuamuc(id)
+        if (isError) {
+            alert(data.errorMessage)
+        }
+        console.log("Muamuc: ", data)
+        setContent(data)
+    }
+
+    const setContent = (data) => {
+        console.log(data)
+        setTitle(data.title)
+        setDescription(data.content)
+        muamucTitle.value = title
+        muamucDescription.value = description
+        setTagId(data.tagId)
+    }
+
+    console.log('tagnamecolor: ', tagNameColor)
+    console.log('tagname: ', tagName)
+    console.log('tagId: ', tagId)
+
+
+    const updateMuamuc = async () => {
+
+        const {isError, data} = await fetchPutMuamuc(id, getMuamuc())
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        dispatch({
+            action: "updateMuamuc",
+            payload: data
+        })
+        navigate(`/muamuc/${data.muamucId}`)
     }
 
     const addRestaurantModalBody = () => {
@@ -171,6 +233,14 @@ const NewContent = () => {
             setMenuPriceInputCounter(menuPriceInputCounter + 1);  // 메뉴 추가 후 카운터 증가
         };
 
+        useLayoutEffect(() => {
+
+            if (isUpdate) {
+                setOriginContent()
+            }
+        })
+
+
         return (
             <div className={"flex justify-center flex-col gap-y-7"} style={{width: "80%"}}>
                 <LineInput placeholder={"식당 이름 입력"} textSize={"text-lg"}/>
@@ -257,7 +327,8 @@ const NewContent = () => {
                         <span className={"main-color"}>#</span>
                         <span className={tagNameColor}>{tagName}</span>
                     </div>
-                    <BadgeContainer setBadgeName={setTagName} setTagId={setTagId} setBadgeNameColor={setTagNameColor}/>
+                    <BadgeContainer setBadgeName={setTagName} setTagId={setTagId} setBadgeNameColor={setTagNameColor}
+                                    originId={tagId}/>
                 </div>
 
                 <LineInput id={"muamuc_title"} placeholder={"게시물 제목 입력"} textSize={"text-lg"}/>
@@ -291,18 +362,26 @@ const NewContent = () => {
                         setIsOpenAddRestaurantModal(true)
                     }}/>
                 </div>
-                <div className={"flex justify-between"}>
-                    <Button name={"작성 취소"} color={"#9A9A9A"} onBtnClick={() => {
-                        setAlertModalMessage("작성을 취소할까요?")
-                        setAlertModalConfirmFunc(() =>
-                            () => {
-                                navigate("/muamuc")
-                            }
-                        )
-                        setIsOpenAlertModal(true)
-                    }}/>
-                    <Button name={"작성 완료"} onBtnClick={createNewContent}/>
-                </div>
+                {!id ?
+                    <div className={"flex justify-between"}>
+                        <Button name={"작성 취소"} color={"#9A9A9A"} onBtnClick={() => {
+                            setAlertModalMessage("작성을 취소할까요?")
+                            setAlertModalConfirmFunc(() =>
+                                () => {
+                                    navigate("/muamuc")
+                                }
+                            )
+                            setIsOpenAlertModal(true)
+                        }}/>
+                        <Button name={"작성 완료"} onBtnClick={createNewContent}/>
+                    </div> :
+                    <div className={"flex justify-between"}>
+                        <Button name={"수정 취소"} color={"#9A9A9A"} onBtnClick={() => {
+                            navigate("/muamuc")
+                        }}/>
+                        <Button name={"수정 완료"} onBtnClick={updateMuamuc}/>
+                    </div>
+                }
             </div>
             <AlertModal message={alertModalMessage} openModal={isOpenAlertModal} onConfirm={alertModalConfirmFunc}
                         onClose={() => {

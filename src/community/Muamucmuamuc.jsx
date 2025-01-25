@@ -7,13 +7,13 @@ import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../context/UserContext.js";
 import AlertModal from "../common/AlertModal.jsx";
 import {fetchGetMuamucList} from "../service/MuamucService.js";
-import {MuamucContextList} from "../context/MuamucContext.js";
+import {MuamuctListContext} from "../context/MuamucContext.js";
 
 export default function Muamucmuamuc() {
     const navigate = useNavigate()
-    const [MuamucList, setMuamucList] = useState([]);
     const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
     const {loginUser} = useContext(UserContext)
+    const {muamucList, dispatch} = useContext(MuamuctListContext)
 
     const tagNames = [
         "오점먹", "오저먹", "오점뭐", "오저뭐", "다이어트", "식당추천", "혼밥", "혼술"
@@ -26,8 +26,12 @@ export default function Muamucmuamuc() {
         if (isError) {
             alert(data.errorMessage)
         }
-        setMuamucList(data)
-        console.log("MuamucList.length: ", MuamucList.length)
+        console.log("Muamuc: ", muamucList)
+        console.log("dispatch: ", dispatch)
+        dispatch({
+            type: "setMuamucList",
+            payload: data
+        })
 
     }
 
@@ -37,7 +41,7 @@ export default function Muamucmuamuc() {
 
     return (
         <>
-            <Searchbar></Searchbar>
+            <Searchbar/>
             <div className={"flex justify-center align-center gap-7 mt-6"}
                  style={{height: 43}}>
                 <TagContainer tagNames={tagNames} selectedTag={selectedTagId} setSelectedTag={setSelectedTagId}/>
@@ -53,12 +57,10 @@ export default function Muamucmuamuc() {
                             }
                         }}/>
             </div>
-            <MuamucContextList.Provider value={MuamucList}>
-                {
-                    MuamucList.length > 0 &&
-                    <MuamucCardContainer muamucList={MuamucList}></MuamucCardContainer>
-                }
-            </MuamucContextList.Provider>
+            {
+                muamucList?.length > 0 &&
+                <MuamucCardContainer />
+            }
         </>
     )
 }

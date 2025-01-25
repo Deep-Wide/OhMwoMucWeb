@@ -1,28 +1,29 @@
-import {_fetch, fetchGet, fetchPost} from "./fetch.js";
+import {_fetch, fetchDelete, fetchGet, fetchPost, fetchPut} from "./fetch.js";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const MUAMUC_API_URL = `${serverHost}/api/muamuc`;
 
-export const fetchPostCreateMuamuc = (tag_id, title, content, writer_id) => {
-    
-    const data = {
-        tagId: tag_id,
-        title: title,
-        content: content,
-        writerId: writer_id
-    }
-
+export const fetchPostCreateMuamuc = (data) => {
     console.log("data: ", data)
 
-    // return fetchPost(MUAMUC_API_URL, data);
-    _fetch(MUAMUC_API_URL, {method: "Post", credentials: 'include', headers: {
-            'Content-Type': 'application/json',  // JSON 데이터를 보내므로, Content-Type을 application/json으로 설정
-        }, body: JSON.stringify(data)})
+    return fetchPost(MUAMUC_API_URL, data);
 }
 
 export const fetchGetMuamucList = (tag_id, searchKeyword) => {
-    let requestUrl = `${serverHost}/api/muamuc?tag=${tag_id}`;
+    let requestUrl = `${serverHost}/api/muamuc?tag=${tag_id}`
     searchKeyword && requestUrl.concat(`/searchKeyword=${searchKeyword}`)
     console.log("requestUrl: ", requestUrl)
-    return fetchGet(requestUrl);
+    return fetchGet(requestUrl)
+}
+
+export const fetchGetMuamuc = (muamuc_id) => {
+    return fetchGet(`${MUAMUC_API_URL}/${muamuc_id}`)
+}
+
+export const fetchPutMuamuc = (muamuc_id, muamuc) => {
+    return fetchPut(`${MUAMUC_API_URL}/${muamuc_id}`, muamuc)
+}
+
+export const fetchDeleteMuamuc = (muamuc_id) => {
+    return fetchDelete(`${MUAMUC_API_URL}/${muamuc_id}`)
 }
