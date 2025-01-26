@@ -28,13 +28,6 @@ export function Topbar() {
                             <a href="#"
                                className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"
                                aria-current="page">
-                                내찜먹
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"
-                               className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"
-                               aria-current="page">
                                 우리뭐먹
                             </a>
                         </li>
@@ -52,13 +45,7 @@ export function Topbar() {
                                 뭐먹뭐먹
                             </Link>
                         </li>
-                        <li>
-                            <a href="#"
-                               className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"
-                               aria-current="page">
-                                새로운먹
-                            </a>
-                        </li>
+                        
                         <li>
                             <Link to={!!loginUser?.nickname ? "/mypage" : "/login"}
                                   className="block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-semibold secondary-color"

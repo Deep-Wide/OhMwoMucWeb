@@ -1,8 +1,7 @@
 import LineInput from "../common/LineInput.jsx";
 import CloseCircle from "../assets/icon/close-circle.svg";
 import Button from "../common/Button.jsx";
-import {useState} from "react";
-import NewContent from "./NewContent.jsx";
+import {useRef, useState} from "react";
 
 const AddRestaurantModal = () => {
 
@@ -11,6 +10,10 @@ const AddRestaurantModal = () => {
     const [selectedCheckDays, setSelectedCheckDays] = useState([])
     const [menuIds, setMenuIds] = useState([])
     const [menuInputs, setMenuInputs] = useState([])
+    const [startTime, setStartTime] = useState(0)
+    const startTimeRef = useRef(null)
+    const [endTime, setEndTime] = useState(0)
+    const endTimeRef = useRef(null)
 
     const InputName = ({name}) => {
 
@@ -28,9 +31,11 @@ const AddRestaurantModal = () => {
     const TimeInput = () => {
         return (
             <div className={"flex gap-x-16 ml-8 mr-8"}>
-                <LineInput placeholder={"시작 시각 입력"}/>
+                <LineInput placeholder={"시작 시각 입력"} value={startTime}
+                           onChange={(event) => setStartTime(event.target.value)} ref={startTimeRef}/>
                 <div className="flex items-center">-</div>
-                <LineInput placeholder={"종료 시각 입력"}/>
+                <LineInput placeholder={"종료 시각 입력"} value={endTime} onChange={(event) => setEndTime(event.target.value)}
+                           ref={endTimeRef}/>
             </div>
         )
     }

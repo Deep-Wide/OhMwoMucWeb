@@ -24,7 +24,9 @@ const NewContent = ({isUpdate = false}) => {
     const [content, setContent] = useState("")
     const {dispatch} = useContext(MuamuctListContext)
     const muamucTagList = useContext(MuamucTagListContext)
+    const titleRef = useRef(null)
     const textAreaRef = useRef(null)
+
 
     const getMuamuc = () => {
 
@@ -55,7 +57,7 @@ const NewContent = ({isUpdate = false}) => {
             setValidateModal("글 태그를 선택해주세요")
         } else if (muamucTitle?.value.trim() === "") {
             setValidateModal("글 제목을 입력해주세요", () => {
-                // muamucTitle.focus()
+                titleRef.current.focus()
             })
         } else if (muamucDescription?.value.trim() === "") {
             setValidateModal("글 내용을 작성해주세요", () => {
@@ -92,8 +94,7 @@ const NewContent = ({isUpdate = false}) => {
     const setMuamucData = (data) => {
         setTitle(data.title)
         setContent(data.content)
-        // setSelectedTag(muamucTagList.find(tag => tag.id === data.tagId))
-        setSelectedTag(muamucTagList[0])
+        setSelectedTag(muamucTagList.find(tag => tag.id === data.tagId))
     }
 
 
@@ -147,7 +148,7 @@ const NewContent = ({isUpdate = false}) => {
                     <BadgeContainer selectedTagId={selectedTag?.id} onChangeTag={setSelectedTag}/>
                 </div>
 
-                <LineInput id={"muamuc_title"} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
+                <LineInput ref = {titleRef} id={"muamuc_title"} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
 
                 <div className={"flex justify-center"}>
                     <Button name={"이미지 추가"} style={{width: "160px"}}/>

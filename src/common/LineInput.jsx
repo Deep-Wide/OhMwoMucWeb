@@ -1,4 +1,4 @@
-const LineInput = ({placeholder, textSize = "text-base", type = "text", onChange, id, value}) => {
+const LineInput = ({ref, placeholder, textSize = "text-base", type = "text", onChange, id, value}) => {
 
     return (
         <div className={`${textSize} font-semibold flex justify-center`}
@@ -8,7 +8,7 @@ const LineInput = ({placeholder, textSize = "text-base", type = "text", onChange
                  paddingBottom: "7px",
                  width: "100%"
              }}>
-            <input id={id} className={`${textSize} main-color`} type={type} placeholder={placeholder}
+            <input id={id} ref = {ref} className={`${textSize} main-color`} type={type} placeholder={placeholder}
                    style={{width: "100%"}} onChange={onChange} autoComplete="off" value={value}/>
         </div>
     )

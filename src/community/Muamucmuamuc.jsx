@@ -18,12 +18,10 @@ export default function Muamucmuamuc() {
     const [selectedTagId, setSelectedTagId] = useState(0)
     const [searchKeyword, setSearchKeyword] = useState("")
     const [isSearch, setIsSearch] = useState(false)
+    const [badgeName, setBadgeName] = useState("")
 
     const getMuamucList = async () => {
-        let isError, data
-        isSearch ?
-            {isError, data} = await fetchGetMuamucList(selectedTagId, searchKeyword) :
-            {isError, data} = await fetchGetMuamucList(selectedTagId)
+        const {isError, data} = await fetchGetMuamucList(selectedTagId, searchKeyword.trim())
         if (isError) {
             alert(data.errorMessage)
         }
@@ -34,6 +32,11 @@ export default function Muamucmuamuc() {
     }
 
     useEffect(() => {
+        if (searchKeyword === "")
+            setIsSearch(false)
+    }, [searchKeyword])
+
+    useEffect(() => {
         getMuamucList()
     }, [selectedTagId, isSearch])
 
@@ -41,9 +44,15 @@ export default function Muamucmuamuc() {
         <>
             <Searchbar placeholder={"다른 사람들은 뭐 먹었지?"} onSearch={() => {
                 setIsSearch((true))
-            }} value={searchKeyword} onChange={(e) => setSearchKeyword(e.currentTarget.value)}/>
+                setBadgeName(searchKeyword)
+            }} value={searchKeyword} onChange={
+                (e) => {
+                    setSearchKeyword(e.currentTarget.value)
+
+                }}/>
+
             {isSearch && searchKeyword.trim() && <div className="max-w mt-3 flex justify-center">
-                <Badge name={searchKeyword} isSelected={true} isSearch={true} onDelBtn={() => {
+                <Badge name={badgeName} isSelected={true} isSearch={true} onDelBtn={() => {
                     setSearchKeyword("")
                     setIsSearch(false)
                 }}/>

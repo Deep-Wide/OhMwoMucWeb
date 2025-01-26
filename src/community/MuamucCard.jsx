@@ -52,8 +52,10 @@ const MuamucCard = ({
                 <div style={{width: "202px"}}>
                     <img className="w-auto h-auto" src={`${image}`} alt=""/>
                 </div>
-                <div style={{width: "100%"}}>
-                    <span className={"mt-2 flex"}> {content} </span>
+                <div className={"flex"}>
+                    <span
+                        style={{wordBreak:"break-all"}}
+                        className={"mt-2 flex break-words"}> {content} </span>
                 </div>
             </div>
 
