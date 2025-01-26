@@ -1,17 +1,20 @@
-import {_fetch, fetchDelete, fetchGet, fetchPost, fetchPut} from "./fetch.js";
+import {fetchDelete, fetchGet, fetchPost, fetchPut} from "./fetch.js";
 
 const serverHost = import.meta.env.VITE_SERVER_HOST;
 const MUAMUC_API_URL = `${serverHost}/api/muamuc`;
 
-export const fetchPostCreateMuamuc = (data) => {
-    console.log("data: ", data)
+export const fetchGetMuamucTagList = () => {
+    return fetchGet(`${MUAMUC_API_URL}/tag`);
+}
 
+export const fetchPostCreateMuamuc = (data) => {
     return fetchPost(MUAMUC_API_URL, data);
 }
 
 export const fetchGetMuamucList = (tag_id, searchKeyword) => {
     let requestUrl = `${serverHost}/api/muamuc?tag=${tag_id}`
-    searchKeyword && requestUrl.concat(`/searchKeyword=${searchKeyword}`)
+    console.log(searchKeyword)
+    searchKeyword && (requestUrl = requestUrl.concat(`&searchKeyword=${searchKeyword}`))
     console.log("requestUrl: ", requestUrl)
     return fetchGet(requestUrl)
 }

@@ -120,14 +120,12 @@ const Content = ({
         setIsOwner(username === loginUser.id)
     }
 
-    console.log("id: ", id)
 
     const getMuamuc = async () => {
         const {isError, data} = await fetchGetMuamuc(id)
         if (isError) {
             alert(data.errorMessage)
         }
-        console.log("Muamuc: ", data)
         setMuamuc(data)
     }
 

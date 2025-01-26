@@ -23,7 +23,6 @@ const Logout = () => {
     }
 
     const getLogoutModal = () => {
-        console.log("isOpenModal: ", isOpenModal)
         setIsOpenModal(true)
     }
 

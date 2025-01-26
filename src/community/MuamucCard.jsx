@@ -19,7 +19,6 @@ const MuamucCard = ({
     const navigate = useNavigate();
 
 
-    console.log("muamucID:: ", muamucId)
     return (
         <div className={"flex flex-col items-center justify-around"} style={{
             width: "250px",

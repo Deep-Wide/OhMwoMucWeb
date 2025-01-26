@@ -3,8 +3,6 @@ import Button from "../common/Button.jsx";
 
 const Signup = () => {
 
-    console.log("123123");
-
     return (
         <div className={"flex justify-center pt-11"}>
             <div className={"flex flex-col gap-16"}>

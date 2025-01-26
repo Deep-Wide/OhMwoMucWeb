@@ -1,6 +1,6 @@
 import {createContext} from "react";
 
-export const MuamucTagContextList = createContext([])
+export const MuamucTagListContext = createContext([])
 export const MuamuctListContext = createContext({
     muamucList: [],
     dispatch: null

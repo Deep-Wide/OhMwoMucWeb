@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
+import CloseCircle from "/src/assets/icon/close-circle.svg"
 
-const Badge = ({name, isSelected = false, onClick}) => {
+const Badge = ({name, isSelected = false, isSearch = false, onClick, onDelBtn}) => {
 
     const selectedTheme = {
         width: "fit-content",
@@ -28,13 +29,15 @@ const Badge = ({name, isSelected = false, onClick}) => {
 
     return (
         <div
-            className={"cursor-pointer"}
+            className={"cursor-pointer flex gap-x-2"}
             style={isSelected ? selectedTheme : nonSelectedTheme}
             onClick={onClick}
         >
             <span className={isSelected? "main-color font-semibold" : "secondary-color"}>
-                #{name}
+                {isSearch ? name :  `#${name}`}
             </span>
+            {isSearch && <img src={CloseCircle} className={"cursor-pointer"} onClick={onDelBtn}/>}
+
         </div>
     )
 }
