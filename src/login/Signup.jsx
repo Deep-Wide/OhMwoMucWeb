@@ -4,8 +4,6 @@ import {useNavigate} from "react-router-dom";
 
 const Signup = () => {
 
-    console.log("123123");
-
     const navigate = useNavigate();
 
     return (

@@ -12,7 +12,8 @@ const Button = ({
                     borderColor = "#EE5460",
                     logo,
                     width,
-                    onBtnClick = null
+                    onBtnClick = null,
+                    disable = false,
                 }) => {
 
     const logos = {
@@ -24,6 +25,7 @@ const Button = ({
 
     return (
         <button
+            disabled={disable}
             type="button"
             className="text-white p-3 rounded-xl flex items-center justify-center"
             style={{

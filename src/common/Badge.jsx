@@ -1,5 +1,5 @@
 import React from "react";
-import CloseCircle from "/src/assets/icon/close-circle.svg"
+import CloseCircle from "/src/assets/icon/filled-close-circle.svg"
 
 const Badge = ({name, isSelected = false, isSearch = false, onClick, onDelBtn}) => {
 

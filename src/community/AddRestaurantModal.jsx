@@ -1,5 +1,5 @@
 import LineInput from "../common/LineInput.jsx";
-import CloseCircle from "../assets/icon/close-circle.svg";
+import CloseCircle from "../assets/icon/filled-close-circle.svg";
 import Button from "../common/Button.jsx";
 import {useRef, useState} from "react";
 

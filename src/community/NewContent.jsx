@@ -4,7 +4,7 @@ import {useState, useContext, useLayoutEffect, useEffect, useRef} from "react";
 import CommonModal from "../common/CommonModal.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import AlertModal from "../common/AlertModal.jsx";
-import CloseCircle from "/src/assets/icon/close-circle.svg";
+import CloseCircle from "/src/assets/icon/filled-close-circle.svg";
 import LineInput from "../common/LineInput.jsx";
 import {fetchGetMuamuc, fetchPostCreateMuamuc, fetchPutMuamuc} from "../service/MuamucService.js"
 import {UserContext} from "../context/UserContext.js";
