@@ -83,7 +83,7 @@ export default function Login() {
                         <img src={naver} alt="naver"/>
                     </div>
                 </div>
-                <Button name="회원가입" color={"white"} border={true} navigate={() => {
+                <Button name="회원가입" color={"white"} border={true} onBtnClick={() => {
                     navigate("/signup")
                 }}/>
             </div>
