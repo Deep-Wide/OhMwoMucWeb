@@ -8,11 +8,17 @@ import naver from "/src/assets/logo/naver.svg";
 import {useNavigate} from "react-router-dom";
 import {fetchPostLogin} from "../service/LoginService.js";
 import Toast from "../common/Toast.jsx";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import UserStore from "../store/UserStore.js";
 
 
 export default function Login() {
+
+    const [email, setEmail] = useState("");
+    const idRef = useRef(null);
+
+    const [password, setPassword] = useState("");
+    const pwRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -45,8 +51,6 @@ export default function Login() {
     }
 
     function onClickLoginBtn() {
-        const email = document.getElementById("emailInput").value;
-        const password = document.getElementById("passwordInput").value;
 
         fetchPostLogin(email, password).then(response => {
             if (response.isError) {
@@ -64,10 +68,15 @@ export default function Login() {
                 <Title name={"로그인"}/>
                 {toastMessage && <Toast status={toastStatus} message={toastMessage}/>}
                 <div className={"grid gap-3"} style={{width: "340px"}}>
-                    <InputBox name={"이메일"} placeholder={"이메일 입력"} id="emailInput" onKeyPress={onPressEnterKey}/>
-                    <InputBox name={"비밀번호"} placeholder={"비밀번호 입력"} type={"password"} id="passwordInput" onKeyPress={onPressEnterKey}/>
+                    <InputBox value={email} onChange={(e) => {
+                        setEmail(e.target.value)
+                    }} ref={idRef} name={"이메일"} placeholder={"이메일 입력"} onKeyPress={onPressEnterKey}/>
+                    <InputBox value={password} onChange={(e) => {
+                        setPassword(e.target.value)
+                    }} ref={pwRef} name={"비밀번호"} placeholder={"비밀번호 입력"} type={"password"}
+                              onKeyPress={onPressEnterKey}/>
                 </div>
-                <Button name="로그인" onBtnClick={onClickLoginBtn} />
+                <Button name="로그인" onBtnClick={onClickLoginBtn}/>
                 <Line/>
                 <div>
                     <div className={"font-light flex justify-center"}>
