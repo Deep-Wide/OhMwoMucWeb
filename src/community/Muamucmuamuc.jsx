@@ -5,7 +5,7 @@ import MuamucCardContainer from "./MuamucCardContainer.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import AlertModal from "../common/AlertModal.jsx";
-import {fetchGetMuamucList} from "../service/MuamucService.js";
+import {fetchGetMuamucList, fetchGetMuamucTagList} from "../service/MuamucService.js";
 import Badge from "../common/Badge.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
@@ -14,7 +14,7 @@ export default function Muamucmuamuc() {
     const navigate = useNavigate()
     const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
     const {loginUser} = UserStore()
-    const {muamucList, setMuamucList} = MuamucStore()
+    const {muamucList, setMuamucList, muamucTagList, setMuamucTagList} = MuamucStore()
     const [selectedTagId, setSelectedTagId] = useState(0)
     const [searchKeyword, setSearchKeyword] = useState("")
     const [isSearch, setIsSearch] = useState(false)
@@ -28,6 +28,16 @@ export default function Muamucmuamuc() {
         setMuamucList(data)
     }
 
+    const getMuamucTagList = async () => {
+        const {isError, data} = await fetchGetMuamucTagList()
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setMuamucTagList(data)
+
+    }
+
     useEffect(() => {
         if (searchKeyword === "")
             setIsSearch(false)
@@ -37,6 +47,11 @@ export default function Muamucmuamuc() {
         getMuamucList()
     }, [selectedTagId, isSearch])
 
+    useEffect( ()=>{
+        console.log("#########TT")
+        getMuamucTagList()
+    }, [])
+
     return (
         <>
             <Searchbar placeholder={"다른 사람들은 뭐 먹었지?"} onSearch={() => {
@@ -45,7 +60,6 @@ export default function Muamucmuamuc() {
             }} value={searchKeyword} onChange={
                 (e) => {
                     setSearchKeyword(e.currentTarget.value)
-
                 }}/>
 
             {isSearch && searchKeyword.trim() && <div className="max-w mt-3 flex justify-center">

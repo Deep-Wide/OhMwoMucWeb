@@ -8,7 +8,7 @@ export function TagContainer({selectedTag, onChangeTag}) {
     return (
         <div className={"flex gap-3"}>
             {
-                muamucTagList.map((tag, index) => (
+                muamucTagList && muamucTagList.map((tag, index) => (
                    <Tag name = {tag.name} key={index} isSelected={selectedTag === tag.id} onClick={() => onChangeTag(tag)}/>
                ))
             }

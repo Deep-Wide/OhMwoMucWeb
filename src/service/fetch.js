@@ -1,5 +1,4 @@
 export const fetchGet = async (url) => {
-
     return _fetch(url, {method: "Get", credentials: 'include'})
 }
 
@@ -25,11 +24,12 @@ export const fetchDelete = async (url, body = {}) => {
 }
 
 export const _fetch = async (url, requestInit) => {
-
     const res = await fetch(url, requestInit);
     let data = {}
     try {
         data = await res.json();
-    } catch (error) {}
+    } catch (error) {
+        console.error(error)
+    }
     return {isError: !res.ok, data: data};
 }
