@@ -1,15 +1,14 @@
 import BadgeContainer from "../common/BadgeContainer.jsx";
 import Button from "../common/Button.jsx";
-import {useState, useContext, useLayoutEffect, useEffect, useRef} from "react";
+import {useState, useEffect, useRef} from "react";
 import CommonModal from "../common/CommonModal.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import AlertModal from "../common/AlertModal.jsx";
-import CloseCircle from "/src/assets/icon/filled-close-circle.svg";
 import LineInput from "../common/LineInput.jsx";
 import {fetchGetMuamuc, fetchPostCreateMuamuc, fetchPutMuamuc} from "../service/MuamucService.js"
-import {UserContext} from "../context/UserContext.js";
-import {MuamucTagListContext, MuamuctListContext} from "../context/MuamucContext.js";
 import AddRestaurantModal from "./AddRestaurantModal.jsx";
+import UserStore from "../store/UserStore.js";
+import MuamucStore from "../store/MuamucStore.js";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
@@ -18,12 +17,11 @@ const NewContent = ({isUpdate = false}) => {
     const [alertModalConfirmFunc, setAlertModalConfirmFunc] = useState(null)
     const [alertModalMessage, setAlertModalMessage] = useState("")
     const navigate = useNavigate()
-    const {loginUser} = useContext(UserContext)
+    const {loginUser} = UserStore()
     const {id} = useParams()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-    const {dispatch} = useContext(MuamuctListContext)
-    const muamucTagList = useContext(MuamucTagListContext)
+    const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
     const titleRef = useRef(null)
     const textAreaRef = useRef(null)
 
@@ -76,10 +74,7 @@ const NewContent = ({isUpdate = false}) => {
             alert(`${data.errorMessage}`)
             return;
         }
-        dispatch({
-            type: "addMuamuc",
-            payload: data
-        })
+        addMuamuc(data)
         navigate("/muamuc")
     }
 
@@ -98,17 +93,14 @@ const NewContent = ({isUpdate = false}) => {
     }
 
 
-    const updateMuamuc = async () => {
+    const update = async () => {
 
         const {isError, data} = await fetchPutMuamuc(id, getMuamuc())
         if (isError) {
             alert(data.errorMessage)
             return
         }
-        dispatch({
-            action: "updateMuamuc",
-            payload: data
-        })
+        updateMuamuc(data)
         navigate(`/muamuc/${data.muamucId}`)
     }
 

@@ -2,12 +2,11 @@
 
 
 import {Link} from "react-router-dom";
-import {UserContext} from "../context/UserContext.js";
-import {useContext, useState} from "react";
+import UserStore from "../store/UserStore.js";
 
 export function Topbar() {
 
-    const {loginUser, dispatch} = useContext(UserContext);
+    const {loginUser} = UserStore()
 
     return (<nav className="bg-white border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

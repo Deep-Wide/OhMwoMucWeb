@@ -8,15 +8,15 @@ import naver from "/src/assets/logo/naver.svg";
 import {useNavigate} from "react-router-dom";
 import {fetchPostLogin} from "../service/LoginService.js";
 import Toast from "../common/Toast.jsx";
-import {useContext, useState} from "react";
-import {UserContext} from "../context/UserContext.js";
+import {useState} from "react";
+import UserStore from "../store/UserStore.js";
 
 
 export default function Login() {
 
     const navigate = useNavigate();
 
-    const {dispatch} = useContext(UserContext);
+    const {setUser} = UserStore()
 
     const [toastMessage, setToastMessage] = useState(null);
     const [toastStatus, setToastStatus] = useState(null);
@@ -40,7 +40,7 @@ export default function Login() {
     }
 
     const loginSuccess = (user) => {
-        dispatch({type: "setUser", payload: user});
+        setUser(user)
         toast(`${user.nickname}님 오늘은 뭐 먹을까요?`, "success", () => navigate('/'))
     }
 

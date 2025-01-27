@@ -6,10 +6,9 @@ import {TextBtn} from "../common/TextBtn.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchDeleteMuamuc, fetchGetMuamuc} from "../service/MuamucService.js";
 import {useContext, useState} from "react";
-import {UserContext} from "../context/UserContext.js";
-import log from "eslint-plugin-react/lib/util/log.js";
 import AlertModal from "../common/AlertModal.jsx";
-import {MuamuctListContext} from "../context/MuamucContext.js";
+import UserStore from "../store/UserStore.js";
+import MuamucStore from "../store/MuamucStore.js";
 
 const Content = ({
                      // username = "사용자",
@@ -23,7 +22,7 @@ const Content = ({
                      comment = 0,
                  }) => {
 
-    const {loginUser} = useContext(UserContext);
+    const {loginUser} = UserStore()
     const [username, setUsername] = useState("")
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
@@ -32,7 +31,8 @@ const Content = ({
     const [isOwner, setIsOwner] = useState(false)
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
     const navigate = useNavigate()
-    const {dispatch} = useContext(MuamuctListContext)
+
+    const {removeMuamuc} = MuamucStore()
 
     let accordionItems = [
         {
@@ -129,12 +129,9 @@ const Content = ({
         setMuamuc(data)
     }
 
-    const removeMuamuc = async ()=> {
+    const remove = async ()=> {
         await fetchDeleteMuamuc(id)
-        dispatch({
-            type: "removeMuamuc",
-            payload: id
-        })
+        removeMuamuc(id)
         navigate("/muamuc")
     }
     getMuamuc(id)
@@ -157,7 +154,7 @@ const Content = ({
             }}>
                 <AlertModal openModal={isOpenDeleteModal} message={"해당 게시물을 정말 삭제할까요? 다시 복구 안돼용 ㅠ"} onClose={() => {
                     setIsOpenDeleteModal(false)
-                }} onConfirm={removeMuamuc}/>
+                }} onConfirm={remove}/>
                 <div className={"flex justify-between"}
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>

@@ -1,13 +1,13 @@
 import Button from "../common/Button.jsx";
-import {useContext, useState} from "react";
-import {UserContext} from "../context/UserContext.js";
+import {useState} from "react";
 import {logoutAction} from "../service/LoginService.js";
 import {useNavigate} from "react-router-dom";
 import AlertModal from "../common/AlertModal.jsx";
+import UserStore from "../store/UserStore.js";
 
 const Logout = () => {
 
-    const {loginUser, dispatch} = useContext(UserContext)
+    const {loginUser, setUser} = UserStore()
     const [isOpenModal, setIsOpenModal] = useState(false);
     const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const Logout = () => {
         }
         alert('로그아웃이 완료되었습니다.')
         navigate('/login')
-        dispatch({type: "setUser", payload: null})
+        setUser(null)
     }
 
     const getLogoutModal = () => {

@@ -9,7 +9,6 @@ import Signup from "../login/Signup.jsx";
 import Email from "../login/Email.jsx";
 import Information from "../login/Information.jsx";
 import Logout from "../pages/Logout.jsx";
-import MuamucIdx from "../community/MuamucIdx.jsx";
 
 export default function Router() {
 
@@ -23,12 +22,10 @@ export default function Router() {
                     <Route path="/signup/email" element={<Email />}/>
                     <Route path="/signup/info" element={<Information />}/>
                 </Route>
-                <Route path="/muamuc" element={<MuamucIdx />}>
                     <Route path="/muamuc/" element={<Muamucmuamuc />} />
                     <Route path="/muamuc/newcontent" element={<NewContent/>}/>
                     <Route path="/muamuc/content/:id" element={<Content/>}/>
                     <Route path="/muamuc/updateContent/:id" element={<NewContent isUpdate={true}/>} />
-                </Route>
             </Route>
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

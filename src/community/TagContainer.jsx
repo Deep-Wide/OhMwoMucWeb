@@ -1,10 +1,9 @@
 import Tag from "./Tag.jsx";
-import {useContext} from "react";
-import {MuamucTagListContext} from "../context/MuamucContext.js";
+import MuamucStore from "../store/MuamucStore.js";
 
 export function TagContainer({selectedTag, onChangeTag}) {
 
-    const muamucTagList = useContext(MuamucTagListContext)
+    const {muamucTagList} = MuamucStore()
 
     return (
         <div className={"flex gap-3"}>

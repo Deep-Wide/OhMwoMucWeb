@@ -1,9 +1,9 @@
-import React, {useContext} from "react";
+import React from "react";
 import Badge from "./Badge";
-import {MuamucTagListContext} from "../context/MuamucContext.js";
+import MuamucStore from "../store/MuamucStore.js";
 const BadgeContainer = ({ selectedTagId, onChangeTag }) => {
 
-    const muamucTagList = useContext(MuamucTagListContext)
+    const {muamucTagList} = MuamucStore()
 
     return (
         <div

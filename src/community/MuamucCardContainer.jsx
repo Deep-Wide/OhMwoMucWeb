@@ -1,10 +1,9 @@
 import MuamucCard from "./MuamucCard.jsx";
-import {useContext} from "react";
-import {MuamuctListContext} from "../context/MuamucContext.js";
+import MuamucStore from "../store/MuamucStore.js";
 
 const MuamucCardContainer = () => {
 
-    const {muamucList} = useContext(MuamuctListContext)
+    const {muamucList} = MuamucStore()
 
     return (
         <div className={"mt-6"}>

@@ -3,18 +3,18 @@ import {TagContainer} from "./TagContainer.jsx";
 import Button from "../common/Button.jsx";
 import MuamucCardContainer from "./MuamucCardContainer.jsx";
 import {useNavigate} from "react-router-dom";
-import {useContext, useEffect, useRef, useState} from "react";
-import {UserContext} from "../context/UserContext.js";
+import {useEffect, useState} from "react";
 import AlertModal from "../common/AlertModal.jsx";
 import {fetchGetMuamucList} from "../service/MuamucService.js";
-import {MuamuctListContext} from "../context/MuamucContext.js";
 import Badge from "../common/Badge.jsx";
+import UserStore from "../store/UserStore.js";
+import MuamucStore from "../store/MuamucStore.js";
 
 export default function Muamucmuamuc() {
     const navigate = useNavigate()
     const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
-    const {loginUser} = useContext(UserContext)
-    const {muamucList, dispatch} = useContext(MuamuctListContext)
+    const {loginUser} = UserStore()
+    const {muamucList, setMuamucList} = MuamucStore()
     const [selectedTagId, setSelectedTagId] = useState(0)
     const [searchKeyword, setSearchKeyword] = useState("")
     const [isSearch, setIsSearch] = useState(false)
@@ -25,10 +25,7 @@ export default function Muamucmuamuc() {
         if (isError) {
             alert(data.errorMessage)
         }
-        dispatch({
-            type: "setMuamucList",
-            payload: data
-        })
+        setMuamucList(data)
     }
 
     useEffect(() => {
@@ -57,12 +54,12 @@ export default function Muamucmuamuc() {
                     setIsSearch(false)
                 }}/>
             </div>}
-            <div className={"flex justify-center align-center gap-7 mt-6"}
+            <div className={"flex align-center justify-end gap-7 mt-6 mr-10"}
                  style={{height: 43}}>
                 <TagContainer selectedTag={selectedTagId} onChangeTag={(tag) => {
                     setSelectedTagId(tag.id)
                 }}/>
-                <AlertModal openModal={isOpenAlertModal} message={"글 작성 전 로그인부터 해주세용 !"} onConfirm={() => {
+                <AlertModal openModal={isOpenAlertModal} onClose={()=>{setIsOpenAlertModal(false)}} message={"글 작성 전 로그인부터 해주세용 !"} onConfirm={() => {
                     navigate("/login")
                 }}/>
                 <Button name="새 글 쓰기"
