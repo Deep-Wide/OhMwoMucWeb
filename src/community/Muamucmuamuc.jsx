@@ -48,7 +48,6 @@ export default function Muamucmuamuc() {
     }, [selectedTagId, isSearch])
 
     useEffect( ()=>{
-        console.log("#########TT")
         getMuamucTagList()
     }, [])
 

@@ -13,9 +13,7 @@ export const fetchPostCreateMuamuc = (data) => {
 
 export const fetchGetMuamucList = (tag_id, searchKeyword) => {
     let requestUrl = `${serverHost}/api/muamuc?tag=${tag_id}`
-    console.log(searchKeyword)
     searchKeyword && (requestUrl = requestUrl.concat(`&searchKeyword=${searchKeyword}`))
-    console.log("requestUrl: ", requestUrl)
     return fetchGet(requestUrl)
 }
 

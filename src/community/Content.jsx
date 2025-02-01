@@ -114,7 +114,6 @@ const Content = ({
     const {id} = useParams()
 
     const setMuamuc = (data) => {
-        console.log(data)
         setUsername(data.writerName)
         setUserId(data.writerId)
         setTitle(data.title)
