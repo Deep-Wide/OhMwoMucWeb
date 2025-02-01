@@ -11,7 +11,7 @@ const MuamucCardContainer = () => {
                 {
                     muamucList.map((item) => {
                         return (
-                            <MuamucCard key={item.muamucId} username={item.writerId} title={item.title}
+                            <MuamucCard key={item.muamucId} username={item.writerName} title={item.title}
                                         content={item.content} muamucId={item.muamucId}> </MuamucCard>
                         )
                     })

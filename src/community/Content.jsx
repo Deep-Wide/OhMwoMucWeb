@@ -23,7 +23,8 @@ const Content = ({
                  }) => {
 
     const {loginUser} = UserStore()
-    const [username, setUsername] = useState("")
+    const [userId, setUserId] = useState("")
+    const [userName, setUsername] = useState("")
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [userImg, setUserImg] = useState("")
@@ -113,11 +114,13 @@ const Content = ({
     const {id} = useParams()
 
     const setMuamuc = (data) => {
-        setUsername(data.writerId)
+        console.log(data)
+        setUsername(data.writerName)
+        setUserId(data.writerId)
         setTitle(data.title)
         setContent(data.content)
         /*Todo 추후 유저 로직 생성 후 userId로 수정할 것*/
-        setIsOwner(username === loginUser.id)
+        setIsOwner(userId === loginUser.id)
     }
 
 
@@ -159,7 +162,7 @@ const Content = ({
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>
                         <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
-                        <span className={"text-ml"}> {username} </span>
+                        <span className={"text-ml"}> {userName} </span>
                     </div>
                     <Icon className={"w-10 h-10 me-4 rounded-full"} icon={"onyum"}></Icon>
                 </div>
