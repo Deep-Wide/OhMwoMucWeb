@@ -1,7 +1,7 @@
 const InputBox = ({name, placeholder, type="text", id, onKeyPress, ref, value, onChange}) => {
     return (
         <div>
-            <div className={`font-semibold main-color text-lg`}>
+            <div className={`font-semibold main-color text-lg select-none`}>
                 {name}
             </div>
             <div style={{

@@ -14,18 +14,20 @@ import UserStore from "../store/UserStore.js";
 
 export default function Login() {
 
-    const [email, setEmail] = useState("");
-    const idRef = useRef(null);
+    const [email, setEmail] = useState("")
+    const idRef = useRef(null)
 
-    const [password, setPassword] = useState("");
-    const pwRef = useRef(null);
+    const [password, setPassword] = useState("")
+    const pwRef = useRef(null)
+
+    const [rememberMe, setRememberMe] = useState(false)
 
     const navigate = useNavigate();
 
     const {setUser} = UserStore()
 
-    const [toastMessage, setToastMessage] = useState(null);
-    const [toastStatus, setToastStatus] = useState(null);
+    const [toastMessage, setToastMessage] = useState(null)
+    const [toastStatus, setToastStatus] = useState(null)
 
     const onPressEnterKey = (event) => {
         if (event.key === "Enter") {
@@ -37,10 +39,10 @@ export default function Login() {
         setToastMessage(message)
         setToastStatus(status)
         setTimeout(() => {
-            setToastMessage(null);
-            setToastStatus(null);
+            setToastMessage(null)
+            setToastStatus(null)
             if (callback) {
-                callback();
+                callback()
             }
         }, 1000);
     }
@@ -52,13 +54,13 @@ export default function Login() {
 
     function onClickLoginBtn() {
 
-        fetchPostLogin(email, password).then(response => {
+        fetchPostLogin(email, password, rememberMe).then(response => {
             if (response.isError) {
                 toast("이메일이나 비밀번호가 틀렸습니다.", "danger")
             } else {
                 loginSuccess(response.data)
             }
-        });
+        })
     }
 
 
@@ -75,6 +77,12 @@ export default function Login() {
                         setPassword(e.target.value)
                     }} ref={pwRef} name={"비밀번호"} placeholder={"비밀번호 입력"} type={"password"}
                               onKeyPress={onPressEnterKey}/>
+                </div>
+                <div className={"flex items-center"}>
+                    <input className={"mr-2"} type={"checkbox"} value={rememberMe} id="rememberMe" onChange={(event) => {
+                        setRememberMe(event.target.checked)
+                    }}/>
+                    <label className={"select-none"} htmlFor="rememberMe">자동로그인</label>
                 </div>
                 <Button name="로그인" onBtnClick={onClickLoginBtn}/>
                 <Line/>
