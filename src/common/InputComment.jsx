@@ -1,11 +1,10 @@
 import {TextBtn} from "./TextBtn.jsx";
 
-const InputComment = () => {
-
+const InputComment = ({isOpen, onClose}) => {
 
     return (
-        <div>
-
+        isOpen &&
+        (<div>
             <div className={"font-light text-base"}
                  style={{
                      borderStyle: "solid",
@@ -23,10 +22,11 @@ const InputComment = () => {
                             placeholder={"댓글 내용 작성"}/>
             </div>
             <div className={"flex justify-between mt-2"}>
-                <TextBtn name={"작성취소"}/>
+                <TextBtn name={"작성취소"} onClick={onClose}/>
                 <TextBtn name={"작성완료"} color={"#EE5460"}/>
             </div>
-        </div>
+        </div>)
+
     )
 }
 

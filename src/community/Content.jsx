@@ -5,10 +5,11 @@ import Icon from "../common/Icon.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchDeleteMuamuc, fetchGetMuamuc} from "../service/MuamucService.js";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import AlertModal from "../common/AlertModal.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
+import {fetchGetCommentList} from "../service/CommentService.js";
 
 const Content = ({
                      // username = "사용자",
@@ -31,6 +32,13 @@ const Content = ({
     const [state, setState] = useState("")
     const [isOwner, setIsOwner] = useState(false)
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+    const [commentItems, setCommentItems] = useState([
+        {
+            title: "댓글",
+            btnName: "댓글 쓰기",
+            comments: []
+        }
+    ])
     const navigate = useNavigate()
 
     const {removeMuamuc} = MuamucStore()
@@ -66,51 +74,6 @@ const Content = ({
         }
     ]
 
-    let commentItems = [
-        {
-            title: "댓글",
-            commentCount: 0,
-            btnName: "댓글 쓰기",
-            comments: [
-                {
-                    userImg: "",
-                    userName: "냠이",
-                    comment: "우와 진짜 맛있어보여요 !! 여기 포장도 되나요?",
-                    subComments: [
-                        {
-                            userImg: "",
-                            userName: "냠냠이",
-                            comment: "네넹 글고 포장하면 2000원 더 싸요 !! 더더 강추임당"
-                        },
-                        {
-                            userImg: "",
-                            userName: "냠냠이",
-                            comment: "네넹 글고 포장하면 2000원 더 싸요 !! 더더 강추임당"
-                        }
-                    ]
-                },
-                {
-                    userImg: "",
-                    userName: "냠이",
-                    comment: "우와 진짜 맛있어보여요 !! 여기 포장도 되나요?",
-                    subComments: [
-                        {
-                            userImg: "",
-                            userName: "냠냠이",
-                            comment: "네넹 글고 포장하면 2000원 더 싸요 !! 더더 강추임당"
-                        },
-                        {
-                            userImg: "",
-                            userName: "냠냠이",
-                            comment: "네넹 글고 포장하면 2000원 더 싸요 !! 더더 강추임당"
-                        }
-                    ]
-                }
-            ]
-
-        }
-    ]
-
     const {id} = useParams()
 
     const setMuamuc = (data) => {
@@ -119,7 +82,7 @@ const Content = ({
         setTitle(data.title)
         setContent(data.content)
         /*Todo 추후 유저 로직 생성 후 userId로 수정할 것*/
-        setIsOwner(userId === loginUser.id)
+        setIsOwner(userId === loginUser?.id)
     }
 
 
@@ -131,12 +94,29 @@ const Content = ({
         setMuamuc(data)
     }
 
-    const remove = async ()=> {
+    const remove = async () => {
         await fetchDeleteMuamuc(id)
         removeMuamuc(id)
         navigate("/muamuc")
     }
-    getMuamuc(id)
+
+    const setComment = async () => {
+        const {isError, data} = await fetchGetCommentList(id)
+        if (isError) {
+            alert(data.errorMessage)
+        }
+        setCommentItems(p => [{
+            ...p[0],
+            comments: data
+        }])
+
+    }
+
+
+    useEffect(() => {
+        getMuamuc(id)
+        setComment()
+    }, [id]);
 
 
     return (
@@ -180,8 +160,8 @@ const Content = ({
                             <TextBtn name={"삭제하기"} onClick={() => {
                                 setIsOpenDeleteModal(true)
                             }}/> <TextBtn name={"수정하기"} onClick={() => {
-                                navigate(`/muamuc/updateContent/${id}`)
-                        }} />
+                            navigate(`/muamuc/updateContent/${id}`)
+                        }}/>
                         </div>
                     ) :
                     <div className={"flex flex-row-reverse justify-between"}>
@@ -189,7 +169,7 @@ const Content = ({
                     </div>
 
                 }
-                <Accordion items={accordionItems} kind={"RestaurantInfo"}/>
+                {/*<Accordion items={accordionItems} kind={"RestaurantInfo"}/>*/}
                 <Accordion items={commentItems}/>
             </div>
         </div>
