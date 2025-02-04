@@ -4,17 +4,20 @@ import {TextBtn} from "./TextBtn.jsx";
 import RestaurantInfo from "../community/RestaurantInfo.jsx";
 import Comment from "../community/Comment.jsx";
 import InputComment from "./InputComment.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
+import {fetchPostCreateComment} from "../service/CommentService.js";
 import AlertModal from "./AlertModal.jsx";
-import Toast from "./Toast.jsx";
 
 
-const Accordion = ({items, kind}) => {
+const Accordion = ({items, kind, setCommentItems, commentItems}) => {
     const [activeIndex, setActiveIndex] = useState(0)
     const [isOpenInputComment, setIsOpenInputComment] = useState(false)
+    const [isOpenModal, setIsOpenModal] = useState(false)
+    const [modalMessage, setModalMessage] = useState("")
     const navigate = useNavigate()
     const {loginUser} = UserStore()
+    const {id} = useParams()
 
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -41,6 +44,35 @@ const Accordion = ({items, kind}) => {
         )
     }
 
+    const addComment = async (comment) => {
+        if (comment.trim() === "") {
+            setModalMessage("댓글이 작성되지 않았습니다ㅠ")
+            setModalConfirmFunc(() => {
+                // inputCommentRef.current.focus()
+                // Todo 에러 수정
+            })
+            setIsOpenModal(true)
+        }
+        const newComment = {
+            "userId": loginUser?.id,
+            "muamucId": id,
+            "commentText": comment,
+        }
+        const {data, isError} = await fetchPostCreateComment(newComment)
+
+        if (isError) {
+            console.log(isError)
+            return;
+        }
+        setCommentItems(prevItems => [
+            {
+                ...prevItems[0], // 첫 번째 객체를 복사
+                comments: [...prevItems[0].comments, data] // 새로운 댓글을 추가
+            }
+        ])
+        setIsOpenInputComment(false);
+    }
+
 
     return (
         <div className="w-full max-w-md mx-auto space-y-4">
@@ -49,6 +81,9 @@ const Accordion = ({items, kind}) => {
                     key={index}
                     className=" rounded-lg overflow-hidden"
                 >
+                    <AlertModal openModal={isOpenModal} onClose={() => {
+                        setIsOpenModal(false)
+                    }} message={modalMessage}/>
                     <div
                         className="w-full text-left px-4 py-2 flex justify-between items-center"
                     >
@@ -92,7 +127,9 @@ const Accordion = ({items, kind}) => {
                                     :
                                     (
                                         <>
-                                            <InputComment isOpen={isOpenInputComment} onClose={()=>{setIsOpenInputComment(false)}}/>
+                                            <InputComment isOpen={isOpenInputComment} onClose={() => {
+                                                setIsOpenInputComment(false)
+                                            }} onClickWriteComment={addComment}/>
                                             <ContentWrapper info={item}/>
                                         </>
                                     )

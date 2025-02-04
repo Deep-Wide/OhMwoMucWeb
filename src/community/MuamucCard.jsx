@@ -11,13 +11,11 @@ const MuamucCard = ({
                         image = "",
                         content = "기본 내용",
                         fork = "offfork",
-                        forks = 0,
                         forkStatus = false,
-                        comment = 0,
+                        commentCount,
                         muamucId
                     }) => {
     const navigate = useNavigate();
-
 
     return (
         <div className={"flex flex-col items-center justify-around"} style={{
@@ -54,7 +52,7 @@ const MuamucCard = ({
                 </div>
                 <div className={"flex h-max-[206px] overflow-hidden text-ellipsis"}>
                     <span
-                        style={{wordBreak:"break-all"}}
+                        style={{wordBreak: "break-all"}}
                         className={"mt-2 flex break-words"}> {content} </span>
                 </div>
             </div>
@@ -65,7 +63,7 @@ const MuamucCard = ({
                     <Icon className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>
                 </div>
                 <div className={"flex justify-between items-center"}>
-                    <Icon className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={comment}/>
+                    <Icon className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={commentCount}/>
                 </div>
             </div>
 

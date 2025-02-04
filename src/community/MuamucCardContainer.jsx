@@ -10,9 +10,11 @@ const MuamucCardContainer = () => {
             <div className={"grid gap-x-3 gap-y-5 grid-cols-4"}>
                 {
                     muamucList.map((item) => {
+
                         return (
                             <MuamucCard key={item.muamucId} username={item.writerName} title={item.title}
-                                        content={item.content} muamucId={item.muamucId}> </MuamucCard>
+                                        content={item.content}
+                                        muamucId={item.muamucId} commentCount={item.commentCount}></MuamucCard>
                         )
                     })
                 }

@@ -4,7 +4,11 @@ const serverHost = import.meta.env.VITE_SERVER_HOST
 const COMMENT_API_URL = `${serverHost}/api/comment`
 
 export const fetchGetCommentList = (muamucId) => {
-    return fetchGet(`${COMMENT_API_URL}/${muamucId}`)
+    return fetchGet(`${COMMENT_API_URL}/muamuc/${muamucId}`)
+}
+
+    export const fetchGetComment = (commentId) => {
+    return fetchGet(`${COMMENT_API_URL}/${commentId}`)
 }
 
 export const fetchPostCreateComment = (data) => {

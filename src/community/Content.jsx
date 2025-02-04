@@ -109,7 +109,6 @@ const Content = ({
             ...p[0],
             comments: data
         }])
-
     }
 
 
@@ -170,7 +169,7 @@ const Content = ({
 
                 }
                 {/*<Accordion items={accordionItems} kind={"RestaurantInfo"}/>*/}
-                <Accordion items={commentItems}/>
+                <Accordion items={commentItems} setCommentItems={setCommentItems} commentItems={commentItems}/>
             </div>
         </div>
     )
