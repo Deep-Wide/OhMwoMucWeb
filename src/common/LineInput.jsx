@@ -1,4 +1,6 @@
-const LineInput = ({ref, placeholder, textSize = "text-base", type = "text", onChange, id, value}) => {
+import {forwardRef} from "react";
+
+const LineInput = forwardRef(({placeholder, textSize = "text-base", type = "text", onChange, id, value}, ref) => {
 
     return (
         <div className={`${textSize} font-semibold flex justify-center`}
@@ -8,10 +10,10 @@ const LineInput = ({ref, placeholder, textSize = "text-base", type = "text", onC
                  paddingBottom: "7px",
                  width: "100%"
              }}>
-            <input id={id} ref = {ref} className={`${textSize} main-color`} type={type} placeholder={placeholder}
+            <input id={id} ref={ref} className={`${textSize} main-color`} type={type} placeholder={placeholder}
                    style={{width: "100%"}} onChange={onChange} autoComplete="off" value={value}/>
         </div>
     )
-}
+})
 
 export default LineInput;

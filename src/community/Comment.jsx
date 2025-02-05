@@ -11,6 +11,7 @@ import {
     fetchPostCreateComment,
     fetchPostUpdateComment
 } from "../service/CommentService.js";
+import AlertModalStore from "../store/AlertModalStore.js";
 
 const Comment = ({comments}) => {
     const [sortedComments, setSortedComments] = useState([])
@@ -23,19 +24,7 @@ const Comment = ({comments}) => {
     const {id} = useParams()
     const ref = useRef(null);
 
-    const [modalInfo, setModalInfo] = useState({
-        isOpen: false,
-        message: "",
-        confirm() {}
-    });
-
-    const initializeModal = () => {
-        setModalInfo({
-            isOpen: false,
-            message: "",
-            confirm() {}
-        })
-    }
+    const {setAlertModalInfo} = AlertModalStore()
 
     const updateInputTargetId = (commentId) => {
         setInputTargetParentId(commentId)
@@ -87,15 +76,15 @@ const Comment = ({comments}) => {
 
     const updateComment = async (commentId, text) => {
         if (text.trim() === "") {
-            setModalInfo({
-                isOpen: true,
+            setAlertModalInfo({isOpen: true,
                 message: "댓글이 작성되지 않았습니다ㅠ",
                 confirm() {
                     // inputCommentRef.current.focus()
                     // Todo 에러 수정
-                }
-            })
-        }
+                }})
+
+            }
+
         const newComment = {
             "userId": loginUser?.id,
             "muamucId": id,
@@ -137,13 +126,10 @@ const Comment = ({comments}) => {
         setSortedComments(list);
     }, [commentList]);
 
-    console.log("####### ", ref)
 
     return (
         <div style={{width: "100%"}}>
-            <AlertModal openModal={modalInfo.isOpen} onClose={initializeModal}
-                        message={modalInfo.message}
-                        onConfirm={modalInfo.confirm}/>
+
             {Array.isArray(sortedComments) &&
                 (
                     sortedComments.map((comment) => (
@@ -173,7 +159,7 @@ const Comment = ({comments}) => {
                                     }}/>
                                 ) : (
                                     <TextBtn name={"신고하기"} onClick={() => {
-                                        setModalInfo({
+                                        setAlertModalInfo({
                                             isOpen: true,
                                             message: "해당 댓글을 정말 신고할까요?",
                                             confirm: reportComment
@@ -188,7 +174,7 @@ const Comment = ({comments}) => {
                                     updateInputTargetId(comment.commentId)
                                 }}/>}
                                 {loginUser?.id === comment.userId && <TextBtn name={"삭제하기"} onClick={() => {
-                                    setModalInfo({
+                                    setAlertModalInfo({
                                         isOpen: true,
                                         message: ("해당 댓글을 정말 삭제할까요?"),
                                         confirm() {

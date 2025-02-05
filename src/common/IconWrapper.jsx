@@ -5,7 +5,7 @@ import offfork from "/src/assets/emoji/offfork.png"
 import onfork from "/src/assets/emoji/onfork.png"
 
 
-const Icon = ({icon, className, num = 0}) => {
+const IconWrapper = ({icon, className, num = 0}) => {
 
     const emoji = {
         chat: chat,
@@ -14,8 +14,6 @@ const Icon = ({icon, className, num = 0}) => {
         offfork: offfork,
         onfork: onfork
     };
-    if (num !== 0)
-        console.log("#####")
 
     return (
         <div className="flex justify-between items-center">
@@ -25,4 +23,4 @@ const Icon = ({icon, className, num = 0}) => {
     )
 }
 
-export default Icon
+export default IconWrapper

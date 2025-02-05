@@ -1,10 +1,17 @@
 import {Modal} from "flowbite-react";
 import {HiOutlineExclamationCircle} from "react-icons/hi";
 import Button from "./Button.jsx";
+import AlertModalStore from "../store/AlertModalStore.js";
 
-const AlertModal = ({openModal, onClose, message, onConfirm, onCancel}) => {
+const AlertModal = ({openModal, message, onConfirm, onCancel}) => {
+
+    const {setAlertModalInfo} = AlertModalStore()
+    const closeModal = () => {
+        setAlertModalInfo({isOpen: false, message: "", confirm: null})
+    }
+
     return (
-        <Modal show={openModal} size="md" onClose={onClose} popup>
+        <Modal show={openModal} size="md" onClose={closeModal} popup>
             <Modal.Header/>
             <Modal.Body>
                 <div className="text-center">
@@ -15,11 +22,11 @@ const AlertModal = ({openModal, onClose, message, onConfirm, onCancel}) => {
                     <div className="flex justify-center gap-4">
                         <Button width={"65.48px"} onBtnClick={() => {
                             onConfirm && onConfirm()
-                            onClose()
+                            closeModal()
                         }} name={"넹"}/>
                         <Button color="gray" onBtnClick={() => {
                             onCancel && onCancel()
-                            onClose()
+                            closeModal()
                         }} name={"아니요"}/>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import defaultImg from "/src/assets/icon/default-profile.svg"
 import FoodCarousel from "../common/FoodCarousel.jsx";
-import Accordion from "../common/Accordion.jsx";
-import Icon from "../common/Icon.jsx";
+import Accordion from "../common/oldAccordion.jsx";
+import IconWrapper from "../common/IconWrapper.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchDeleteMuamuc, fetchGetMuamuc} from "../service/MuamucService.js";
@@ -10,6 +10,10 @@ import AlertModal from "../common/AlertModal.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
 import {fetchGetCommentList} from "../service/CommentService.js";
+import RestaurantInfoWrapper from "./RestaurantInfoWrapper.jsx";
+import CommentWrapper from "./CommentWrapper.jsx";
+import AlertModalStore from "../store/AlertModalStore.js";
+import {AccordionTitle} from "flowbite-react";
 
 const Content = ({
                      // username = "사용자",
@@ -24,6 +28,7 @@ const Content = ({
                  }) => {
 
     const {loginUser} = UserStore()
+    const {setAlertModalInfo} = AlertModalStore()
     const [userId, setUserId] = useState("")
     const [userName, setUsername] = useState("")
     const [title, setTitle] = useState("")
@@ -32,47 +37,17 @@ const Content = ({
     const [state, setState] = useState("")
     const [isOwner, setIsOwner] = useState(false)
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
-    const [commentItems, setCommentItems] = useState([
-        {
-            title: "댓글",
-            btnName: "댓글 쓰기",
-            comments: []
-        }
-    ])
+    const [comments, setComments] = useState([])
+    // const [commentItems, setCommentItems] = useState([
+    //     {
+    //         title: "댓글",
+    //         btnName: "댓글 쓰기",
+    //         comments: []
+    //     }
+    // ])
     const navigate = useNavigate()
 
     const {removeMuamuc} = MuamucStore()
-
-    let accordionItems = [
-        {
-            title: "꾸리네 족발곱창",
-            time: "13:00 - 22:00",
-            menu: [
-                {
-                    name: "족발(대)",
-                    price: "31,000"
-                },
-                {
-                    name: "족발(중)",
-                    price: "20,000"
-                },
-                {
-                    name: "족발(소)",
-                    price: "13,000"
-                },
-                {
-                    name: "돼지곱창",
-                    price: "8,000"
-                },
-                {
-                    name: "사이다",
-                    price: "3,000"
-                }
-            ],
-            telNum: "02-9090-9090",
-            address: "서울시 관악구 관악대로 16길 1층 꾸리네족발곱창"
-        }
-    ]
 
     const {id} = useParams()
 
@@ -105,10 +80,11 @@ const Content = ({
         if (isError) {
             alert(data.errorMessage)
         }
-        setCommentItems(p => [{
-            ...p[0],
-            comments: data
-        }])
+        setComments(data)
+    }
+
+    const setDeleteAlertModal = () => {
+        setAlertModalInfo({isOpen: true, message: "해당 게시물을 정말 삭제할까요? 다시 복구 안돼용 ㅠ", confirm: remove})
     }
 
 
@@ -133,16 +109,14 @@ const Content = ({
                 paddingLeft: "33px",
                 paddingRight: "33px"
             }}>
-                <AlertModal openModal={isOpenDeleteModal} message={"해당 게시물을 정말 삭제할까요? 다시 복구 안돼용 ㅠ"} onClose={() => {
-                    setIsOpenDeleteModal(false)
-                }} onConfirm={remove}/>
+
                 <div className={"flex justify-between"}
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>
                         <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
                         <span className={"text-ml"}> {userName} </span>
                     </div>
-                    <Icon className={"w-10 h-10 me-4 rounded-full"} icon={"onyum"}></Icon>
+                    <IconWrapper className={"w-10 h-10 me-4 rounded-full"} icon={"onyum"}></IconWrapper>
                 </div>
 
                 <div style={{width: "100%"}}>
@@ -156,11 +130,10 @@ const Content = ({
                 </div>
                 {(isOwner) ? (
                         <div className={"flex justify-between"}>
-                            <TextBtn name={"삭제하기"} onClick={() => {
-                                setIsOpenDeleteModal(true)
-                            }}/> <TextBtn name={"수정하기"} onClick={() => {
-                            navigate(`/muamuc/updateContent/${id}`)
-                        }}/>
+                            <TextBtn name={"삭제하기"} onClick={setDeleteAlertModal}/>
+                            <TextBtn name={"수정하기"} onClick={() => {
+                                navigate(`/muamuc/updateContent/${id}`)
+                            }}/>
                         </div>
                     ) :
                     <div className={"flex flex-row-reverse justify-between"}>
@@ -168,8 +141,10 @@ const Content = ({
                     </div>
 
                 }
+                <RestaurantInfoWrapper/>
+                <CommentWrapper comments={comments} onUpdateComment={setComments}/>
                 {/*<Accordion items={accordionItems} kind={"RestaurantInfo"}/>*/}
-                <Accordion items={commentItems} setCommentItems={setCommentItems} commentItems={commentItems}/>
+                {/*<Accordion items={commentItems} setCommentItems={setCommentItems} commentItems={commentItems}/>*/}
             </div>
         </div>
     )

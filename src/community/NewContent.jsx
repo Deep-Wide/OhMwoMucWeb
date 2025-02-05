@@ -3,32 +3,35 @@ import Button from "../common/Button.jsx";
 import {useState, useEffect, useRef} from "react";
 import CommonModal from "../common/CommonModal.jsx";
 import {useNavigate, useParams} from "react-router-dom";
-import AlertModal from "../common/AlertModal.jsx";
 import LineInput from "../common/LineInput.jsx";
 import {fetchGetMuamuc, fetchPostCreateMuamuc, fetchPutMuamuc} from "../service/MuamucService.js"
 import AddRestaurantModal from "./AddRestaurantModal.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
+import AlertModalStore from "../store/AlertModalStore.js";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
     const [isOpenAddRestaurantModal, setIsOpenAddRestaurantModal] = useState(false)
-    const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
-    const [alertModalConfirmFunc, setAlertModalConfirmFunc] = useState(null)
-    const [alertModalMessage, setAlertModalMessage] = useState("")
+
+    // const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
+    // const [alertModalConfirmFunc, setAlertModalConfirmFunc] = useState(null)
+    // const [alertModalMessage, setAlertModalMessage] = useState("")
+
     const navigate = useNavigate()
     const {loginUser} = UserStore()
     const {id} = useParams()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
+    const {isOpen, message, confirm, setAlertModalInfo} = AlertModalStore()
     const titleRef = useRef(null)
-    const textAreaRef = useRef(null)
-
+    const contentRef = useRef(null)
 
     const getMuamuc = () => {
 
-        validateElement()
+        if (!validateElement())
+            return
 
         const data = {
             tagId: selectedTag.id,
@@ -44,27 +47,31 @@ const NewContent = ({isUpdate = false}) => {
     const validateElement = () => {
 
         const setValidateModal = (message, func) => {
-            setAlertModalMessage(message)
-            setIsOpenAlertModal(true)
-            setAlertModalConfirmFunc(() => () => {
-                func()
-            })
+            setAlertModalInfo({isOpen: true, message, confirm: func})
         }
 
         if (!selectedTag) {
             setValidateModal("글 태그를 선택해주세요")
-        } else if (muamucTitle?.value.trim() === "") {
+            return false
+        } else if (title.trim() === "") {
             setValidateModal("글 제목을 입력해주세요", () => {
                 titleRef.current.focus()
             })
-        } else if (muamucDescription?.value.trim() === "") {
+            return false
+        } else if (content.trim() === "") {
             setValidateModal("글 내용을 작성해주세요", () => {
-                textAreaRef.current.focus()
+                contentRef.current.focus()
             })
+            return false
         }
+        return true
+
     }
 
     const createNewContent = async () => {
+        if (!validateElement()) {
+            return
+        }
 
         const {
             isError,
@@ -140,7 +147,7 @@ const NewContent = ({isUpdate = false}) => {
                     <BadgeContainer selectedTagId={selectedTag?.id} onChangeTag={setSelectedTag}/>
                 </div>
 
-                <LineInput ref = {titleRef} id={"muamuc_title"} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
+                <LineInput ref={titleRef}  placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
 
                 <div className={"flex justify-center"}>
                     <Button name={"이미지 추가"} style={{width: "160px"}}/>
@@ -157,7 +164,7 @@ const NewContent = ({isUpdate = false}) => {
                              paddingRight: "10px"
                          }}>
                         <textarea
-                            ref={textAreaRef}
+                            ref={contentRef}
                             value = {content}
                             onChange={event => setContent(event.target.value)}
                             className={"text-sm"}
@@ -176,13 +183,7 @@ const NewContent = ({isUpdate = false}) => {
                 {!id ?
                     <div className={"flex justify-between"}>
                         <Button name={"작성 취소"} color={"#9A9A9A"} onBtnClick={() => {
-                            setAlertModalMessage("작성을 취소할까요?")
-                            setAlertModalConfirmFunc(() =>
-                                () => {
-                                    navigate("/muamuc")
-                                }
-                            )
-                            setIsOpenAlertModal(true)
+                            setAlertModalInfo({isOpen: true, message:"작성을 취소할까요?", confirm:()=>navigate("/muamuc")})
                         }}/>
                         <Button name={"작성 완료"} onBtnClick={createNewContent}/>
                     </div> :
@@ -190,14 +191,10 @@ const NewContent = ({isUpdate = false}) => {
                         <Button name={"수정 취소"} color={"#9A9A9A"} onBtnClick={() => {
                             navigate("/muamuc")
                         }}/>
-                        <Button name={"수정 완료"} onBtnClick={updateMuamuc}/>
+                        <Button name={"수정 완료"} onBtnClick={update}/>
                     </div>
                 }
             </div>
-            <AlertModal message={alertModalMessage} openModal={isOpenAlertModal} onConfirm={alertModalConfirmFunc}
-                        onClose={() => {
-                            setIsOpenAlertModal(false)
-                        }}/>
             <CommonModal title={"신규 식당 등록"} modalBody={AddRestaurantModal} openModal={isOpenAddRestaurantModal}
                          onConfirm={() => {
                              navigate("/muamuc")

@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import Icon from "../common/Icon.jsx";
+import IconWrapper from "../common/IconWrapper.jsx";
 
 
 const MuamucCard = ({
@@ -37,7 +37,7 @@ const MuamucCard = ({
                     <span className={"text-sm"}> {username} </span>
                 </div>
                 <div className={"flex justify-between items-center"}>
-                    <Icon className={"w-10 h-10 me-4 rounded-full"} icon={likeStatus ? "onyum" : "nonyum"} num={likes}/>
+                    <IconWrapper className={"w-10 h-10 me-4 rounded-full"} icon={likeStatus ? "onyum" : "nonyum"} num={likes}/>
                 </div>
             </div>
             <div style={{width: "100%"}}>
@@ -60,10 +60,10 @@ const MuamucCard = ({
             <div className={"flex justify-between"}
                  style={{width: "169px"}}>
                 <div className={"flex justify-between items-center"}>
-                    <Icon className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>
+                    <IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>
                 </div>
                 <div className={"flex justify-between items-center"}>
-                    <Icon className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={commentCount}/>
+                    <IconWrapper className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={commentCount}/>
                 </div>
             </div>
 
