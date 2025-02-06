@@ -16,8 +16,6 @@ const InputComment = ({isOpen, onClose, onClickWriteComment, defaultValue, ref }
         setValue(defaultValue);
     }, [ defaultValue ]);
 
-    console.log("####### ", ref)
-
     return (
         isOpen &&
         (<div>
