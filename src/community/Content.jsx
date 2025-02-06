@@ -1,19 +1,16 @@
 import defaultImg from "/src/assets/icon/default-profile.svg"
 import FoodCarousel from "../common/FoodCarousel.jsx";
-import Accordion from "../common/oldAccordion.jsx";
 import IconWrapper from "../common/IconWrapper.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {fetchDeleteMuamuc, fetchGetMuamuc} from "../service/MuamucService.js";
-import {useContext, useEffect, useState} from "react";
-import AlertModal from "../common/AlertModal.jsx";
+import {useEffect, useState} from "react";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
 import {fetchGetCommentList} from "../service/CommentService.js";
 import RestaurantInfoWrapper from "./RestaurantInfoWrapper.jsx";
 import CommentWrapper from "./CommentWrapper.jsx";
 import AlertModalStore from "../store/AlertModalStore.js";
-import {AccordionTitle} from "flowbite-react";
 
 const Content = ({
                      // username = "사용자",
@@ -34,17 +31,9 @@ const Content = ({
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [userImg, setUserImg] = useState("")
-    const [state, setState] = useState("")
     const [isOwner, setIsOwner] = useState(false)
-    const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
     const [comments, setComments] = useState([])
-    // const [commentItems, setCommentItems] = useState([
-    //     {
-    //         title: "댓글",
-    //         btnName: "댓글 쓰기",
-    //         comments: []
-    //     }
-    // ])
+
     const navigate = useNavigate()
 
     const {removeMuamuc} = MuamucStore()
@@ -56,7 +45,6 @@ const Content = ({
         setUserId(data.writerId)
         setTitle(data.title)
         setContent(data.content)
-        /*Todo 추후 유저 로직 생성 후 userId로 수정할 것*/
         setIsOwner(userId === loginUser?.id)
     }
 

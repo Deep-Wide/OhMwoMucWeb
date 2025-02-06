@@ -14,17 +14,13 @@ const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
     const [isOpenAddRestaurantModal, setIsOpenAddRestaurantModal] = useState(false)
 
-    // const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
-    // const [alertModalConfirmFunc, setAlertModalConfirmFunc] = useState(null)
-    // const [alertModalMessage, setAlertModalMessage] = useState("")
-
     const navigate = useNavigate()
     const {loginUser} = UserStore()
     const {id} = useParams()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
-    const {isOpen, message, confirm, setAlertModalInfo} = AlertModalStore()
+    const {setAlertModalInfo} = AlertModalStore()
     const titleRef = useRef(null)
     const contentRef = useRef(null)
 
@@ -147,7 +143,7 @@ const NewContent = ({isUpdate = false}) => {
                     <BadgeContainer selectedTagId={selectedTag?.id} onChangeTag={setSelectedTag}/>
                 </div>
 
-                <LineInput ref={titleRef}  placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
+                <LineInput ref={titleRef} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
 
                 <div className={"flex justify-center"}>
                     <Button name={"이미지 추가"} style={{width: "160px"}}/>

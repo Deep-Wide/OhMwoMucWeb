@@ -5,6 +5,8 @@ const BadgeContainer = ({ selectedTagId, onChangeTag }) => {
 
     const {muamucTagList} = MuamucStore()
 
+    console.log("muamucTagList: ", muamucTagList);
+
     return (
         <div
             className="gap-1"

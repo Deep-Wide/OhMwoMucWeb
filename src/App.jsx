@@ -7,10 +7,13 @@ import UserStore from "./store/UserStore.js";
 import {Alert} from "flowbite-react";
 import AlertModal from "./common/AlertModal.jsx";
 import AlertModalStore from "./store/AlertModalStore.js";
+import MuamucStore from "./store/MuamucStore.js";
+import {fetchGetMuamucTagList} from "./service/MuamucService.js";
 
 function App() {
 
     const {setUser} = UserStore()
+    const {setMuamucTagList} = MuamucStore()
     const {isOpen, message, confirm, cancel} = AlertModalStore()
 
     const getLoginUser = async () => {
@@ -22,8 +25,18 @@ function App() {
         setUser(data)
     }
 
+    const getMuamucTagList = async () => {
+        const {isError, data} = await fetchGetMuamucTagList()
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setMuamucTagList(data)
+    }
+
     useEffect(() => {
         getLoginUser()
+        getMuamucTagList()
     }, [])
 
     return (

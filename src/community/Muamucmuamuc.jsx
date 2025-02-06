@@ -9,33 +9,24 @@ import {fetchGetMuamucList, fetchGetMuamucTagList} from "../service/MuamucServic
 import Badge from "../common/Badge.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
+import AlertModalStore from "../store/AlertModalStore.js";
 
 export default function Muamucmuamuc() {
     const navigate = useNavigate()
-    const [isOpenAlertModal, setIsOpenAlertModal] = useState(false)
     const {loginUser} = UserStore()
-    const {muamucList, setMuamucList, muamucTagList, setMuamucTagList} = MuamucStore()
+    const {muamucList, setMuamucList, setMuamucTagList} = MuamucStore()
+    const {setAlertModalInfo} = AlertModalStore()
     const [selectedTagId, setSelectedTagId] = useState(0)
     const [searchKeyword, setSearchKeyword] = useState("")
     const [isSearch, setIsSearch] = useState(false)
     const [badgeName, setBadgeName] = useState("")
 
     const getMuamucList = async () => {
-        console.log("??: ",searchKeyword)
         const {isError, data} = await fetchGetMuamucList(selectedTagId, searchKeyword.trim())
         if (isError) {
             alert(data.errorMessage)
         }
         setMuamucList(data)
-    }
-
-    const getMuamucTagList = async () => {
-        const {isError, data} = await fetchGetMuamucTagList()
-        if (isError) {
-            alert(data.errorMessage)
-            return
-        }
-        setMuamucTagList(data)
     }
 
     const onSearch = (searchInputValue) => {
@@ -51,12 +42,7 @@ export default function Muamucmuamuc() {
 
     useEffect(() => {
         getMuamucList()
-        console.log("123")
     }, [selectedTagId, isSearch])
-
-    useEffect( ()=>{
-        getMuamucTagList()
-    }, [])
 
     return (
         <>
@@ -72,15 +58,13 @@ export default function Muamucmuamuc() {
                 <TagContainer selectedTag={selectedTagId} onChangeTag={(tag) => {
                     setSelectedTagId(tag.id)
                 }}/>
-                <AlertModal openModal={isOpenAlertModal} onClose={()=>{setIsOpenAlertModal(false)}} message={"글 작성 전 로그인부터 해주세용 !"} onConfirm={() => {
-                    navigate("/login")
-                }}/>
+
                 <Button name="새 글 쓰기"
                         onBtnClick={() => {
                             if (!!loginUser?.nickname) {
                                 navigate("/muamuc/newcontent")
                             } else {
-                                setIsOpenAlertModal(true)
+                                setAlertModalInfo({isOpen:true, message:"글 작성 전 로그인부터 해주세용 !", confirm:()=>navigate("/login")})
                             }
                         }}/>
             </div>
