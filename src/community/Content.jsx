@@ -11,6 +11,7 @@ import {fetchGetCommentList} from "../service/CommentService.js";
 import RestaurantInfoWrapper from "./RestaurantInfoWrapper.jsx";
 import CommentWrapper from "./CommentWrapper.jsx";
 import AlertModalStore from "../store/AlertModalStore.js";
+import {fetchGetLikes, fetchPostReverseLike} from "../service/LikesService.js";
 
 const Content = ({
                      // username = "사용자",
@@ -26,8 +27,8 @@ const Content = ({
 
     const {loginUser} = UserStore()
     const {setAlertModalInfo} = AlertModalStore()
-    const [userId, setUserId] = useState("")
-    const [userName, setUsername] = useState("")
+    const {updateMuamuc} = MuamucStore()
+    const [muamuc, setMuamuc] = useState({})
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [userImg, setUserImg] = useState("")
@@ -40,21 +41,17 @@ const Content = ({
 
     const {id} = useParams()
 
-    const setMuamuc = (data) => {
-        setUsername(data.writerName)
-        setUserId(data.writerId)
-        setTitle(data.title)
-        setContent(data.content)
-        setIsOwner(userId === loginUser?.id)
+    const setMuamucData = (data) => {
+        console.log("data: ", data)
+        setMuamuc(data)
     }
-
 
     const getMuamuc = async () => {
         const {isError, data} = await fetchGetMuamuc(id)
         if (isError) {
             alert(data.errorMessage)
         }
-        setMuamuc(data)
+        setMuamucData(data)
     }
 
     const remove = async () => {
@@ -75,11 +72,34 @@ const Content = ({
         setAlertModalInfo({isOpen: true, message: "해당 게시물을 정말 삭제할까요? 다시 복구 안돼용 ㅠ", confirm: remove})
     }
 
+    const onClickLikes = async () => {
+
+        if (!loginUser?.id) {
+            navigate("/login");
+            return;
+        }
+
+        const like = {
+            userId: loginUser?.id,
+            muamucId: id
+        }
+
+        const likeRes = await fetchPostReverseLike(like)
+        if (muamuc.liked = likeRes.data)
+            muamuc.likeCount++
+        else
+            muamuc.likeCount--
+        updateMuamuc(muamuc)
+    }
 
     useEffect(() => {
-        getMuamuc(id)
+        getMuamuc()
         setComment()
     }, [id]);
+
+    useEffect(() => {
+        setIsOwner(muamuc?.userId === loginUser?.id)
+    }, [muamuc]);
 
 
     return (
@@ -102,19 +122,21 @@ const Content = ({
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>
                         <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
-                        <span className={"text-ml"}> {userName} </span>
+                        <span className={"text-ml"}> {muamuc.writerName} </span>
                     </div>
-                    <IconWrapper className={"w-10 h-10 me-4 rounded-full"} icon={"onyum"}></IconWrapper>
+                    <IconWrapper className={"w-10 h-10 me-4 rounded-full cursor-pointer"}
+                                 icon={muamuc?.liked ? "onyum" : "nonyum"} num={muamuc.likeCount} hoverIcon={"onyum"}
+                                 onClickIcon={onClickLikes}></IconWrapper>
                 </div>
 
                 <div style={{width: "100%"}}>
                     <span className={"text-lg font-semibold flex cursor-pointer"}>
-                        {title}
+                        {muamuc.title}
                     </span>
                 </div>
                 <FoodCarousel/>
                 <div className={"font-light text-sm"}>
-                    {content}
+                    {muamuc.content}
                 </div>
                 {(isOwner) ? (
                         <div className={"flex justify-between"}>
@@ -131,8 +153,6 @@ const Content = ({
                 }
                 <RestaurantInfoWrapper/>
                 <CommentWrapper comments={comments} onUpdateComment={setComments}/>
-                {/*<Accordion items={accordionItems} kind={"RestaurantInfo"}/>*/}
-                {/*<Accordion items={commentItems} setCommentItems={setCommentItems} commentItems={commentItems}/>*/}
             </div>
         </div>
     )

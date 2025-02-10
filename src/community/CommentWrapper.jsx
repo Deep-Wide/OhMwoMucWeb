@@ -46,17 +46,19 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
                 댓글
             </Accordion.Title>
             <Accordion.TitleRightArea>
-                <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={() => {
-                    if (!!!loginUser?.id) {
-                        navigate("/login")
-                    }
-                    setIsOpenInputComment(true)
-                }}></TextBtn>
             </Accordion.TitleRightArea>
             <Accordion.Count>
                 {comments.length}
             </Accordion.Count>
             <Accordion.Body>
+                <div className={"flex justify-end mb-3"}>
+                    <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={() => {
+                        if (!!!loginUser?.id) {
+                            navigate("/login")
+                        }
+                        setIsOpenInputComment(true)
+                    }}></TextBtn>
+                </div>
                 <InputComment isOpen={isOpenInputComment} onClose={() => {
                     setIsOpenInputComment(false)
                 }} onClickWriteComment={addComment}/>

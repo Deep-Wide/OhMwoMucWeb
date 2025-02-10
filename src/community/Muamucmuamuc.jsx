@@ -4,8 +4,7 @@ import Button from "../common/Button.jsx";
 import MuamucCardContainer from "./MuamucCardContainer.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import AlertModal from "../common/AlertModal.jsx";
-import {fetchGetMuamucList, fetchGetMuamucTagList} from "../service/MuamucService.js";
+import {fetchGetMuamucList} from "../service/MuamucService.js";
 import Badge from "../common/Badge.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
@@ -14,7 +13,7 @@ import AlertModalStore from "../store/AlertModalStore.js";
 export default function Muamucmuamuc() {
     const navigate = useNavigate()
     const {loginUser} = UserStore()
-    const {muamucList, setMuamucList, setMuamucTagList} = MuamucStore()
+    const {muamucList, setMuamucList} = MuamucStore()
     const {setAlertModalInfo} = AlertModalStore()
     const [selectedTagId, setSelectedTagId] = useState(0)
     const [searchKeyword, setSearchKeyword] = useState("")
@@ -22,7 +21,7 @@ export default function Muamucmuamuc() {
     const [badgeName, setBadgeName] = useState("")
 
     const getMuamucList = async () => {
-        const {isError, data} = await fetchGetMuamucList(selectedTagId, searchKeyword.trim())
+        const {isError, data} = await fetchGetMuamucList(selectedTagId, searchKeyword.trim(), loginUser?.id)
         if (isError) {
             alert(data.errorMessage)
         }
@@ -41,8 +40,10 @@ export default function Muamucmuamuc() {
     }, [searchKeyword])
 
     useEffect(() => {
+        if (!loginUser)
+            return
         getMuamucList()
-    }, [selectedTagId, isSearch])
+    }, [selectedTagId, isSearch, loginUser])
 
     return (
         <>
