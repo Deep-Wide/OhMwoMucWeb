@@ -29,9 +29,6 @@ const Content = ({
     const {setAlertModalInfo} = AlertModalStore()
     const {updateMuamuc} = MuamucStore()
     const [muamuc, setMuamuc] = useState({})
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [userImg, setUserImg] = useState("")
     const [isOwner, setIsOwner] = useState(false)
     const [comments, setComments] = useState([])
 
@@ -47,7 +44,7 @@ const Content = ({
     }
 
     const getMuamuc = async () => {
-        const {isError, data} = await fetchGetMuamuc(id)
+        const {isError, data} = await fetchGetMuamuc(id, loginUser?.id)
         if (isError) {
             alert(data.errorMessage)
         }
@@ -125,7 +122,7 @@ const Content = ({
                         <span className={"text-ml"}> {muamuc.writerName} </span>
                     </div>
                     <IconWrapper className={"w-10 h-10 me-4 rounded-full cursor-pointer"}
-                                 icon={muamuc?.liked ? "onyum" : "nonyum"} num={muamuc.likeCount} hoverIcon={"onyum"}
+                                 icon={muamuc.liked ? "onyum" : "nonyum"} num={muamuc.likeCount} hoverIcon={"onyum"}
                                  onClickIcon={onClickLikes}></IconWrapper>
                 </div>
 

@@ -19,8 +19,11 @@ export const fetchGetMuamucList = (tag_id, searchKeyword, user_id) => {
     return fetchGet(requestUrl)
 }
 
-export const fetchGetMuamuc = (muamuc_id) => {
-    return fetchGet(`${MUAMUC_API_URL}/${muamuc_id}`)
+export const fetchGetMuamuc = (muamuc_id, user_id) => {
+    console.log("user_id:    ", user_id)
+    if (typeof(user_id) !== "number")
+        user_id = 0
+    return fetchGet(`${MUAMUC_API_URL}/${muamuc_id}?userId=${user_id}`)
 }
 
 export const fetchPutMuamuc = (muamuc_id, muamuc) => {
