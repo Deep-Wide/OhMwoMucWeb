@@ -3,24 +3,29 @@ export const fetchGet = async (url) => {
 }
 
 
-
 export const fetchPost = async (url, body = {}) => {
 
-    return _fetch(url, {method: "Post", credentials: 'include', headers: {
+    return _fetch(url, {
+        method: "Post", credentials: 'include', headers: {
             'Content-Type': 'application/json',
-        }, body: JSON.stringify(body)})
+        }, body: JSON.stringify(body)
+    })
 }
 
 export const fetchPut = async (url, body = {}) => {
-    return _fetch(url, {method: "PUT", credentials: 'include', headers: {
+    return _fetch(url, {
+        method: "PUT", credentials: 'include', headers: {
             'Content-Type': 'application/json',
-        }, body: JSON.stringify(body)})
+        }, body: JSON.stringify(body)
+    })
 }
 
 export const fetchDelete = async (url, body = {}) => {
-    return _fetch(url, {method: "Delete", credentials: 'include', headers: {
+    return _fetch(url, {
+        method: "Delete", credentials: 'include', headers: {
             'Content-Type': 'application/json',
-        }})
+        }
+    })
 }
 
 export const _fetch = async (url, requestInit) => {
