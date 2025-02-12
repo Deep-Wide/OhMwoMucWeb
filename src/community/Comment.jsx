@@ -12,6 +12,7 @@ import {
     fetchPostUpdateComment
 } from "../service/CommentService.js";
 import AlertModalStore from "../store/AlertModalStore.js";
+import DropdownHover from "../common/DropdownHover.jsx";
 
 const Comment = ({comments}) => {
     const [sortedComments, setSortedComments] = useState([])
@@ -25,6 +26,26 @@ const Comment = ({comments}) => {
     const ref = useRef(null);
 
     const {setAlertModalInfo} = AlertModalStore()
+
+
+    const dropdownMenus = [
+        {
+            name: "삭제하기", onMenuClick: () => {
+                setAlertModalInfo({
+                    isOpen: true,
+                    message: ("해당 댓글을 정말 삭제할까요?"),
+                    confirm() {
+                        deleteComment(comment.commentId)
+                    }
+                })
+            }
+        }
+        ,{
+            name: "수정하기", onMenuClick: () => {
+                openUpdateCommentInput(comment.commentId)
+            }
+        }
+    ]
 
     const updateInputTargetId = (commentId) => {
         setInputTargetParentId(commentId)
@@ -76,14 +97,16 @@ const Comment = ({comments}) => {
 
     const updateComment = async (commentId, text) => {
         if (text.trim() === "") {
-            setAlertModalInfo({isOpen: true,
+            setAlertModalInfo({
+                isOpen: true,
                 message: "댓글이 작성되지 않았습니다ㅠ",
                 confirm() {
                     // inputCommentRef.current.focus()
                     // Todo 에러 수정
-                }})
+                }
+            })
 
-            }
+        }
 
         const newComment = {
             "userId": loginUser?.id,
@@ -145,7 +168,7 @@ const Comment = ({comments}) => {
                                         setIsUpdateComment(false)
                                     }} onClickWriteComment={(text) => {
                                         updateComment(comment.commentId, text)
-                                    }} defaultValue={comment.commentText} />
+                                    }} defaultValue={comment.commentText}/>
                                 </div>
                                 :
                                 <div>
@@ -153,6 +176,7 @@ const Comment = ({comments}) => {
                                 </div>
                             }
                             <div className={"flex justify-between flex-row-reverse"}>
+                                <DropdownHover></DropdownHover>
                                 {loginUser?.id === comment.userId ? (
                                     <TextBtn name={"수정하기"} onClick={() => {
                                         openUpdateCommentInput(comment.commentId)
@@ -185,9 +209,10 @@ const Comment = ({comments}) => {
                                 }
                             </div>
                             {comment.commentId === inputTargetParentId &&
-                                <InputComment ref={ref} isOpen={comment.commentId === inputTargetParentId} onClose={() => {
-                                    setInputTargetParentId(null)
-                                }} onClickWriteComment={writeComment} />
+                                <InputComment ref={ref} isOpen={comment.commentId === inputTargetParentId}
+                                              onClose={() => {
+                                                  setInputTargetParentId(null)
+                                              }} onClickWriteComment={writeComment}/>
                             }
                         </div>
                     ))

@@ -9,6 +9,7 @@ import AddRestaurantModal from "./AddRestaurantModal.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
+import FileUploader from "../common/FileUploader.jsx";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
@@ -143,10 +144,17 @@ const NewContent = ({isUpdate = false}) => {
                     <BadgeContainer selectedTagId={selectedTag?.id} onChangeTag={setSelectedTag}/>
                 </div>
 
-                <LineInput ref={titleRef} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title} onChange={e => setTitle(e.target.value)}/>
+                <LineInput ref={titleRef} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title}
+                           onChange={e => setTitle(e.target.value)}/>
 
                 <div className={"flex justify-center"}>
-                    <Button name={"이미지 추가"} style={{width: "160px"}}/>
+                    <FileUploader multiple={true} onUploaded={(data) => {
+                        console.log("$$$$$$$: ", data)
+                    }} onError={(data) => {
+                        alert(data.errorMessage)
+                    }}>
+                        <Button name={"이미지 추가"} style={{width: "160px"}}/>
+                    </FileUploader>
                 </div>
                 <div>
                     <div className={"font-light text-base"}
@@ -161,7 +169,7 @@ const NewContent = ({isUpdate = false}) => {
                          }}>
                         <textarea
                             ref={contentRef}
-                            value = {content}
+                            value={content}
                             onChange={event => setContent(event.target.value)}
                             className={"text-sm"}
                             type="text"
@@ -179,7 +187,7 @@ const NewContent = ({isUpdate = false}) => {
                 {!id ?
                     <div className={"flex justify-between"}>
                         <Button name={"작성 취소"} color={"#9A9A9A"} onBtnClick={() => {
-                            setAlertModalInfo({isOpen: true, message:"작성을 취소할까요?", confirm:()=>navigate("/muamuc")})
+                            setAlertModalInfo({isOpen: true, message: "작성을 취소할까요?", confirm: () => navigate("/muamuc")})
                         }}/>
                         <Button name={"작성 완료"} onBtnClick={createNewContent}/>
                     </div> :

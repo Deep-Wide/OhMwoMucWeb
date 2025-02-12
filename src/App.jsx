@@ -1,4 +1,4 @@
-import {useEffect, useReducer, useState} from 'react'
+import {useEffect} from 'react'
 import './App.css'
 import {Outlet} from "react-router-dom";
 import {Topbar} from "./common/Topbar.jsx";
@@ -43,7 +43,7 @@ function App() {
     return (
         <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
             <div className={"default-layout"}>
-                <Topbar />
+                <Topbar/>
                 <AlertModal openModal={isOpen} message={message} onConfirm={confirm} onCancel={cancel}></AlertModal>
                 <Outlet/>
             </div>

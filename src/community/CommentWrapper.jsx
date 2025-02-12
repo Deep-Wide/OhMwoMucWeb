@@ -17,6 +17,9 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
     const {id} = useParams()
 
     const addComment = async (comment) => {
+        if (!!!loginUser?.id) {
+            navigate("/login")
+        }
         if (comment.trim() === "") {
             setAlertModalInfo({
                 isOpen: true, message: "댓글이 작성되지 않았습니다ㅠ", confirm() {
@@ -51,17 +54,13 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
                 {comments.length}
             </Accordion.Count>
             <Accordion.Body>
-                <div className={"flex justify-end mb-3"}>
-                    <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={() => {
-                        if (!!!loginUser?.id) {
-                            navigate("/login")
-                        }
-                        setIsOpenInputComment(true)
-                    }}></TextBtn>
-                </div>
-                <InputComment isOpen={isOpenInputComment} onClose={() => {
-                    setIsOpenInputComment(false)
-                }} onClickWriteComment={addComment}/>
+                {/*<div className={"flex justify-end mb-3"}>*/}
+                {/*    <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={() => {*/}
+                {/*        */}
+                {/*        setIsOpenInputComment(true)*/}
+                {/*    }}></TextBtn>*/}
+                {/*</div>*/}
+                <InputComment onClickWriteComment={addComment}/>
                 <Comment comments={comments}/>
             </Accordion.Body>
         </Accordion>
