@@ -1,53 +1,62 @@
 "use client";
 
 
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 export function Topbar() {
 
     const {loginUser} = UserStore()
     const [targetMenuIndex, setTargetMenuIndex] = useState(0)
+    const location = useLocation()
 
-const menus = [
-    {
-        id: 0,
-        name: "주변뭐먹",
-        link: '/near-muamuc'
+    const setTopbarTargetMenu = () => {
+        setTargetMenuIndex(menus.filter(menu => menu.link === `/${location.pathname.split('/')[1]}`).map(menu => menu.id))
     }
-    ,
-    {
-        id: 1,
-        name: "우리뭐먹",
-        link: '#'
 
-    }
-    ,
-    {
-        id: 2,
-        name: "이거먹",
-        link: '#'
-    }
-    ,
-    {
-        id: 3,
-        name: "뭐먹뭐먹",
-        link: '/muamuc'
-    }
-    ,
-    {
-        id: 4,
-        name: "마이페이지",
-        link: !!loginUser?.nickname ? "/mypage" : "/login"
-    }
-    ,
-]
+    const menus = [
+        {
+            id: 0,
+            name: "주변뭐먹",
+            link: '/near-muamuc'
+        }
+        ,
+        {
+            id: 1,
+            name: "우리뭐먹",
+            link: '#'
+
+        }
+        ,
+        {
+            id: 2,
+            name: "이거먹",
+            link: '#'
+        }
+        ,
+        {
+            id: 3,
+            name: "뭐먹뭐먹",
+            link: '/muamuc'
+        }
+        ,
+        {
+            id: 4,
+            name: "마이페이지",
+            link: !!loginUser?.nickname ? "/mypage" : "/login"
+        }
+        ,
+    ]
+
+    useEffect(() => {
+        setTopbarTargetMenu()
+    }, [location.pathname])
 
     return (<nav className="bg-white border-gray-200 dark:bg-gray-900">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <Link to={"/near-muamuc"} className={"flex items-center space-x-3 rtl:space-x-reverse"} >
+                <Link to={"/near-muamuc"} className={"flex items-center space-x-3 rtl:space-x-reverse"}>
                     <span
                         className="self-center text-4xl font-bold whitespace-nowrap main-color">오뭐먹</span>
                 </Link>
@@ -56,12 +65,9 @@ const menus = [
                         {menus.map((menu) => {
                             return (
                                 <li key={menu.id}>
-                                    <Link to= {menu.link}
-                                          className={`block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold ${targetMenuIndex == menu.id ? "main-color" : "secondary-color"}`}
-                                          aria-current="page"
-                                          onClick={() => {
-                                              setTargetMenuIndex(menu.id)
-                                          }}>
+                                    <Link to={menu.link}
+                                          className={`cursor-pointer block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold ${targetMenuIndex == menu.id ? "main-color" : "secondary-color"}`}
+                                          aria-current="page">
                                         {menu.name}
                                     </Link>
                                 </li>
