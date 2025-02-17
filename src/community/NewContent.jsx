@@ -4,12 +4,19 @@ import {useState, useEffect, useRef} from "react";
 import CommonModal from "../common/CommonModal.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import LineInput from "../common/LineInput.jsx";
-import {fetchGetMuamuc, fetchPostCreateMuamuc, fetchPutMuamuc} from "../service/MuamucService.js"
+import {
+    fetchAddMuamucImage,
+    fetchGetMuamuc,
+    fetchGetMuamucImages,
+    fetchPostCreateMuamuc,
+    fetchPutMuamuc
+} from "../service/MuamucService.js"
 import AddRestaurantModal from "./AddRestaurantModal.jsx";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
 import FileUploader from "../common/FileUploader.jsx";
+import ImageViewer from "../common/ImageViewer.jsx";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
@@ -22,6 +29,9 @@ const NewContent = ({isUpdate = false}) => {
     const [content, setContent] = useState("")
     const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
     const {setAlertModalInfo} = AlertModalStore()
+
+    const [images, setImages] = useState([])
+
     const titleRef = useRef(null)
     const contentRef = useRef(null)
 
@@ -65,11 +75,14 @@ const NewContent = ({isUpdate = false}) => {
 
     }
 
+    const onUploadFiles = (newFiles) => {
+        setImages([...images, ...newFiles])
+    }
+
     const createNewContent = async () => {
         if (!validateElement()) {
             return
         }
-
         const {
             isError,
             data
@@ -78,6 +91,8 @@ const NewContent = ({isUpdate = false}) => {
             alert(`${data.errorMessage}`)
             return;
         }
+        await uploadMuamucImages(data.muamucId)
+
         addMuamuc(data)
         navigate("/muamuc")
     }
@@ -96,7 +111,6 @@ const NewContent = ({isUpdate = false}) => {
         setSelectedTag(muamucTagList.find(tag => tag.id === data.tagId))
     }
 
-
     const update = async () => {
 
         const {isError, data} = await fetchPutMuamuc(id, getMuamuc())
@@ -108,12 +122,27 @@ const NewContent = ({isUpdate = false}) => {
         navigate(`/muamuc/${data.muamucId}`)
     }
 
+    const uploadMuamucImages = async (muamucId) => {
+        images.forEach(image => image.muamucId = muamucId)
+        const {data, isError} = await fetchAddMuamucImage(images)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+    }
+
     useEffect(() => {
         if (isUpdate) {
             getMuamucData()
         }
 
     }, [isUpdate]);
+
+    useEffect(()=>{
+
+    }, [images])
+
+
 
     return (
         <div className={"flex justify-center mt-6"}>
@@ -147,10 +176,9 @@ const NewContent = ({isUpdate = false}) => {
                 <LineInput ref={titleRef} placeholder={"게시물 제목 입력"} textSize={"text-lg"} value={title}
                            onChange={e => setTitle(e.target.value)}/>
 
-                <div className={"flex justify-center"}>
-                    <FileUploader multiple={true} onUploaded={(data) => {
-                        console.log("$$$$$$$: ", data)
-                    }} onError={(data) => {
+                <div className={"flex justify-center flex-col items-center gap-5"}>
+                    <ImageViewer images={images} />
+                    <FileUploader multiple={true} onUploaded={onUploadFiles} onError={(data) => {
                         alert(data.errorMessage)
                     }}>
                         <Button name={"이미지 추가"} style={{width: "160px"}}/>

@@ -3,7 +3,7 @@ import FoodCarousel from "../common/FoodCarousel.jsx";
 import IconWrapper from "../common/IconWrapper.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
 import {useNavigate, useParams} from "react-router-dom";
-import {fetchDeleteMuamuc, fetchGetMuamuc} from "../service/MuamucService.js";
+import {fetchDeleteMuamuc, fetchGetMuamuc, fetchGetMuamucImages} from "../service/MuamucService.js";
 import {useEffect, useState} from "react";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
@@ -14,21 +14,18 @@ import AlertModalStore from "../store/AlertModalStore.js";
 import {fetchGetLikes, fetchPostReverseLike} from "../service/LikesService.js";
 
 const Content = ({
-                     // username = "사용자",
                      likestatus = "nonyum",
                      likes = 0,
-                     // title = "기본 제목",
                      image = "",
-                     // content = "족발이랑 곱창을 시켜서 먹어봤는데 양도 푸짐하고 무엇보다 뒷다리살 안 쓰고 앞다리살만 쓰신다고 하셔서 감격 !! ㅠㅠㅠ 앞으로도 종종 족발 생각나면 방문하려구요",
                      fork = "offfork",
-                     forks = 0,
-                     comment = 0,
+                     forks = 0
                  }) => {
 
     const {loginUser} = UserStore()
     const {setAlertModalInfo} = AlertModalStore()
     const {updateMuamuc} = MuamucStore()
     const [muamuc, setMuamuc] = useState({})
+    const [images, setImages] = useState([])
     const [isOwner, setIsOwner] = useState(false)
     const [comments, setComments] = useState([])
 
@@ -39,7 +36,6 @@ const Content = ({
     const {id} = useParams()
 
     const setMuamucData = (data) => {
-        console.log("data: ", data)
         setMuamuc(data)
     }
 
@@ -89,6 +85,17 @@ const Content = ({
         updateMuamuc(muamuc)
     }
 
+    const getMuamucImages = async (muamucId) => {
+        if (!muamucId)
+            return
+        const {data, isError} = await fetchGetMuamucImages(muamucId)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setImages(data)
+    }
+
     useEffect(() => {
         getMuamuc()
         setComment()
@@ -96,6 +103,7 @@ const Content = ({
 
     useEffect(() => {
         setIsOwner(muamuc?.userId === loginUser?.id)
+        getMuamucImages(muamuc?.muamucId)
     }, [muamuc]);
 
 
@@ -131,7 +139,7 @@ const Content = ({
                         {muamuc.title}
                     </span>
                 </div>
-                <FoodCarousel/>
+                <FoodCarousel images={images}/>
                 <div className={"font-light text-sm"}>
                     {muamuc.content}
                 </div>

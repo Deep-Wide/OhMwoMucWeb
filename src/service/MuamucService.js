@@ -33,3 +33,11 @@ export const fetchPutMuamuc = (muamuc_id, muamuc) => {
 export const fetchDeleteMuamuc = (muamuc_id) => {
     return fetchDelete(`${MUAMUC_API_URL}/${muamuc_id}`)
 }
+
+export const fetchAddMuamucImage = (muamucImages) => {
+    return fetchPost(`${MUAMUC_API_URL}/images`, muamucImages)
+}
+
+export const fetchGetMuamucImages = (muamucId) => {
+    return fetchGet(`${MUAMUC_API_URL}/${muamucId}/images`)
+}

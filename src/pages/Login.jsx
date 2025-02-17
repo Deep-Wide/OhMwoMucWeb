@@ -49,7 +49,7 @@ export default function Login() {
 
     const loginSuccess = (user) => {
         setUser(user)
-        toast(`${user.nickname}님 오늘은 뭐 먹을까요?`, "success", () => navigate('/'))
+        toast(`${user.nickname}님 오늘은 뭐 먹을까요?`, "success", () => navigate('/near-muamuc'))
     }
 
     function onClickLoginBtn() {
