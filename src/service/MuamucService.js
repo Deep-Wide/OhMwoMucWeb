@@ -27,6 +27,8 @@ export const fetchGetMuamuc = (muamuc_id, user_id) => {
 }
 
 export const fetchPutMuamuc = (muamuc_id, muamuc) => {
+    console.log("muamuc_id: ", muamuc_id)
+    console.log("muamuc: ", muamuc)
     return fetchPut(`${MUAMUC_API_URL}/${muamuc_id}`, muamuc)
 }
 
@@ -34,8 +36,8 @@ export const fetchDeleteMuamuc = (muamuc_id) => {
     return fetchDelete(`${MUAMUC_API_URL}/${muamuc_id}`)
 }
 
-export const fetchAddMuamucImage = (muamucImages) => {
-    return fetchPost(`${MUAMUC_API_URL}/images`, muamucImages)
+export const fetchAddMuamucImage = (muamucImages, muamuc_id) => {
+    return fetchPost(`${MUAMUC_API_URL}/${muamuc_id}/images`, muamucImages)
 }
 
 export const fetchGetMuamucImages = (muamucId) => {

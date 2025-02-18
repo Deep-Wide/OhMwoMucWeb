@@ -27,6 +27,7 @@ const NewContent = ({isUpdate = false}) => {
     const {id} = useParams()
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [muamuc, setMuamuc] = useState({})
     const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
     const {setAlertModalInfo} = AlertModalStore()
 
@@ -44,12 +45,20 @@ const NewContent = ({isUpdate = false}) => {
             tagId: selectedTag.id,
             title: title,
             content: content,
+            muamucId: id,
             writerId: loginUser.id
         }
 
         return data
     }
 
+    const removeImg = (index) => {
+        if (index < 0 || index >= images.length) {
+            return
+        }
+
+        setImages([...images.slice(0, index), ...images.slice(index + 1)])
+    }
 
     const validateElement = () => {
 
@@ -105,9 +114,20 @@ const NewContent = ({isUpdate = false}) => {
         setMuamucData(data)
     }
 
+    const getMuamucImages = async (muamucId) => {
+        if (!muamucId)
+            return
+        const {data, isError} = await fetchGetMuamucImages(muamucId)
+        console.log("가져온 이미지: ", data)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setImages(data)
+    }
+
     const setMuamucData = (data) => {
-        setTitle(data.title)
-        setContent(data.content)
+        setMuamuc(data)
         setSelectedTag(muamucTagList.find(tag => tag.id === data.tagId))
     }
 
@@ -119,12 +139,14 @@ const NewContent = ({isUpdate = false}) => {
             return
         }
         updateMuamuc(data)
-        navigate(`/muamuc/${data.muamucId}`)
+        await uploadMuamucImages(data.muamucId)
+
+        navigate(`/muamuc/content/${data.muamucId}`)
     }
 
     const uploadMuamucImages = async (muamucId) => {
         images.forEach(image => image.muamucId = muamucId)
-        const {data, isError} = await fetchAddMuamucImage(images)
+        const {data, isError} = await fetchAddMuamucImage(images, muamucId)
         if (isError) {
             alert(data.errorMessage)
             return
@@ -139,8 +161,10 @@ const NewContent = ({isUpdate = false}) => {
     }, [isUpdate]);
 
     useEffect(()=>{
-
-    }, [images])
+        setTitle(muamuc.title)
+        setContent(muamuc.content)
+        getMuamucImages(muamuc.muamucId)
+    }, [muamuc])
 
 
 
@@ -177,7 +201,7 @@ const NewContent = ({isUpdate = false}) => {
                            onChange={e => setTitle(e.target.value)}/>
 
                 <div className={"flex justify-center flex-col items-center gap-5"}>
-                    <ImageViewer images={images} />
+                    <ImageViewer images={images} onClickDelBtn={removeImg}/>
                     <FileUploader multiple={true} onUploaded={onUploadFiles} onError={(data) => {
                         alert(data.errorMessage)
                     }}>

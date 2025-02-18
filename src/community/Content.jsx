@@ -102,7 +102,8 @@ const Content = ({
     }, [id]);
 
     useEffect(() => {
-        setIsOwner(muamuc?.userId === loginUser?.id)
+        setIsOwner(muamuc?.writerId === loginUser?.id && typeof(loginUser?.id) === "number")
+
         getMuamucImages(muamuc?.muamucId)
     }, [muamuc]);
 

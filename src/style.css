@@ -1,24 +1,7 @@
-#app {
-    height: 100%;
-}
-html,
-body {
-    position: relative;
-    height: 100%;
-}
-
-body {
-    background: #eee;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-}
 
 .swiper {
     width: 100%;
-    height: 100%;
+    height: 300px;
 }
 
 .swiper-slide {
@@ -42,4 +25,16 @@ body {
 .swiper {
     margin-left: auto;
     margin-right: auto;
+}
+
+.swiper-button-prev{
+    color: #EE5460;
+}
+
+.swiper-button-next {
+    color: #EE5460;
+}
+
+.swiper-pagination-bullet {
+    background-color: #EE5460;
 }

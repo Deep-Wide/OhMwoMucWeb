@@ -10,7 +10,6 @@ import {TextBtn} from "../common/TextBtn.jsx";
 
 const CommentWrapper = ({onUpdateComment, comments}) => {
 
-    const [isOpenInputComment, setIsOpenInputComment] = useState(false)
     const navigate = useNavigate()
     const {loginUser} = UserStore()
     const {setAlertModalInfo} = AlertModalStore()
@@ -40,7 +39,6 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
         onUpdateComment(prevItems => [{
             comments: [...prevItems[0].comments, data] // 새로운 댓글을 추가
         }])
-        setIsOpenInputComment(false);
     }
 
     return (
