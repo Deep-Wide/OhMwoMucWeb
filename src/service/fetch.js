@@ -29,9 +29,18 @@ export const fetchDelete = async (url, body = {}) => {
 }
 
 export const _fetch = async (url, requestInit) => {
+
+    if (sessionStorage.getItem('atk')) {
+        requestInit.headers = {...requestInit.headers, 'Authorization': sessionStorage.getItem('atk')}
+    }
+
     const res = await fetch(url, requestInit);
+
     let data = {}
     try {
+        if (res.headers.get('atk')) {
+            sessionStorage.setItem("atk", res.headers.get('atk'));
+        }
         data = await res.json();
     } catch (error) {
         console.error(error)

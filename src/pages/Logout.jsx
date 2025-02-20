@@ -12,11 +12,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     const logout = async () => {
-        const {isError, data} = await logoutAction();
-        if (isError) {
-            alert(data.errorMessage)
-            return;
-        }
+        sessionStorage.clear()
         alert('로그아웃이 완료되었습니다.')
         navigate('/login')
         setUser(null)
