@@ -9,7 +9,6 @@ const MuamucCard = ({
                         muamuc,
                         // username = "사용자",
                         userImg = "/src/assets/icon/default-profile.svg",
-                        isLiked,
                         likes = 0,
                         title = "기본 제목",
                         image = "",
@@ -22,6 +21,8 @@ const MuamucCard = ({
     const navigate = useNavigate();
     const {loginUser} = UserStore()
     const {updateMuamuc} = MuamucStore()
+
+    console.log("###: ", muamuc)
 
     const onClickLikes = async () => {
 

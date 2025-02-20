@@ -9,8 +9,6 @@ import {FILE_API_URL} from "../service/FileService.js";
 
 const FoodCarousel = ({images}) => {
 
-    console.log("image:   ", images)
-    console.log("key:   ", images.length)
 
     return (
         <>

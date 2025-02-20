@@ -20,15 +20,12 @@ export const fetchGetMuamucList = (tag_id, searchKeyword, user_id) => {
 }
 
 export const fetchGetMuamuc = (muamuc_id, user_id) => {
-    console.log("user_id:    ", user_id)
     if (typeof(user_id) !== "number")
         user_id = 0
     return fetchGet(`${MUAMUC_API_URL}/${muamuc_id}?userId=${user_id}`)
 }
 
 export const fetchPutMuamuc = (muamuc_id, muamuc) => {
-    console.log("muamuc_id: ", muamuc_id)
-    console.log("muamuc: ", muamuc)
     return fetchPut(`${MUAMUC_API_URL}/${muamuc_id}`, muamuc)
 }
 
