@@ -3,7 +3,7 @@ import nonyum from "/src/assets/emoji/offyum.png"
 import onyum from "/src/assets/emoji/onyum.png"
 import offfork from "/src/assets/emoji/offfork.png"
 import onfork from "/src/assets/emoji/onfork.png"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 const IconWrapper = ({icon, hoverIcon, className, num = 0, onClickIcon}) => {
@@ -26,6 +26,10 @@ const IconWrapper = ({icon, hoverIcon, className, num = 0, onClickIcon}) => {
     const handleMouseLeave = () => {
         setCurrentIcon(icon)
     };
+
+    useEffect(() => {
+        setCurrentIcon(icon);
+    }, [ icon ]);
 
     return (
         <div className="flex justify-between items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

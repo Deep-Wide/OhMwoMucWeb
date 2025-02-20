@@ -1,4 +1,4 @@
-export function TextBtn({name, color = "black", fontSize = "text-base", onClick}) {
+export function     TextBtn({name, color = "black", fontSize = "text-base", onClick}) {
 
     const onButtonClick = () => {
         onClick && onClick();

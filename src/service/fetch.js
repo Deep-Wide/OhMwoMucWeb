@@ -20,6 +20,14 @@ export const fetchPut = async (url, body = {}) => {
     })
 }
 
+export const fetchPatch = async (url, body = {}) => {
+    return _fetch(url, {
+        method: "PATCH", credentials: 'include', headers: {
+            'Content-Type': 'application/json',
+        }, body: JSON.stringify(body)
+    })
+}
+
 export const fetchDelete = async (url, body = {}) => {
     return _fetch(url, {
         method: "Delete", credentials: 'include', headers: {

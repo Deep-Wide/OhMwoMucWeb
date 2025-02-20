@@ -2,7 +2,6 @@ import defaultImg from "/src/assets/icon/default-profile.svg"
 import {TextBtn} from "../common/TextBtn.jsx";
 import InputComment from "../common/InputComment.jsx";
 import React, {forwardRef, useEffect, useRef, useState} from "react";
-import AlertModal from "../common/AlertModal.jsx";
 import {useNavigate, useParams} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
 import {

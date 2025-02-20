@@ -10,6 +10,7 @@ import Email from "../login/Email.jsx";
 import Information from "../login/Information.jsx";
 import Logout from "../pages/Logout.jsx";
 import NearMuamuc from "../near-muamuc/NearMuamuc.jsx";
+import MyPage from "../pages/MyPage.jsx";
 
 export default function Router() {
 
@@ -17,7 +18,7 @@ export default function Router() {
         <Routes>
             <Route path="/" element={<App/>}>
                 <Route path={"login"} element={<Login/>}/>
-                <Route path={"/mypage"} element={<Logout/>}/>
+                <Route path={"/mypage"} element={<MyPage/>}/>
                 <Route path={"/near-muamuc"} element={<NearMuamuc/>}/>
                 <Route path="/signup">
                     <Route path="/signup" element={<Signup/>}/>

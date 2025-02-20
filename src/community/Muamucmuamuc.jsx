@@ -40,8 +40,6 @@ export default function Muamucmuamuc() {
     }, [searchKeyword])
 
     useEffect(() => {
-        if (!loginUser)
-            return
         getMuamucList()
     }, [selectedTagId, isSearch, loginUser])
 

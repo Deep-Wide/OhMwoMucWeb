@@ -1,5 +1,5 @@
 import React from "react";
-import Badge from "./Badge";
+import Badge from "./Badge.jsx";
 import MuamucStore from "../store/MuamucStore.js";
 const BadgeContainer = ({ selectedTagId, onChangeTag }) => {
 

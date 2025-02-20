@@ -24,6 +24,7 @@ function App() {
             return
         }
         setUser(data)
+        getMuamucTagList()
     }
 
     const getMuamucTagList = async () => {
@@ -37,7 +38,6 @@ function App() {
 
     useEffect(() => {
         getLoginUser()
-        getMuamucTagList()
     }, [])
 
     return (

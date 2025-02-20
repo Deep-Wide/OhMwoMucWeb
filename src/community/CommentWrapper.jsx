@@ -52,12 +52,6 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
                 {comments.length}
             </Accordion.Count>
             <Accordion.Body>
-                {/*<div className={"flex justify-end mb-3"}>*/}
-                {/*    <TextBtn name={"댓글쓰기"} color={"#EE5460"} onClick={() => {*/}
-                {/*        */}
-                {/*        setIsOpenInputComment(true)*/}
-                {/*    }}></TextBtn>*/}
-                {/*</div>*/}
                 <InputComment onClickWriteComment={addComment}/>
                 <Comment comments={comments}/>
             </Accordion.Body>

@@ -12,7 +12,6 @@ const FileUploader = ({children, multiple, accept = "image/*", onUploaded, onErr
             formData.append('files', file)
         const {data, isError} = await uploadFilesAction(formData)
         if (isError) {
-            console.log(isError)
             onError && onError(data)
             return;
         }

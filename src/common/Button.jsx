@@ -12,8 +12,11 @@ const Button = ({
                     borderColor = "#EE5460",
                     logo,
                     width,
+                    height,
                     onBtnClick = null,
                     disable = false,
+                    textSize = "text-base",
+                    roundedSize = "rounded-xl",
                 }) => {
 
     const logos = {
@@ -27,11 +30,12 @@ const Button = ({
         <button
             disabled={disable}
             type="button"
-            className="text-white p-3 rounded-xl flex items-center justify-center"
+            className={`text-white p-3 rounded-xl flex items-center justify-center ${textSize} ${roundedSize}`}
             style={{
                 background: color, boxSizing: "border-box",
                 ...(border && {border: `1px solid ${borderColor}`, color: nameColor}),
-                ...(width && {width: width})
+                ...(width && {width: width}),
+                ...(height && {height: height})
             }}
             onClick={() => {
                 onBtnClick && onBtnClick()

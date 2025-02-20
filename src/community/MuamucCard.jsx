@@ -22,8 +22,6 @@ const MuamucCard = ({
     const {loginUser} = UserStore()
     const {updateMuamuc} = MuamucStore()
 
-    console.log("###: ", muamuc)
-
     const onClickLikes = async () => {
 
         if (!loginUser?.id) {
@@ -37,7 +35,7 @@ const MuamucCard = ({
         }
 
         const likeRes = await fetchPostReverseLike(like)
-        if (muamuc.liked = likeRes.data)
+        if (muamuc.liked === likeRes.data)
             muamuc.likeCount++
         else
             muamuc.likeCount--
