@@ -21,7 +21,7 @@ export const fetchPostAddUserImage = (data) => {
     return fetchPost(`${USER_API_URL}/${data.userId}/image`, data)
 }
 
-export const fetchDeleteUserImage = (id) => {
+export const fetchDeleteUser = (id) => {
     return fetchDelete(`${USER_API_URL}/${id}`, {method: "DELETE"})
 }
 
