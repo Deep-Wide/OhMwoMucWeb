@@ -13,6 +13,12 @@ export const fetchPatchUpdateUserNickname = (userId, nickname) => {
     return fetchPatch(`${USER_API_URL}/${userId}/nickname`, {nickname})
 }
 
+export const fetchPatchUpdateUserEmail = (userId, email) => {
+    if (!userId)
+        return
+    return fetchPatch(`${USER_API_URL}/${userId}/email`, {email})
+}
+
 export const fetchGetUserImage = (userId) => {
     return fetchGet(`${USER_API_URL}/${userId}/image`)
 }

@@ -11,11 +11,12 @@ import UserStore from "../store/UserStore.js";
 import FileUploader from "../common/FileUploader.jsx";
 import {
     fetchGetUserImage,
-    fetchGetUserInfo,
+    fetchGetUserInfo, fetchPatchUpdateUserEmail,
     fetchPatchUpdateUserNickname,
     fetchPostAddUserImage
 } from "../service/UserService.js";
 import {FILE_API_URL} from "../service/FileService.js";
+import {useNavigate} from "react-router-dom";
 
 const EditMyInfo = () => {
 
@@ -24,15 +25,16 @@ const EditMyInfo = () => {
     const [email, setEmail] = useState("")
     const [userImg, setUserImg] = useState({})
     const {setAlertModalInfo} = AlertModalStore()
-    const {loginUser} = UserStore()
+    const {loginUser, setUser} = UserStore()
+    const navigate = useNavigate();
 
     const userNameRef = useRef()
     const emailRef = useRef()
 
     const onUploadUserImg = async (newImg) => {
         setUserImg(newImg[0]);
-        // 새 객체를 만들어서 userId를 추가
-        const updatedImg = { ...newImg[0], userId: userInfo.id };
+
+        const updatedImg = {...newImg[0], userId: userInfo.id};
 
         console.log("new: ", updatedImg);
         await fetchPostAddUserImage(updatedImg)
@@ -67,7 +69,21 @@ const EditMyInfo = () => {
                 fetchPatchUpdateUserNickname(userInfo.id, nickname)
             }
         })
+    }
 
+    const onClickChangeEmailBtn = () => {
+        fetchPatchUpdateUserEmail(userInfo.id, email)
+        fetchPatchUpdateUserNickname(userInfo.id, nickname)
+        setAlertModalInfo({
+            isOpen: true,
+            message: `입력한 이메일로 다시 로그인 해주세요`,
+            confirm() {
+                sessionStorage.clear()
+                alert('로그아웃이 완료되었습니다.')
+                navigate('/login')
+                setUser(null)
+            }
+        })
     }
 
     useEffect(() => {
@@ -86,8 +102,10 @@ const EditMyInfo = () => {
         <div className={"flex flex-col gap-y-10 items-center"}>
             <div className={"gap-y-3 flex flex-col items-center w-[223px]"}>
                 <div className={"font-semibold text-color text-lg"}>프로필</div>
+
                 <FileUploader multiple={false} onUploaded={onUploadUserImg}>
-                    <ImageToggle hoverMessage={"변경하기"} size={95} alt={userImg?.fileName} imagePath={`${FILE_API_URL}/images/${userImg?.uniqueFileName}`} />
+                    <ImageToggle hoverMessage={"변경하기"} size={95} alt={userImg?.fileName}
+                                 imagePath={`${FILE_API_URL}/images/${userImg?.uniqueFileName}`}/>
                 </FileUploader>
                 <div className="relative w-full  items-center flex">
                     <LineInput ref={userNameRef} textSize={"text-base"} color={"secondary-color"}
@@ -114,7 +132,7 @@ const EditMyInfo = () => {
                     </div>
                     <div className="relative w-full  items-center flex">
                         <LineInput ref={emailRef} textSize={"text-base"} color={"secondary-color"} value={email}
-                                   disabled={true}/>
+                                   onChange={(e) => setEmail(e.target.value)}/>
                         <div className="absolute top-1/2 right-0 transform -translate-y-1/2 z-10">
                             <Button
                                 width={"52px"}
@@ -123,6 +141,7 @@ const EditMyInfo = () => {
                                 name={"변경"}
                                 textSize={"text-sm"}
                                 height={"21px"}
+                                onBtnClick={onClickChangeEmailBtn}
                             />
                         </div>
                     </div>

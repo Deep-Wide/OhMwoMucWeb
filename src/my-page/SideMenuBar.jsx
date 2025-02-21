@@ -12,6 +12,7 @@ const SideMenuBar = ({menus, targetMenuIndex, onClickMenu}) => {
             {menus && menus.map((menu, index) => (
                 <div key={index} className={"flex cursor-pointer justify-between w-[300px]"} onClick={() => {
                     onClickMenu(index)
+                    menu.onClickFn()
                 }}>
                     <span className={`text-lg ${targetMenuIndex === index? "main-color font-semibold" : "text-color font-medium" }`}>
                         {menu.name}
