@@ -1,7 +1,7 @@
 import defaultImg from "/src/assets/icon/default-profile.svg"
 import {TextBtn} from "../common/TextBtn.jsx";
 import InputComment from "../common/InputComment.jsx";
-import React, {forwardRef, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
 import {
@@ -11,39 +11,73 @@ import {
     fetchPostUpdateComment
 } from "../service/CommentService.js";
 import AlertModalStore from "../store/AlertModalStore.js";
+import {FILE_API_URL} from "../service/FileService.js";
+import {fetchGetUserImage} from "../service/UserService.js";
+import DropdownHover from "../common/DropdownHover.jsx";
+import IndentLine from "/src/assets/icon/indent-line.svg?react"
 
-const Comment = ({comments}) => {
+const Comment = ({comments, onUpdateComment}) => {
     const [sortedComments, setSortedComments] = useState([])
     const [inputTargetParentId, setInputTargetParentId] = useState(null)
     const [inputTargetId, setInputTargetId] = useState(null)
     const [isUpdateComment, setIsUpdateComment] = useState(false)
-    const [commentList, setCommentList] = useState(comments)
+    const [userImages, setUserImages] = useState({})
+
     const navigate = useNavigate()
     const {loginUser} = UserStore()
+
     const {id} = useParams()
+
     const ref = useRef(null);
 
     const {setAlertModalInfo} = AlertModalStore()
 
 
-    const dropdownMenus = [
+    const menus = [
         {
-            name: "삭제하기", onMenuClick: () => {
+            name: "수정하기", onClick() {
+                console.log(213)
+            }
+        },
+        {
+            name: "삭제하기", onClick(commentId) {
+                console.log(2133)
                 setAlertModalInfo({
                     isOpen: true,
                     message: ("해당 댓글을 정말 삭제할까요?"),
                     confirm() {
-                        deleteComment(comment.commentId)
+                        deleteComment(commentId)
                     }
                 })
             }
-        }
-        ,{
-            name: "수정하기", onMenuClick: () => {
-                openUpdateCommentInput(comment.commentId)
+        },
+        {
+            name: "신고하기", onClick() {
+                reportComment()
             }
         }
     ]
+
+    const getCommentUserImage = async (writerId) => {
+        if (!writerId || userImages[writerId]) return; // 이미 불러온 이미지면 API 호출 X
+
+        const {data, isError} = await fetchGetUserImage(writerId);
+        if (isError) {
+            console.error(data.errorMessage);
+            return;
+        }
+
+        console.log(data)
+
+        setUserImages(prev => ({
+            ...prev,
+            [writerId]: Object.keys(data).length > 0 ?
+                `${FILE_API_URL}/images/${data.uniqueFileName}` :
+                defaultImg
+        }));
+
+
+    };
 
     const updateInputTargetId = (commentId) => {
         setInputTargetParentId(commentId)
@@ -51,7 +85,7 @@ const Comment = ({comments}) => {
 
     const writeComment = async (text) => {
         if (text?.trim() === "") {
-            setModalInfo({
+            setAlertModalInfo({
                 isOpen: true,
                 message: "댓글이 작성되지 않았습니다ㅠ",
                 confirm() {
@@ -75,7 +109,7 @@ const Comment = ({comments}) => {
         }
         console.log("data: ", data)
         setInputTargetParentId(null)
-        setCommentList(commentsList => [...commentsList, data])
+        onUpdateComment(comments => [...comments, data])
     }
 
     const reportComment = () => {
@@ -88,7 +122,7 @@ const Comment = ({comments}) => {
         setInputTargetId(commentId)
         const {data, isError} = await fetchGetComment(commentId)
         if (isError) {
-            console.log(isError)
+            console.log(data.errorMessage)
             return;
         }
     }
@@ -121,33 +155,39 @@ const Comment = ({comments}) => {
         }
         console.log("data: ", data)
         setIsUpdateComment(false)
-        const index = commentList.findIndex(comment => comment.commentId === commentId)
+        const index = comments.findIndex(comment => comment.commentId === commentId)
         if (index < 0)
             return;
 
-        setCommentList([...commentList.slice(0, index), data, ...commentList.slice(index + 1)])
+        onUpdateComment([...comments.slice(0, index), data, ...comments.slice(index + 1)])
     }
 
     const deleteComment = async (commentId) => {
         const {data, isError} = await fetchDeleteMuamuc(commentId)
+        if (isError) {
+            console.log(data.errorMessage)
+        }
         if (data) {
-            const index = commentList.findIndex(comment => comment.commentId === commentId)
+            const index = comments.findIndex(comment => comment.commentId === commentId)
             if (index < 0)
                 return;
-            setCommentList([...commentList.slice(0, index), ...commentList.slice(index + 1)])
+            onUpdateComment([...comments.slice(0, index), ...comments.slice(index + 1)])
         }
     }
 
     useEffect(() => {
         const list = [];
-        const rootComments = commentList.filter(c => c.parentId === 0);
+        comments.forEach(comment => {
+            getCommentUserImage(comment.userId); // 댓글 작성자의 프로필 이미지 가져오기
+        })
+
+        const rootComments = comments.filter(c => c.parentId === 0);
         for (let r of rootComments) {
             list.push(r);
-            list.push(...commentList.filter(c => c.parentId === r.commentId))
+            list.push(...comments.filter(c => c.parentId === r.commentId))
         }
         setSortedComments(list);
-    }, [commentList]);
-
+    }, [comments]);
 
     return (
         <div style={{width: "100%"}}>
@@ -155,11 +195,19 @@ const Comment = ({comments}) => {
             {Array.isArray(sortedComments) &&
                 (
                     sortedComments.map((comment) => (
-                        <div key={comment.commentId} className={"flex flex-col gap-y-2 mt-3"}
-                             style={{...(comment.parentId !== 0 ? {paddingLeft: "20px"} : {paddingLeft: "0px"})}}>
-                            <div className={"flex justify-start items-center"}>
-                                <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
-                                <span className={"text-ml"}> {comment.writerName} </span>
+                        <div key={comment.commentId} className={"flex flex-col gap-y-2 mt-3"}>
+                            <div className={"flex justify-between items-center"}>
+                                <div className={"flex items-center"}>
+                                {comment.parentId !== 0 &&
+                                    <IndentLine className={"w-[20px] pr-2"}/>}
+                                    <img className={"w-10 h-10 me-4 rounded-full"}
+                                         src={userImages[comment.userId]}/>
+                                    <span className={"text-ml"}> {comment.writerName} </span>
+                                </div>
+                                <DropdownHover menus={
+                                    loginUser?.id === comment.userId ?
+                                        menus.slice(0, 2) :
+                                        menus.slice(2)} commentId={comment.commentId}/>
                             </div>
                             {isUpdateComment && inputTargetId == comment.commentId ?
                                 <div>
@@ -172,37 +220,13 @@ const Comment = ({comments}) => {
                                     {comment.commentText}
                                 </div>
                             }
-                            <div className={"flex justify-between flex-row-reverse"}>
-                                {loginUser?.id === comment.userId ? (
-                                    <TextBtn name={"수정하기"} onClick={() => {
-                                        openUpdateCommentInput(comment.commentId)
-                                    }}/>
-                                ) : (
-                                    <TextBtn name={"신고하기"} onClick={() => {
-                                        setAlertModalInfo({
-                                            isOpen: true,
-                                            message: "해당 댓글을 정말 신고할까요?",
-                                            confirm: reportComment
-                                        })
-                                    }}/>
-
-                                )
-                                }
+                            <div className={"flex"}>
                                 {comment.parentId == 0 && <TextBtn name={"답글쓰기"} onClick={() => {
                                     if (!loginUser?.nickname)
                                         navigate("/login")
                                     updateInputTargetId(comment.commentId)
                                 }}/>}
-                                {loginUser?.id === comment.userId && <TextBtn name={"삭제하기"} onClick={() => {
-                                    setAlertModalInfo({
-                                        isOpen: true,
-                                        message: ("해당 댓글을 정말 삭제할까요?"),
-                                        confirm() {
-                                            deleteComment(comment.commentId)
-                                        }
-                                    })
-                                }}/>
-                                }
+
                             </div>
                             {comment.commentId === inputTargetParentId &&
                                 <InputComment ref={ref} isOpen={comment.commentId === inputTargetParentId}

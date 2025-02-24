@@ -122,7 +122,7 @@ const Content = () => {
 
 
     return (
-        <div className={"flex justify-center mt-6"}>
+        <div className={"flex justify-center mt-6 overflow-visible"}>
 
             <div className={"flex flex-col justify-center gap-y-5"} style={{
                 width: "520px",
@@ -134,7 +134,8 @@ const Content = () => {
                 paddingTop: "20px",
                 paddingBottom: "20px",
                 paddingLeft: "33px",
-                paddingRight: "33px"
+                paddingRight: "33px",
+                overflow: "visible"
             }}>
 
                 <div className={"flex justify-between"}

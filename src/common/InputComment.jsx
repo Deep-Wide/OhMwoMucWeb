@@ -1,11 +1,13 @@
-import {useEffect, useRef, useState} from "react";
+import {forwardRef, useEffect, useRef, useState} from "react";
 import userStore from "../store/UserStore.js";
 import Button from "./Button.jsx";
 import defaultImg from "../assets/icon/default-profile.svg";
 import {FILE_API_URL} from "../service/FileService.js";
 import {fetchGetUserImage} from "../service/UserService.js";
 
-const InputComment = ({onClickWriteComment, ref}) => {
+const InputComment = forwardRef((
+    {onClickWriteComment}, ref) => {
+
     const [value, setValue] = useState("")
     const {loginUser} = userStore()
     const [userImg, setUserImg] = useState({})
@@ -62,11 +64,12 @@ const InputComment = ({onClickWriteComment, ref}) => {
                     <Button name={"취소"} onBtnClick={() => {
                         setValue("")
                     }} border={true} color={"white"} height={"30px"} textSize={"text-sm"} roundedSize={"rounded-md"}/>
-                    <Button name={"등록"} onBtnClick={clickBtn} height={"30px"} textSize={"text-sm"} roundedSize={"rounded-md"}/>
+                    <Button name={"등록"} onBtnClick={clickBtn} height={"30px"} textSize={"text-sm"}
+                            roundedSize={"rounded-md"}/>
                 </div>
             </div>
         </div>
     )
-}
+})
 
 export default InputComment;

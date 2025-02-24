@@ -1,39 +1,43 @@
-import dotsVertical from "/src/assets/icon/dots-vertical.svg"
-import {useState} from "react";
+import dotsVertical from "/src/assets/icon/dots-vertical.svg";
+import { useState } from "react";
 
-const DropdownHover = ({menus}) => {
-
-    const [isHovered, setIsHovered] = useState(false)
+const DropdownHover = ({ menus, commentId }) => {
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <>
-           <img src={dotsVertical} onMouseEnter={isHovered} onMouseLeave={isHovered}/>
+        <div className="relative inline-block">
+            {/* 아이콘 */}
+            <img
+                src={dotsVertical}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                className="cursor-pointer"
+            />
 
-            <div id="dropdownHover"
-                 className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-                    <li>
-                        <a href="#"
-                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
-                            out</a>
-                    </li>
-                </ul>
-            </div>
-
-        </>
-    )
-}
+            {/* 드롭다운 메뉴 */}
+            {isHovered && (
+                <div
+                    id="dropdownHover"
+                    className="absolute top-[-100%] left-0 -translate-x- z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-24 dark:bg-gray-700"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        {menus.map((menu, index) => (
+                            <li key={index}>
+                                <span
+                                    onClick={()=>menu.onClick(commentId)}
+                                    className="select-none block px-4 py-2 transition duration-200 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                >
+                                    {menu.name}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default DropdownHover;

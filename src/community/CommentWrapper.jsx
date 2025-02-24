@@ -1,12 +1,11 @@
 import Accordion from "../common/Accordion.jsx";
 import InputComment from "../common/InputComment.jsx";
-import React, {useState} from "react";
+import React from "react";
 import Comment from "./Comment.jsx";
 import {fetchPostCreateComment} from "../service/CommentService.js";
 import {useNavigate, useParams} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
-import {TextBtn} from "../common/TextBtn.jsx";
 
 const CommentWrapper = ({onUpdateComment, comments}) => {
 
@@ -56,7 +55,7 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
             </Accordion.Count>
             <Accordion.Body>
                 <InputComment onClickWriteComment={addComment}/>
-                <Comment comments={comments}/>
+                <Comment comments={comments} onUpdateComment={onUpdateComment}/>
             </Accordion.Body>
         </Accordion>
     )

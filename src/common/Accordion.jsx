@@ -9,7 +9,7 @@ const Title = function ({ children }) {
 
 const Body = function ({ children }) {
     return (
-        <div className="px-4 py-2 bg-white">
+        <div className="px-4 py-2 bg-white overflow-visible">
             {Array.isArray(children) && children.map(c => (c))}
             {!Array.isArray(children) && children}
         </div>
@@ -47,7 +47,7 @@ const Accordion = ({children}) => {
 
     return (
         <div className="w-full max-w-md mx-auto space-y-4">
-            <div className=" rounded-lg overflow-hidden">
+            <div className=" rounded-lg overflow-visible">
                 <div
                     className="w-full text-left px-4 py-2 flex justify-between items-center">
                     <div className={"flex justify-between items-center gap-x-3"}>
