@@ -3,12 +3,16 @@ import IconWrapper from "../common/IconWrapper.jsx";
 import {fetchPostReverseLike} from "../service/LikesService.js";
 import UserStore from "../store/UserStore.js";
 import MuamucStore from "../store/MuamucStore.js";
+import {fetchGetUserImage} from "../service/UserService.js";
+import {FILE_API_URL} from "../service/FileService.js";
+import {useEffect, useState} from "react";
+import defaultImg from "/src/assets/icon/default-profile.svg"
+
 
 
 const MuamucCard = ({
                         muamuc,
                         // username = "사용자",
-                        userImg = "/src/assets/icon/default-profile.svg",
                         likes = 0,
                         title = "기본 제목",
                         image = "",
@@ -21,6 +25,21 @@ const MuamucCard = ({
     const navigate = useNavigate();
     const {loginUser} = UserStore()
     const {updateMuamuc} = MuamucStore()
+
+    const [userImg, setUserImg] = useState({})
+
+    const getUserImage = async () => {
+        const {isError, data} = await fetchGetUserImage(muamuc.writerId)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setUserImg(data)
+    }
+
+    useEffect(() => {
+        getUserImage()
+    }, [])
 
     const onClickLikes = async () => {
 
@@ -35,7 +54,7 @@ const MuamucCard = ({
         }
 
         const likeRes = await fetchPostReverseLike(like)
-        if (muamuc.liked === likeRes.data)
+        if (muamuc.liked = likeRes.data)
             muamuc.likeCount++
         else
             muamuc.likeCount--
@@ -58,7 +77,7 @@ const MuamucCard = ({
             <div className={"flex justify-between"}
                  style={{width: "100%"}}>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-10 h-10 me-3 rounded-full"} src={userImg}/>
+                    <img className={"w-10 h-10 me-3 rounded-full"} src={Object.keys(userImg).length !== 0? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
                     <span className={"text-sm"}> {muamuc.writerName} </span>
                 </div>
                 <div className={"flex justify-between items-center"}>

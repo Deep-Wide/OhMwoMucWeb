@@ -11,7 +11,6 @@ import {
     fetchPostUpdateComment
 } from "../service/CommentService.js";
 import AlertModalStore from "../store/AlertModalStore.js";
-import DropdownHover from "../common/DropdownHover.jsx";
 
 const Comment = ({comments}) => {
     const [sortedComments, setSortedComments] = useState([])
@@ -130,7 +129,8 @@ const Comment = ({comments}) => {
     }
 
     const deleteComment = async (commentId) => {
-        if (await fetchDeleteMuamuc(commentId)) {
+        const {data, isError} = await fetchDeleteMuamuc(commentId)
+        if (data) {
             const index = commentList.findIndex(comment => comment.commentId === commentId)
             if (index < 0)
                 return;
@@ -163,9 +163,7 @@ const Comment = ({comments}) => {
                             </div>
                             {isUpdateComment && inputTargetId == comment.commentId ?
                                 <div>
-                                    <InputComment isOpen={isUpdateComment} onClose={() => {
-                                        setIsUpdateComment(false)
-                                    }} onClickWriteComment={(text) => {
+                                    <InputComment onClickWriteComment={(text) => {
                                         updateComment(comment.commentId, text)
                                     }} defaultValue={comment.commentText}/>
                                 </div>
@@ -175,7 +173,6 @@ const Comment = ({comments}) => {
                                 </div>
                             }
                             <div className={"flex justify-between flex-row-reverse"}>
-                                <DropdownHover></DropdownHover>
                                 {loginUser?.id === comment.userId ? (
                                     <TextBtn name={"수정하기"} onClick={() => {
                                         openUpdateCommentInput(comment.commentId)

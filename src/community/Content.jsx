@@ -11,27 +11,22 @@ import {fetchGetCommentList} from "../service/CommentService.js";
 import RestaurantInfoWrapper from "./RestaurantInfoWrapper.jsx";
 import CommentWrapper from "./CommentWrapper.jsx";
 import AlertModalStore from "../store/AlertModalStore.js";
-import {fetchGetLikes, fetchPostReverseLike} from "../service/LikesService.js";
+import {fetchPostReverseLike} from "../service/LikesService.js";
+import {fetchGetUserImage} from "../service/UserService.js";
+import {FILE_API_URL} from "../service/FileService.js";
 
-const Content = ({
-                     likestatus = "nonyum",
-                     likes = 0,
-                     image = "",
-                     fork = "offfork",
-                     forks = 0
-                 }) => {
+const Content = () => {
 
     const {loginUser} = UserStore()
     const {setAlertModalInfo} = AlertModalStore()
-    const {updateMuamuc} = MuamucStore()
+    const {updateMuamuc, removeMuamuc} = MuamucStore()
     const [muamuc, setMuamuc] = useState({})
     const [images, setImages] = useState([])
+    const [userImg, setUserImg] = useState({})
     const [isOwner, setIsOwner] = useState(false)
     const [comments, setComments] = useState([])
 
     const navigate = useNavigate()
-
-    const {removeMuamuc} = MuamucStore()
 
     const {id} = useParams()
 
@@ -66,7 +61,6 @@ const Content = ({
     }
 
     const onClickLikes = async () => {
-
         if (!loginUser?.id) {
             navigate("/login");
             return;
@@ -77,11 +71,18 @@ const Content = ({
             muamucId: id
         }
 
-        const likeRes = await fetchPostReverseLike(like)
-        if (muamuc.liked = likeRes.data)
+        const {data, isError} = await fetchPostReverseLike(like)
+        if (isError) {
+            alert(data.errorMessage)
+        }
+        if (muamuc.liked = data) {
             muamuc.likeCount++
-        else
+        }
+        else {
+            muamuc.liked = data
             muamuc.likeCount--
+        }
+
         updateMuamuc(muamuc)
     }
 
@@ -96,15 +97,27 @@ const Content = ({
         setImages(data)
     }
 
+    const getUserImage = async () => {
+        if (!muamuc.writerId) {return}
+        const {data, isError} = await fetchGetUserImage(muamuc.writerId)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setUserImg(data)
+    }
+
     useEffect(() => {
         getMuamuc()
         setComment()
     }, [id]);
 
     useEffect(() => {
+        if (!muamuc) return
         setIsOwner(muamuc?.writerId === loginUser?.id && typeof(loginUser?.id) === "number")
 
         getMuamucImages(muamuc?.muamucId)
+        getUserImage(muamuc?.writerId)
     }, [muamuc]);
 
 
@@ -127,7 +140,7 @@ const Content = ({
                 <div className={"flex justify-between"}
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>
-                        <img className={"w-10 h-10 me-4 rounded-full"} src={defaultImg}/>
+                        <img className={"w-10 h-10 me-4 rounded-full"} src={Object.keys(userImg).length !== 0 ? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
                         <span className={"text-ml"}> {muamuc.writerName} </span>
                     </div>
                     <IconWrapper className={"w-10 h-10 me-4 rounded-full cursor-pointer"}

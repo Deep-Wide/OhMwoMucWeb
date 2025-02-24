@@ -36,9 +36,12 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
             console.log(isError)
             return;
         }
-        onUpdateComment(prevItems => [{
-            comments: [...prevItems[0].comments, data] // 새로운 댓글을 추가
-        }])
+        console.log("###: ", comments)
+        console.log("###: ", data)
+
+        onUpdateComment(prevComments => [
+            ...prevComments, data
+        ])
     }
 
     return (
