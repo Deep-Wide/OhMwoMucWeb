@@ -36,7 +36,6 @@ const EditMyInfo = () => {
 
         const updatedImg = {...newImg[0], userId: userInfo.id};
 
-        console.log("new: ", updatedImg);
         await fetchPostAddUserImage(updatedImg)
 
     };

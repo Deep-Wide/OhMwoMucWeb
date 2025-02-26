@@ -8,6 +8,5 @@ export const fetchGetLikes = (muamucId) => {
 }
 
 export const fetchPostReverseLike = (data) => {
-    console.log("data:   ", data)
     return fetchPost(`${LIKES_API_URL}`, data)
 }

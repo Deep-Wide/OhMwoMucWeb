@@ -36,13 +36,11 @@ const Comment = ({comments, onUpdateComment}) => {
     const menus = [
         {
             name: "수정하기", onClick(commentId) {
-                console.log(commentId)
                 openUpdateCommentInput(commentId)
             }
         },
         {
             name: "삭제하기", onClick(commentId) {
-                console.log(2133)
                 setAlertModalInfo({
                     isOpen: true,
                     message: ("해당 댓글을 정말 삭제할까요?"),
@@ -67,8 +65,6 @@ const Comment = ({comments, onUpdateComment}) => {
             console.error(data.errorMessage);
             return;
         }
-
-        console.log(data)
 
         setUserImages(prev => ({
             ...prev,
@@ -105,10 +101,9 @@ const Comment = ({comments, onUpdateComment}) => {
         const {data, isError} = await fetchPostCreateComment(newComment)
 
         if (isError) {
-            console.log(isError)
+            alert(data.errorMessage)
             return;
         }
-        console.log("data: ", data)
         setInputTargetParentId(null)
         onUpdateComment(comments => [...comments, data])
     }
@@ -123,7 +118,7 @@ const Comment = ({comments, onUpdateComment}) => {
         setInputTargetId(commentId)
         const {data, isError} = await fetchGetComment(commentId)
         if (isError) {
-            console.log(data.errorMessage)
+            alert(data.errorMessage)
             return;
         }
 
@@ -148,14 +143,12 @@ const Comment = ({comments, onUpdateComment}) => {
             "commentText": text,
             "commentId": inputTargetId
         }
-        console.log("### ", newComment);
         const {data, isError} = await fetchPostUpdateComment(commentId, newComment)
 
         if (isError) {
-            console.log(isError)
+            alert(data.errorMessage)
             return;
         }
-        console.log("data: ", data)
         setIsUpdateComment(false)
         const index = comments.findIndex(comment => comment.commentId === commentId)
         if (index < 0)
@@ -167,7 +160,7 @@ const Comment = ({comments, onUpdateComment}) => {
     const deleteComment = async (commentId) => {
         const {data, isError} = await fetchDeleteMuamuc(commentId)
         if (isError) {
-            console.log(data.errorMessage)
+            alert(data.errorMessage)
         }
         if (data) {
             const index = comments.findIndex(comment => comment.commentId === commentId)
@@ -218,7 +211,7 @@ const Comment = ({comments, onUpdateComment}) => {
                                     }} defaultValue={comment.commentText} onClose={() => setIsUpdateComment(false)}/>
                                 </div>
                                 :
-                                <div className={comment.parentId !== 0 && "flex ml-5"}>
+                                <div className={comment.parentId !== 0 ? "flex ml-5" : undefined}>
                                     {comment.commentText}
                                 </div>
                             }

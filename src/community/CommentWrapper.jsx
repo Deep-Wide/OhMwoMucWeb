@@ -32,7 +32,7 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
         const {data, isError} = await fetchPostCreateComment(newComment)
 
         if (isError) {
-            console.log(isError)
+            alert(data.errorMessage)
             return;
         }
 

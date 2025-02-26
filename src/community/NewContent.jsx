@@ -118,7 +118,6 @@ const NewContent = ({isUpdate = false}) => {
         if (!muamucId)
             return
         const {data, isError} = await fetchGetMuamucImages(muamucId)
-        console.log("가져온 이미지: ", data)
         if (isError) {
             alert(data.errorMessage)
             return
