@@ -35,8 +35,9 @@ const Comment = ({comments, onUpdateComment}) => {
 
     const menus = [
         {
-            name: "수정하기", onClick() {
-                console.log(213)
+            name: "수정하기", onClick(commentId) {
+                console.log(commentId)
+                openUpdateCommentInput(commentId)
             }
         },
         {
@@ -125,6 +126,7 @@ const Comment = ({comments, onUpdateComment}) => {
             console.log(data.errorMessage)
             return;
         }
+
     }
 
     const updateComment = async (commentId, text) => {
@@ -198,8 +200,8 @@ const Comment = ({comments, onUpdateComment}) => {
                         <div key={comment.commentId} className={"flex flex-col gap-y-2 mt-3"}>
                             <div className={"flex justify-between items-center"}>
                                 <div className={"flex items-center"}>
-                                {comment.parentId !== 0 &&
-                                    <IndentLine className={"w-[20px] pr-2"}/>}
+                                    {comment.parentId !== 0 &&
+                                        <IndentLine className={"w-[20px] pr-2"}/>}
                                     <img className={"w-10 h-10 me-4 rounded-full"}
                                          src={userImages[comment.userId]}/>
                                     <span className={"text-ml"}> {comment.writerName} </span>
@@ -213,10 +215,10 @@ const Comment = ({comments, onUpdateComment}) => {
                                 <div>
                                     <InputComment onClickWriteComment={(text) => {
                                         updateComment(comment.commentId, text)
-                                    }} defaultValue={comment.commentText}/>
+                                    }} defaultValue={comment.commentText} onClose={() => setIsUpdateComment(false)}/>
                                 </div>
                                 :
-                                <div>
+                                <div className={comment.parentId !== 0 && "flex ml-5"}>
                                     {comment.commentText}
                                 </div>
                             }

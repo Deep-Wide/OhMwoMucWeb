@@ -169,7 +169,6 @@ const Content = () => {
                     <div className={"flex flex-row-reverse justify-between"}>
                         <TextBtn name={"신고하기"}/>
                     </div>
-
                 }
                 <RestaurantInfoWrapper/>
                 <CommentWrapper comments={comments} onUpdateComment={setComments}/>

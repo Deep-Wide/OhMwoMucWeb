@@ -35,8 +35,6 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
             console.log(isError)
             return;
         }
-        console.log("###: ", comments)
-        console.log("###: ", data)
 
         onUpdateComment(prevComments => [
             ...prevComments, data
@@ -51,7 +49,7 @@ const CommentWrapper = ({onUpdateComment, comments}) => {
             <Accordion.TitleRightArea>
             </Accordion.TitleRightArea>
             <Accordion.Count>
-                {comments.length}
+                {comments.filter(c => c.parentId === 0).length}
             </Accordion.Count>
             <Accordion.Body>
                 <InputComment onClickWriteComment={addComment}/>
