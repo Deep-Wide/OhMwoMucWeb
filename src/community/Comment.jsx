@@ -16,12 +16,13 @@ import {fetchGetUserImage} from "../service/UserService.js";
 import DropdownHover from "../common/DropdownHover.jsx";
 import IndentLine from "/src/assets/icon/indent-line.svg?react"
 
-const Comment = ({comments, onUpdateComment}) => {
+const Comment = ({comments, onUpdateComment, onOpenReportModal}) => {
     const [sortedComments, setSortedComments] = useState([])
     const [inputTargetParentId, setInputTargetParentId] = useState(null)
     const [inputTargetId, setInputTargetId] = useState(null)
     const [isUpdateComment, setIsUpdateComment] = useState(false)
     const [userImages, setUserImages] = useState({})
+
 
     const navigate = useNavigate()
     const {loginUser} = UserStore()
@@ -51,8 +52,8 @@ const Comment = ({comments, onUpdateComment}) => {
             }
         },
         {
-            name: "신고하기", onClick() {
-                reportComment()
+            name: "신고하기", onClick(userId, commentId) {
+                onOpenReportModal(userId, commentId)
             }
         }
     ]
@@ -107,12 +108,6 @@ const Comment = ({comments, onUpdateComment}) => {
         setInputTargetParentId(null)
         onUpdateComment(comments => [...comments, data])
     }
-
-    const reportComment = () => {
-        console.log("신고신고~~~")
-        //Todo: 신고기능 만들기
-    }
-
     const openUpdateCommentInput = async (commentId) => {
         setIsUpdateComment(true)
         setInputTargetId(commentId)
@@ -173,7 +168,7 @@ const Comment = ({comments, onUpdateComment}) => {
     useEffect(() => {
         const list = [];
         comments.forEach(comment => {
-            getCommentUserImage(comment.userId); // 댓글 작성자의 프로필 이미지 가져오기
+            getCommentUserImage(comment.userId);
         })
 
         const rootComments = comments.filter(c => c.parentId === 0);
@@ -202,7 +197,7 @@ const Comment = ({comments, onUpdateComment}) => {
                                 <DropdownHover menus={
                                     loginUser?.id === comment.userId ?
                                         menus.slice(0, 2) :
-                                        menus.slice(2)} commentId={comment.commentId}/>
+                                        menus.slice(2)} commentId={comment.commentId} writerId = {comment.userId} />
                             </div>
                             {isUpdateComment && inputTargetId == comment.commentId ?
                                 <div>

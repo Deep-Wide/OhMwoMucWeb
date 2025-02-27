@@ -1,7 +1,7 @@
 import dotsVertical from "/src/assets/icon/dots-vertical.svg";
 import { useState } from "react";
 
-const DropdownHover = ({ menus, commentId }) => {
+const DropdownHover = ({ menus, commentId, writerId }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -26,7 +26,7 @@ const DropdownHover = ({ menus, commentId }) => {
                         {menus.map((menu, index) => (
                             <li key={index}>
                                 <span
-                                    onClick={()=>menu.onClick(commentId)}
+                                    onClick={()=>menu.onClick(commentId, writerId)}
                                     className="select-none block px-4 py-2 transition duration-200 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 >
                                     {menu.name}

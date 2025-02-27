@@ -24,7 +24,7 @@ export default function CommonModal({
                 {confirmBtnName && <Button onBtnClick={() => {
                     onConfirm && onConfirm()
                     onClose()
-                }} name={confirmBtnName}/>}
+                }} name={confirmBtnName} width={"5rem"}/>}
                 {cancelBtnName && <Button color="#9A9A9A" onBtnClick={
                     () => {
                         onCancel && onCancel()

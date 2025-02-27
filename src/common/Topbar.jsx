@@ -4,11 +4,13 @@
 import {Link, useLocation} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
 import {useEffect, useState} from "react";
+import AlertModalStore from "../store/AlertModalStore.js";
 
 
 export function Topbar() {
 
     const {loginUser} = UserStore()
+    const {setAlertModalInfo} = AlertModalStore()
     const [targetMenuIndex, setTargetMenuIndex] = useState(0)
     const location = useLocation()
 
@@ -65,12 +67,23 @@ export function Topbar() {
                         {menus.map((menu) => {
                             return (
                                 <li key={menu.id}>
-                                    <Link to={menu.link}
-                                          className={`cursor-pointer block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold ${targetMenuIndex == menu.id ? "main-color" : "secondary-color"}`}
-                                          aria-current="page">
-                                        {menu.name}
-                                    </Link>
+                                    {menu.link === '#' ? (
+                                        <button
+                                            onClick={() => setAlertModalInfo({
+                                                isOpen: true,
+                                                message: "아직 개발 중인 기능입니다. 조금만 기다려주세용!! (아니요 눌러도 어쩔 수 없지롱 !!)"
+                                            })}
+                                            className="cursor-pointer block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold secondary-color"
+                                        >
+                                            {menu.name}
+                                        </button>
+                                    ) : (
+                                        <Link to={menu.link} className={`cursor-pointer block py-2 px-3 text-white rounded md:bg-transparent md:p-0 dark:text-white text-2xl font-bold ${targetMenuIndex == menu.id ? "main-color" : "secondary-color"}`}>
+                                            {menu.name}
+                                        </Link>
+                                    )}
                                 </li>
+
                             )
                         })}
 
