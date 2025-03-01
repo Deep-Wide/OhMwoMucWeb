@@ -7,6 +7,14 @@ export const fetchGetUserInfo = (userId) => {
     return fetchGet(`${USER_API_URL}/${userId}`)
 }
 
+export const fetchPostCreateUser = (userInfo) => {
+   return fetchPost(USER_API_URL, userInfo)
+}
+
+export const fetchGetDuplicatedEmail = (email) => {
+    return fetchGet(`${USER_API_URL}/email/${email}`)
+}
+
 export const fetchPatchUpdateUserNickname = (userId, nickname) => {
     if (!userId)
         return

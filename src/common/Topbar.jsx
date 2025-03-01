@@ -15,7 +15,9 @@ export function Topbar() {
     const location = useLocation()
 
     const setTopbarTargetMenu = () => {
-        setTargetMenuIndex(menus.filter(menu => menu.link === `/${location.pathname.split('/')[1]}`).map(menu => menu.id))
+        let menuIndex = menus.filter(menu => menu.link === `/${location.pathname.split('/')[1]}`).map(menu => menu.id)
+        if (menuIndex.length < 1) menuIndex = -1
+        setTargetMenuIndex(menuIndex)
     }
 
     const menus = [

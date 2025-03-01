@@ -1,4 +1,6 @@
-const InputBox = ({name, placeholder, type="text", id, onKeyPress, ref, value, onChange}) => {
+import {forwardRef} from "react";
+
+const InputBox = forwardRef(({name, placeholder, type="text", id, onKeyPress, value, onChange}, ref) => {
     return (
         <div>
             <div className={`font-semibold main-color text-lg select-none`}>
@@ -19,6 +21,6 @@ const InputBox = ({name, placeholder, type="text", id, onKeyPress, ref, value, o
 
         </div>
     )
-}
+})
 
 export default InputBox;
