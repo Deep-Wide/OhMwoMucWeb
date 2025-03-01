@@ -16,6 +16,10 @@ export default function Information() {
     const [nicknameValidateInfo, setNicknameValidateInfo] = useState({})
 
     const [allChecked, setAllChecked] = useState(false);
+
+    const [btnDisabled, setBtnDisabled] = useState(false);
+    const [btnColor, setBtnColor] = useState("white");
+
     const [agreements, setAgreements] = useState({
         terms: false,
         marketing: false
@@ -44,7 +48,7 @@ export default function Information() {
         setAgreements(updatedAgreements);
     };
 
-    const signupNewUser = () => {
+    const signupNewUser = async () => {
         if (!nickname) {
             nicknameRef.current.focus()
             return
@@ -56,13 +60,12 @@ export default function Information() {
             nickname: nickname
         }
         console.log(newUser)
-        const {data, isError} = fetchPostCreateUser(newUser);
+        const {data, isError} = await fetchPostCreateUser(newUser);
         if (isError) {
             setToastStatus("danger")
             setToastMessage("회원가입 중 에러가 발생했습니다. 다시 회원가입을 진행해주세요")
             return
         }
-        console.log("$$$: ", data)
         setToastStatus("success")
         setToastMessage(`${data.nickname}님 반가워용! 로그인 창에서 입력하신 정보로 로그인을 진행해주세요.`)
         setTimeout(() => {
@@ -85,6 +88,12 @@ export default function Information() {
             })
         }
     }, [nickname])
+
+    useEffect(() => {
+        const isDisabled = !(nickname !== "" && agreements.terms)
+        setBtnDisabled(isDisabled);
+        setBtnColor(isDisabled ? "white" : "#EE5460");
+    }, [nickname, agreements])
 
     return (
         <div className={"flex justify-center pt-11"}>
@@ -151,7 +160,8 @@ export default function Information() {
                         </div>
                     </div>
 
-                    <Button name={"완료"} width={"100%"} onBtnClick={signupNewUser}/>
+                    <Button disable={btnDisabled} color={btnColor} border={btnDisabled} name={"완료"} width={"100%"}
+                            onBtnClick={signupNewUser}/>
                 </div>
             </div>
         </div>
