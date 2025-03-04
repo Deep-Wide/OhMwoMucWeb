@@ -55,6 +55,9 @@ export function Topbar() {
     ]
 
     useEffect(() => {
+        console.log(location.pathname)
+        console.log(!!loginUser?.nickname)
+
         setTopbarTargetMenu()
     }, [location.pathname])
 

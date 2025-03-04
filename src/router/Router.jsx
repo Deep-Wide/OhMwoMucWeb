@@ -8,7 +8,6 @@ import Login from "../pages/Login.jsx";
 import Signup from "../login/Signup.jsx";
 import Email from "../login/Email.jsx";
 import Information from "../login/Information.jsx";
-import Logout from "../pages/Logout.jsx";
 import NearMuamuc from "../near-muamuc/NearMuamuc.jsx";
 import MyPage from "../pages/MyPage.jsx";
 

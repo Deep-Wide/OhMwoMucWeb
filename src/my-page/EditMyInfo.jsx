@@ -4,6 +4,7 @@ import ImageToggle from "../common/ImageToggle.jsx";
 import naverIcon from "/src/assets/logo/naver.svg";
 import googleIcon from "/src/assets/logo/google.svg";
 import kakaoIcon from "/src/assets/logo/kakao.svg";
+import defaultImg from "/src/assets/icon/default-profile.svg";
 import Button from "../common/Button.jsx";
 import {TextBtn} from "../common/TextBtn.jsx";
 import AlertModalStore from "../store/AlertModalStore.js";
@@ -35,9 +36,7 @@ const EditMyInfo = () => {
         setUserImg(newImg[0]);
 
         const updatedImg = {...newImg[0], userId: userInfo.id};
-
         await fetchPostAddUserImage(updatedImg)
-
     };
 
 
@@ -103,8 +102,8 @@ const EditMyInfo = () => {
                 <div className={"font-semibold text-color text-lg"}>프로필</div>
 
                 <FileUploader multiple={false} onUploaded={onUploadUserImg}>
-                    <ImageToggle hoverMessage={"변경하기"} size={95} alt={userImg?.fileName}
-                                 imagePath={`${FILE_API_URL}/images/${userImg?.uniqueFileName}`}/>
+                    <ImageToggle hoverMessage={"변경하기"} size={95} alt={userImg?.fileName === undefined? "기본 이미지" : userImg?.fileName}
+                                 imagePath={userImg?.fileName === undefined ? defaultImg : `${FILE_API_URL}/images/${userImg?.uniqueFileName}`}/>
                 </FileUploader>
                 <div className="relative w-full  items-center flex">
                     <LineInput ref={userNameRef} textSize={"text-base"} color={"secondary-color"}
@@ -148,7 +147,7 @@ const EditMyInfo = () => {
                     <TextBtn name={"탈퇴하기"} color={"#9A9A9A"} fontSize={"text-sm"} onClick={() => setAlertModalInfo(
                         {
                             isOpen: true,
-                            message: `정말 오뭐먹을 그만 이용하시겠어요? 그동안 작성하신 모든 글과 등록하신 모든 입맛별 식당 리스트가 사라져요 (힝 가지마세여)`,
+                            message: `정말 오뭐먹을 그만 이용하시겠어요? 그동안 등록하신 모든 입맛별 식당 리스트가 사라져요 (힝 가지마세여)`,
                             confirm() {
                                 // inputCommentRef.current.focus()
                                 // Todo 에러 수정

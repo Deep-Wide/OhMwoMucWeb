@@ -11,6 +11,10 @@ export const fetchPostCreateUser = (userInfo) => {
    return fetchPost(USER_API_URL, userInfo)
 }
 
+export const fetchDeleteUser = (userId) => {
+    return fetchDelete(USER_API_URL, userId)
+}
+
 export const fetchGetDuplicatedEmail = (email) => {
     return fetchGet(`${USER_API_URL}/email/${email}`)
 }
@@ -34,9 +38,3 @@ export const fetchGetUserImage = (userId) => {
 export const fetchPostAddUserImage = (data) => {
     return fetchPost(`${USER_API_URL}/${data.userId}/image`, data)
 }
-
-export const fetchDeleteUser = (id) => {
-    return fetchDelete(`${USER_API_URL}/${id}`, {method: "DELETE"})
-}
-
-
