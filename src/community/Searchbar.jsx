@@ -12,7 +12,7 @@ export function Searchbar({ref, placeholder, onSearch}) {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-6">
+        <div className="max-w-md mx-auto">
             <div className="items-center flex gap-3">
                 <img src={SearchIcon} width={45} alt={"search-icon"}/>
                 <input ref={ref} type="search" id="default-search"

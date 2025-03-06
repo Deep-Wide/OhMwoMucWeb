@@ -44,7 +44,7 @@ export default function Muamucmuamuc() {
     }, [selectedTagId, isSearch, loginUser])
 
     return (
-        <>
+        <div className={"mb-6"}>
             <Searchbar placeholder={"다른 사람들은 뭐 먹었지?"} onSearch={onSearch}/>
             {isSearch && searchKeyword.trim() && <div className="max-w mt-3 flex justify-center">
                 <Badge name={badgeName} isSelected={true} isSearch={true} onDelBtn={() => {
@@ -71,6 +71,6 @@ export default function Muamucmuamuc() {
                 muamucList?.length > 0 &&
                 <MuamucCardContainer/>
             }
-        </>
+        </div>
     )
 }
