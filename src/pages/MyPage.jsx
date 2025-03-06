@@ -1,6 +1,6 @@
 import SideMenuBar from "../my-page/SideMenuBar.jsx";
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import MenuBox from "../my-page/MenuBox.jsx";
 import EditMyInfo from "../my-page/EditMyInfo.jsx";
 import UserStore from "../store/UserStore.js";
@@ -11,7 +11,6 @@ const MyPage = () => {
     const navigate = useNavigate()
     const {loginUser, setUser} = UserStore()
     const {setAlertModalInfo} = AlertModalStore()
-
 
     const [targetMenuIndex, setTargetMenuIndex] = useState(0)
 

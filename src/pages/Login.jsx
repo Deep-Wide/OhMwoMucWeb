@@ -14,6 +14,8 @@ import UserStore from "../store/UserStore.js";
 
 export default function Login() {
 
+    const serverHost = import.meta.env.VITE_SERVER_HOST;
+
     const [email, setEmail] = useState("")
     const idRef = useRef(null)
 
@@ -50,6 +52,10 @@ export default function Login() {
     const loginSuccess = (user) => {
         setUser(user)
         toast(`${user.nickname}님 오늘은 뭐 먹을까요?`, "success", () => navigate('/near-muamuc'))
+    }
+
+    const snsLogin = (registraionId) => {
+        window.location.href = `${serverHost}/api/oauth2/authorization/${registraionId}`;
     }
 
     function onClickLoginBtn() {
@@ -95,9 +101,9 @@ export default function Login() {
                     <div
                         className={"flex justify-between"}
                         style={{width: "223.96px", height: "59.99px"}}>
-                        <img src={kakao} alt="kakao-img"/>
-                        <img src={google} alt="google"/>
-                        <img src={naver} alt="naver"/>
+                        <img className={"cursor-pointer"} src={kakao} alt="kakao-img" onClick={()=>snsLogin("kakao")}/>
+                        <img className={"cursor-pointer"} src={google} alt="google" onClick={()=>snsLogin("google")}/>
+                        <img className={"cursor-pointer"} src={naver} alt="naver"/>
                     </div>
                 </div>
                 <Button name="회원가입" color={"white"} border={true} onBtnClick={() => {

@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import './App.css'
-import {Outlet} from "react-router-dom";
+import {Outlet, useSearchParams} from "react-router-dom";
 import {Topbar} from "./common/Topbar.jsx";
 import {getLoginUserAction} from "./service/LoginService.js";
 import UserStore from "./store/UserStore.js";
@@ -16,14 +16,24 @@ function App() {
     const {setMuamucTagList} = MuamucStore()
     const {isOpen, message, confirm, cancel} = AlertModalStore()
     const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    const [searchParams, setSearchParams] = useSearchParams()
+
 
     const getLoginUser = async () => {
+
+        if (searchParams?.get("atk")) {
+            sessionStorage.setItem("atk", searchParams.get("atk"));
+            searchParams.delete("atk");
+            setSearchParams(searchParams)
+        }
+
         const {isError, data} = await getLoginUserAction()
         if (isError) {
             alert(data.errorMessage)
             return
         }
         setUser(data)
+        console.log("@@@@@: ",data)
         getMuamucTagList()
     }
 

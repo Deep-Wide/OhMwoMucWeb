@@ -2,13 +2,17 @@ import {useEffect, useRef, useState} from "react";
 import Title from "./Title.jsx";
 import InputBox from "./InputBox.jsx";
 import Button from "../common/Button.jsx";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import ValidateMessage from "../common/ValidateMessage.jsx";
-import {fetchPostCreateUser} from "../service/UserService.js";
+import {fetchPatchUpdateUserNickname, fetchPostCreateUser} from "../service/UserService.js";
 import Toast from "../common/Toast.jsx";
 
 export default function Information() {
     const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const [id, setId] = useState(0)
+
     const {email, password} = location.state || {};
 
     const [nickname, setNickname] = useState("");
@@ -75,6 +79,34 @@ export default function Information() {
         }, 1000);
     }
 
+    const updateUserInfo = async () => {
+        if (!nickname) {
+            nicknameRef.current.focus()
+            return
+        }
+
+        const {data, isError} = await fetchPatchUpdateUserNickname(id, nickname)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        setToastMessage(`${nickname}님 반가워용! 로그인 창에서 입력하신 정보로 로그인을 진행해주세요.`)
+        setTimeout(() => {
+            setToastMessage(null)
+            setToastStatus(null)
+            navigate('/login')
+        }, 1000);
+    }
+
+    const getSnsInfo = () => {
+        const idParam = searchParams.get("id")
+        if (idParam) {
+            setId(parseInt(idParam, 10))
+            searchParams.delete("id")
+            setSearchParams(searchParams)
+        }
+    }
+
     useEffect(() => {
         if (nickname) {
             setNicknameValidateInfo({
@@ -91,9 +123,13 @@ export default function Information() {
 
     useEffect(() => {
         const isDisabled = !(nickname !== "" && agreements.terms)
-        setBtnDisabled(isDisabled);
-        setBtnColor(isDisabled ? "white" : "#EE5460");
+        setBtnDisabled(isDisabled)
+        setBtnColor(isDisabled ? "white" : "#EE5460")
     }, [nickname, agreements])
+
+    useEffect(() => {
+        getSnsInfo()
+    }, [])
 
     return (
         <div className={"flex justify-center pt-11"}>
@@ -161,7 +197,7 @@ export default function Information() {
                     </div>
 
                     <Button disable={btnDisabled} color={btnColor} border={btnDisabled} name={"완료"} width={"100%"}
-                            onBtnClick={signupNewUser}/>
+                            onBtnClick={id !== null ? updateUserInfo : signupNewUser}/>
                 </div>
             </div>
         </div>

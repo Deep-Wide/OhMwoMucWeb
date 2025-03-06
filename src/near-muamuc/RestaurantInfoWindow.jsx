@@ -34,7 +34,7 @@ const RestaurantInfoWindow = ({restaurant}) => {
     useEffect(() => {
         getRestaurantImage(46)
         getComments(44)
-    }, [images]);
+    }, []);
 
     return (
         <div className={"flex flex-col gap-y-3 rounded-md border-2 bg-white relative p-[33px] h-[75vh] overflow-auto"}
