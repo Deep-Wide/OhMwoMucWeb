@@ -1,7 +1,9 @@
 import {forwardRef} from "react";
 
 const LineInput = forwardRef((
-    {placeholder,
+    {
+        onClick,
+        placeholder,
         textSize = "text-base",
         type = "text",
         onChange,
@@ -13,7 +15,7 @@ const LineInput = forwardRef((
     }, ref) => {
 
     return (
-        <div className={`${textSize}  font-semibold flex justify-center`}
+        <div className={`${textSize}  font-semibold flex justify-center`} onClick={onClick}
              style={{
                  borderBottom: "1.5px solid #D9D9D9",
                  paddingTop: "7px",
@@ -21,7 +23,7 @@ const LineInput = forwardRef((
                  width: width
              }}>
             <input id={id} ref={ref} className={`${textSize} ${color}`} type={type} placeholder={placeholder}
-                   style={{width: "100%"}} onChange={onChange} autoComplete="off" value={value} disabled={disabled} />
+                   style={{width: "100%"}} onChange={onChange} autoComplete="nope" value={value} disabled={disabled} />
         </div>
     )
 })

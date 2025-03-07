@@ -55,3 +55,9 @@ export const _fetch = async (url, requestInit) => {
     }
     return {isError: !res.ok, data: data};
 }
+
+export const outFetch  = async (url, requestInit) => {
+    const res = await fetch(url, requestInit);
+    const data = await res.json();
+    return {isError: !res.ok, data};
+}

@@ -30,7 +30,7 @@ const Button = ({
         <button
             disabled={disable}
             type="button"
-            className={`text-white p-3 rounded-xl flex items-center justify-center ${textSize} ${roundedSize}`}
+            className={`text-white p-3 rounded-xl flex items-center justify-center ${textSize} ${roundedSize} whitespace-nowrap`}
             style={{
                 background: color, boxSizing: "border-box",
                 ...(border && {border: `1px solid ${borderColor}`, color: nameColor}),
