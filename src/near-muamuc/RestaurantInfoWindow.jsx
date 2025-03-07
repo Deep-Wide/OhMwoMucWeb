@@ -37,8 +37,13 @@ const RestaurantInfoWindow = ({restaurant}) => {
     }, []);
 
     return (
-        <div className={"flex flex-col gap-y-3 rounded-md border-2 bg-white relative p-[33px] h-[75vh] overflow-auto"}
-             style={{borderColor: "#949494"}}>
+        <div className={"flex flex-col gap-y-3 bg-white relative p-[33px] h-[75vh] overflow-auto pointer-events-auto"}
+             style={{
+                 borderWidth: "1.37px",
+                 borderStyle: "solid",
+                 borderColor: "#E4E4E4",
+                 borderRadius: "13.69px",
+             }}>
             <CloseIcon className={"absolute top-2 right-2 cursor-pointer w-5 h-5"}/>
             <div className={"flex flex-col gap-y-5 w-[378px] p-3"}>
                 <div className={"flex justify-between"}>
@@ -48,7 +53,7 @@ const RestaurantInfoWindow = ({restaurant}) => {
                 {images && <FoodCarousel images={images}></FoodCarousel>}
                 <RestaurantTaste title={"내 입맛 적합도"}></RestaurantTaste>
                 <RestaurantInfoBox info={restaurant}/>
-                {comments && <CommentWrapper comments={comments} />}
+                {comments && <CommentWrapper comments={comments}/>}
             </div>
         </div>
     )

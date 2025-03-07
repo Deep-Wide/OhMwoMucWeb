@@ -24,7 +24,12 @@ const searchResults = [
 
 const SearchResult = () => {
     return (
-        <div className={"flex rounded-md border-2 bg-white p-0"} style={{borderColor: "#949494"}}>
+        <div className={"flex rounded-md bg-white p-0 pointer-events-auto"} style={{
+            borderWidth: "1.37px",
+            borderStyle: "solid",
+            borderColor: "#E4E4E4",
+            borderRadius: "13.69px",
+        }}>
             <div className={"w-full flex flex-col"}>
                 <div className={"w-full p-3"}>
                     <Searchbar placeholder={"내 주변 맛집은? "}/>
