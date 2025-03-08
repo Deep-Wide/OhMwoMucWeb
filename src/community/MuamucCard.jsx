@@ -7,24 +7,18 @@ import {fetchGetUserImage} from "../service/UserService.js";
 import {FILE_API_URL} from "../service/FileService.js";
 import {useEffect, useState} from "react";
 import defaultImg from "/src/assets/icon/default-profile.svg"
-
+import {fetchGetMuamucImages} from "../service/MuamucService.js";
 
 
 const MuamucCard = ({
                         muamuc,
-                        // username = "사용자",
-                        likes = 0,
-                        title = "기본 제목",
-                        image = "",
-                        content = "기본 내용",
-                        fork = "offfork",
                         forkStatus = false,
-                        commentCount,
-                        muamucId
                     }) => {
     const navigate = useNavigate();
     const {loginUser} = UserStore()
     const {updateMuamuc} = MuamucStore()
+
+    const [image, setImage] = useState(null);
 
     const [userImg, setUserImg] = useState({})
 
@@ -37,9 +31,29 @@ const MuamucCard = ({
         setUserImg(data)
     }
 
+    const getMuamucImages = async () => {
+        if (!muamuc)
+            return
+        const {data, isError} = await fetchGetMuamucImages(muamuc.muamucId)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+        if (data?.length > 0)
+            setImage(data[0])
+        console.log("data: ", data[0])
+    }
+
+
     useEffect(() => {
         getUserImage()
+        getMuamucImages()
+
     }, [])
+
+    useEffect(() => {
+        getMuamucImages()
+    }, [muamuc])
 
     const onClickLikes = async () => {
 
@@ -77,7 +91,8 @@ const MuamucCard = ({
             <div className={"flex justify-between"}
                  style={{width: "100%"}}>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-10 h-10 me-3 rounded-full"} src={Object.keys(userImg).length !== 0? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
+                    <img className={"w-10 h-10 me-3 rounded-full"}
+                         src={Object.keys(userImg).length !== 0 ? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
                     <span className={"text-sm"}> {muamuc.writerName} </span>
                 </div>
                 <div className={"flex justify-between items-center"}>
@@ -92,24 +107,38 @@ const MuamucCard = ({
                 <span className={"text-lg font-semibold flex cursor-pointer"}
                       onClick={() => navigate(`./content/${muamuc.muamucId}`)}> {muamuc.title} </span>
             </div>
-            <div className="flex flex-col justify-center cursor-pointer"
+            <div className="flex flex-col justify-center cursor-pointer w-full items-center"
                  style={{height: "206px"}}
                  onClick={() => navigate(`./content/${muamuc.muamucId}`)}>
-                <div style={{width: "202px"}}>
-                    <img className="w-auto h-auto" src={`${image}`} alt=""/>
-                </div>
-                <div className={"flex h-max-[206px] overflow-hidden text-ellipsis"}>
-                    <span
-                        style={{wordBreak: "break-all"}}
-                        className={"mt-2 flex break-words"}> {muamuc.content} </span>
-                </div>
+                {
+                    image &&
+                    <div className={"flex justify-center w-[170px]"}>
+                        <img className="w-auto h-auto" src={`${FILE_API_URL}/images/${image?.uniqueFileName}`}/>
+                    </div>
+                }
+                {
+                    image ?
+                        <div className="flex h-max-[206px] w-full overflow-hidden">
+                            <div
+                                className="mt-2 w-full truncate text-ellipsis whitespace-nowrap overflow-hidden"
+                                style={{wordBreak: "break-all"}}
+                            >
+                                {muamuc.content}
+                            </div>
+                        </div> :
+                        <div className={"flex h-max-[206px] overflow-hidden text-ellipsis w-full"}>
+                            <div
+                                style={{wordBreak: "break-all"}}
+                                className={"mt-2 flex break-words text-ellipsis"}> {muamuc.content} </div>
+                        </div>
+                }
             </div>
 
             <div className={"flex justify-between"}
                  style={{width: "169px"}}>
-                <div className={"flex justify-between items-center"}>
-                    <IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>
-                </div>
+                {/*<div className={"flex justify-between items-center"}>*/}
+                {/*    <IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>*/}
+                {/*</div>*/}
                 <div className={"flex justify-between items-center"}>
                     <IconWrapper className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={muamuc.commentCount}/>
                 </div>

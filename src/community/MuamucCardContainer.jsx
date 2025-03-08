@@ -1,5 +1,7 @@
 import MuamucCard from "./MuamucCard.jsx";
 import MuamucStore from "../store/MuamucStore.js";
+import {useState} from "react";
+import {fetchGetMuamucImages} from "../service/MuamucService.js";
 
 const MuamucCardContainer = () => {
 
@@ -10,10 +12,9 @@ const MuamucCardContainer = () => {
             <div className={"grid gap-x-3 gap-y-5 grid-cols-4"}>
                 {
                     muamucList.map((item) => {
-
                         return (
                             <MuamucCard key={item.muamucId}
-                                        muamuc={item}/>
+                                        muamuc={item} />
                         )
                     })
                 }
