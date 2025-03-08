@@ -9,6 +9,7 @@ import AlertModalStore from "./store/AlertModalStore.js";
 import MuamucStore from "./store/MuamucStore.js";
 import {fetchGetMuamucTagList} from "./service/MuamucService.js";
 import {APIProvider} from "@vis.gl/react-google-maps";
+import useScript from "./hook/useScript.js";
 
 function App() {
 
@@ -17,6 +18,9 @@ function App() {
     const {isOpen, message, confirm, cancel} = AlertModalStore()
     const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
     const [searchParams, setSearchParams] = useSearchParams()
+    const KAKAO_JS_KEY = import.meta.env.VITE_KAKAO_JS_KEY
+    const KAKAO_MAP_SCRIPT = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&libraries=services,clusterer`;
+
 
 
     const getLoginUser = async () => {
@@ -46,9 +50,12 @@ function App() {
         setMuamucTagList(data)
     }
 
+    // useScript(KAKAO_MAP_SCRIPT)
+
     useEffect(() => {
         getLoginUser()
     }, [])
+
 
     return (
         <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>

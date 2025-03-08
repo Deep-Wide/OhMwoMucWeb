@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import DropdownIcon from "/src/assets/icon/angle-down.svg?react";
 
-const Dropdown = ({ defaultValue, onClickList, dropdownList, width = "170px", height }) => {
+const Dropdown = ({ defaultValue, onClickItem, categoryList, width = "170px", height }) => {
 
     const [value, setValue] = useState(defaultValue)
     const [onClickDropdown, setOnClickDropdown] = useState(false)
@@ -38,12 +38,12 @@ const Dropdown = ({ defaultValue, onClickList, dropdownList, width = "170px", he
                     style={{ width }}
                 >
                     <ul className="py-2 text-sm text-gray-700">
-                        {dropdownList.map((category, index) => (
+                        {categoryList.map((category, index) => (
                             <li key={index}>
                                 <span
                                     onClick={() => {
                                         setValue(category.name)
-                                        onClickList(category.name)
+                                        onClickItem(category)
                                         setOnClickDropdown(false)
                                     }}
                                     className="block px-4 py-2 cursor-pointer transition duration-200 hover:bg-gray-100"

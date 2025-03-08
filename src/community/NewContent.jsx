@@ -1,7 +1,6 @@
 import BadgeContainer from "../common/BadgeContainer.jsx";
 import Button from "../common/Button.jsx";
-import {useState, useEffect, useRef} from "react";
-import CommonModal from "../common/CommonModal.jsx";
+import {useState, useEffect, useRef, useCallback} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import LineInput from "../common/LineInput.jsx";
 import {
@@ -17,6 +16,8 @@ import MuamucStore from "../store/MuamucStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
 import FileUploader from "../common/FileUploader.jsx";
 import ImageViewer from "../common/ImageViewer.jsx";
+import {fetchGetRestaurantList, fetchPostCreateRestaurant} from "../service/RestaurantService.js";
+import _, {isError} from "lodash";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
@@ -28,6 +29,8 @@ const NewContent = ({isUpdate = false}) => {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
     const [muamuc, setMuamuc] = useState({})
+    const [searchKeyword, setSearchKeyword] = useState("")
+
     const {muamucTagList, addMuamuc, updateMuamuc} = MuamucStore()
     const {setAlertModalInfo} = AlertModalStore()
 
@@ -35,6 +38,10 @@ const NewContent = ({isUpdate = false}) => {
 
     const titleRef = useRef(null)
     const contentRef = useRef(null)
+
+    const [searchResult, setSearchResult] = useState([])
+
+    const [restaurantId, setRestaurantId] = useState(0)
 
     const getMuamuc = () => {
 
@@ -46,7 +53,8 @@ const NewContent = ({isUpdate = false}) => {
             title: title,
             content: content,
             muamucId: id,
-            writerId: loginUser.id
+            writerId: loginUser.id,
+            restaurantId
         }
 
         return data
@@ -152,6 +160,36 @@ const NewContent = ({isUpdate = false}) => {
         }
     }
 
+    const addRestaurantInfo = async (info) => {
+        const {isError, data} = await fetchPostCreateRestaurant(info)
+
+        if (isError) {
+            alert(data.errorMessage)
+            return;
+        }
+        console.log(data)
+        setIsOpenAddRestaurantModal(false)
+    }
+
+    const getRestaurantSearchResult = async () => {
+        if (searchKeyword?.trim()) {
+            const {data, isError} = await fetchGetRestaurantList(`?searchKeyword=${searchKeyword}`)
+            if (isError) {
+                alert(data.errorMessage)
+                return;
+            }
+            setSearchResult(data)
+            return
+        }
+        setSearchResult([])
+    }
+
+    const setRestaurantInfo = (info) => {
+        setSearchKeyword(`${info.name}   ${info.address}`)
+        setSearchResult(null)
+        setRestaurantId(info.restaurantId)
+    }
+
     useEffect(() => {
         if (isUpdate) {
             getMuamucData()
@@ -159,12 +197,19 @@ const NewContent = ({isUpdate = false}) => {
 
     }, [isUpdate]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setTitle(muamuc.title)
         setContent(muamuc.content)
         getMuamucImages(muamuc.muamucId)
     }, [muamuc])
 
+    const debouncedSearch = useCallback(_.debounce(() => {
+        getRestaurantSearchResult();
+    }, 300), [searchKeyword]);
+
+    useEffect(() => {
+        debouncedSearch();
+    }, [searchKeyword]);
 
 
     return (
@@ -229,7 +274,41 @@ const NewContent = ({isUpdate = false}) => {
                     </div>
                     <span className={"text-xs secondary-color"}>* 욕설 등의 비적절한 문구 포함 시 임의로 삭제될 수 있습니다.</span>
                 </div>
-                <LineInput placeholder={"식당 검색"}/>
+                <div>
+
+                    <LineInput placeholder={"식당 검색"} value={searchKeyword}
+                               onChange={e => setSearchKeyword(e.target.value)}/>
+                    <div className={"relative"}>
+
+                        {searchResult?.length > 0 && (
+                            <div
+                                className="absolute left-0 top-full mt-1 w-full bg-white border rounded-lg shadow-lg z-10"
+                            >
+                                <ul className="py-2 text-sm text-gray-700">
+                                    {searchResult.map((info, index) => (
+                                        <li key={index}>
+                                            <div
+                                                onClick={() => {
+                                                    setRestaurantInfo(info)
+                                                }}
+                                                className="block px-4 py-2 cursor-pointer transition duration-200 hover:bg-gray-100 flex justify-between"
+                                            >
+                                                <div className={"text-base font-semibold"}>
+                                                    {info.name}
+                                                </div>
+                                                <div className={"text-sm"}>
+                                                    {info.address}
+                                                </div>
+
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 <div className={"flex justify-center"}>
                     <Button name={"식당 추가"} style={{width: "160px"}} onBtnClick={() => {
                         setIsOpenAddRestaurantModal(true)
@@ -250,12 +329,8 @@ const NewContent = ({isUpdate = false}) => {
                     </div>
                 }
             </div>
-            <CommonModal title={"신규 식당 등록"} modalBody={AddRestaurantModal} openModal={isOpenAddRestaurantModal}
-                         onConfirm={() => {
-                             navigate("/muamuc")
-                         }} onClose={() => {
-                setIsOpenAddRestaurantModal(false)
-            }} confirmBtnName={"식당 등록"}/>
+            <AddRestaurantModal openModal={isOpenAddRestaurantModal} onAdded={addRestaurantInfo}
+                                onClose={() => setIsOpenAddRestaurantModal(false)}/>
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import {RESTAURANT_OPEN_DATE} from "../constant/Restaurant.js";
 
 const RestaurantInfo = ({title, contents}) => {
     return (
@@ -7,7 +8,17 @@ const RestaurantInfo = ({title, contents}) => {
             {Array.isArray(contents) ? (
                 contents.map((content, index) => (
                     <div key={index}>
-                        <div className={"ml-3"}>{content.name}: {content.price}</div>
+                        {
+                            content?.price &&
+                            <div className={"ml-3"}>{content.name}: {content.price}원</div>
+                        }
+                        {
+                            content?.day &&
+                                    <div
+                                        className={"ml-3"}>{RESTAURANT_OPEN_DATE[Number(content.day)].name}: {content.startTime}-{content.endTime}
+                                    </div>
+
+                        }
                     </div>
                 ))
             ) : (

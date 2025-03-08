@@ -17,6 +17,7 @@ import {FILE_API_URL} from "../service/FileService.js";
 import CommonModal from "../common/CommonModal.jsx";
 import {fetchGetReportTitleList, fetchPostAddReport} from "../service/ReportService.js";
 import LineInput from "../common/LineInput.jsx";
+import {fetchGetRestaurantInfo} from "../service/RestaurantService.js";
 
 const Content = () => {
 
@@ -34,6 +35,9 @@ const Content = () => {
     const [reportDetail, setReportDetail] = useState("")
     const [reportedUserId, setReportedUserId] = useState(0)
     const [reportedCommentId, setReportedCommentId] = useState(null)
+
+    const [restaurant, setRestaurant] = useState(null)
+
     const navigate = useNavigate()
 
     const {id} = useParams()
@@ -55,6 +59,18 @@ const Content = () => {
             alert(data.errorMessage)
         }
         setMuamucData(data)
+    }
+
+    const getRestaurant = async () => {
+        if (muamuc?.restaurantId != null) {
+            const {isError, data} = await fetchGetRestaurantInfo(muamuc.restaurantId)
+            if (isError) {
+                alert(data.errorMessage)
+                return
+            }
+            console.log("#@@@##: ", data)
+            setRestaurant(data)
+        }
     }
 
     const remove = async () => {
@@ -156,7 +172,6 @@ const Content = () => {
             alert(data.errorMessage)
             return
         }
-        console.log("^^: ", data)
     }
 
     const reportModalBody = () => {
@@ -189,6 +204,10 @@ const Content = () => {
         getMuamuc()
         setComment()
     }, [id]);
+
+    useEffect(()=>{
+        getRestaurant()
+    }, [muamuc])
 
     useEffect(() => {
         if (!muamuc) return
@@ -264,11 +283,15 @@ const Content = () => {
                         <TextBtn name={"신고하기"} onClick={() => openReportModal(null, muamuc.writerId)}/>
                     </div>
                 }
-                <RestaurantInfoWrapper/>
+                {
+                    restaurant != null &&
+                    <RestaurantInfoWrapper restaurant={restaurant}/>
+
+                }
                 <CommentWrapper comments={comments}
                                 onUpdateComment={setComments}
                                 onOpenReportModal={openReportModal}
-                                />
+                />
             </div>
         </div>
     )
