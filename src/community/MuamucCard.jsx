@@ -104,15 +104,16 @@ const MuamucCard = ({
                 </div>
             </div>
             <div style={{width: "100%"}}>
-                <span className={"text-lg font-semibold flex cursor-pointer"}
-                      onClick={() => navigate(`./content/${muamuc.muamucId}`)}> {muamuc.title} </span>
+                <span className={"text-lg font-semibold cursor-pointer overflow-hidden text-ellipsis line-clamp-1 break-words"}
+                      onClick={() => navigate(`./content/${muamuc.muamucId}`)}
+                      style={{wordBreak: "break-all"}}> {muamuc.title} </span>
             </div>
             <div className="flex flex-col justify-center cursor-pointer w-full items-center"
                  style={{height: "206px"}}
                  onClick={() => navigate(`./content/${muamuc.muamucId}`)}>
                 {
                     image &&
-                    <div className={"flex justify-center w-[170px]"}>
+                    <div className={"flex justify-center h-[170px]"}>
                         <img className="w-auto h-auto" src={`${FILE_API_URL}/images/${image?.uniqueFileName}`}/>
                     </div>
                 }

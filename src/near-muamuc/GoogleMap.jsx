@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {AdvancedMarker, InfoWindow} from "@vis.gl/react-google-maps";
 import YumBubble from "/src/assets/icon/bubble/yumBubble.svg?react"
 import BadBubble from "/src/assets/icon/bubble/badBubble.svg?react"
@@ -18,7 +18,11 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange}) => {
 
     const onBoundsChange = useCallback(
         throttle((data) => {
-            onChange(data.detail.bounds);
+            onChange(data?.detail?.bounds);
+            console.log("$$$$: ",data?.detail?.bounds?.west);
+            console.log("$$$$: ",data?.detail?.bounds?.east);
+            console.log("$$$$: ",data?.detail?.bounds?.south);
+            console.log("$$$$: ",data?.detail?.bounds?.north);
         }, 1500), [onChange])
 
     const constMarkerType = {
@@ -29,6 +33,9 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange}) => {
         4: NoneBadBubble,
         5: ForkBubble
     }
+
+    console.log("#### ", markers)
+
 
     return (
         <>

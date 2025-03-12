@@ -15,7 +15,7 @@ const RestaurantInfo = ({title, contents}) => {
                         {
                             content?.day &&
                                     <div
-                                        className={"ml-3"}>{RESTAURANT_OPEN_DATE[Number(content.day)].name}: {content.startTime}-{content.endTime}
+                                        className={"ml-3"}>{RESTAURANT_OPEN_DATE[Number(content.day) - 1].name}: {content.startTime}-{content.endTime}
                                     </div>
 
                         }

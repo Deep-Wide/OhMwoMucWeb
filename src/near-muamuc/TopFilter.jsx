@@ -5,18 +5,18 @@ import NoneSosoBubble from "/src/assets/icon/bubble/noneSosoBubble.svg?react"
 import ForkBubble from "/src/assets/icon/bubble/forkBubble.svg?react"
 import SearchIcon from "/src/assets/emoji/search-icon.svg?react"
 
-const TopFilter = () => {
+const TopFilter = ({onClickSearchIcon}) => {
 
     return (
         <div className={"flex gap-x-2 items-center pointer-events-auto"}>
             <div className={"rounded-2xl w-[60px] h-[60px] bg-red-500 flex items-center justify-center"}>
-                <SearchIcon className={"w-[40px] h-[40px]"} style={{color:"white"}}/>
+                <SearchIcon className={"w-[40px] h-[40px] cursor-pointer"} style={{color:"white"}} onClick={onClickSearchIcon}/>
             </div>
-            <AllBubble className={"w-[50px] h-[42px]"}/>
-            <YumBubble className={"w-[50px] h-[42px]"}/>
-            <BadBubble className={"w-[50px] h-[42px]"}/>
-            <NoneSosoBubble className={"w-[50px] h-[42px]"}/>
-            <ForkBubble className={"w-[50px] h-[42px]"}/>
+            <AllBubble className={"w-[50px] h-[42px] cursor-pointer"}/>
+            <YumBubble className={"w-[50px] h-[42px] cursor-pointer"}/>
+            <BadBubble className={"w-[50px] h-[42px] cursor-pointer"}/>
+            <NoneSosoBubble className={"w-[50px] h-[42px] cursor-pointer"}/>
+            {/*<ForkBubble className={"w-[50px] h-[42px]"}/>*/}
         </div>
     )
 }
