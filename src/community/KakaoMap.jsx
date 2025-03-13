@@ -5,10 +5,6 @@ const KakaoMap = ({lat, lng, name}) => {
     const [marker, setMarker] = useState({position: {lat, lng}, content: name})
 
 
-    console.log("@@@@@@ ", marker)
-    console.log(window.kakao)
-
-
     return (
         <Map
             center={{

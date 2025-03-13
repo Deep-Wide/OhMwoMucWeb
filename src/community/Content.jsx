@@ -68,7 +68,6 @@ const Content = () => {
                 alert(data.errorMessage)
                 return
             }
-            console.log("#@@@##: ", data)
             setRestaurant(data)
         }
     }

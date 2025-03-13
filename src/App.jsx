@@ -37,7 +37,6 @@ function App() {
             return
         }
         setUser(data)
-        console.log("@@@@@: ",data)
         getMuamucTagList()
     }
 

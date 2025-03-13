@@ -5,57 +5,49 @@ import {FILE_API_URL} from "../service/FileService.js";
 
 const SearchResultRestaurant = ({restaurantInfo, onClickResult}) => {
 
-    const [openTimeText, setOpenTimeText] = useState("")
-    const [restaurantImg, setRestaurantImg] = useState(null)
+    const [openTimeText, setOpenTimeText] = useState("");
+    const [restaurantImg, setRestaurantImg] = useState(null);
 
     const getToday = () => {
-        const today = new Date()
+        const today = new Date();
         const koreaTimeOffset = 9 * 60;
-        today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + koreaTimeOffset)
+        today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + koreaTimeOffset);
 
-        const day = today.getDay()
+        const day = today.getDay();
 
-        return day === 0 ? 7 : day
-    }
+        return day === 0 ? 7 : day;
+    };
 
-    const getIsTodayOpen = () => {
-        if (!restaurantInfo.openTimeList || restaurantInfo.openTimeList.length === 0) {
-            setOpenTimeText("영업시간이 아직 등록되지 않았습니당 !ㅠ")
+    const setTodayOpenTimeText = () => {
+        console.log(restaurantInfo.openTimeList)
+        if (!restaurantInfo.openTimeList[0]?.startTime) {
+            setOpenTimeText("영업시간이 아직 등록되지 않았습니당 !ㅠ");
+            return;
         }
 
-        const today = getToday()
+        const today = getToday();
 
-        const todayOpenTime = restaurantInfo.openTimeList.find(openTime => openTime.day === today)
+        const todayOpenTime = restaurantInfo.openTimeList.find(
+            (openTime) => Number(openTime.day) === today
+        );
 
         if (todayOpenTime) {
-            setOpenTimeText(`${todayOpenTime.startTime} - ${todayOpenTime.endTime}`)
-        } else {
-            setOpenTimeText("오늘은 휴무일입니당 !ㅠ")
-        }
-
-    }
-
-    const getOpenTimeText = () => {
-        const todayOpenInfo = getIsTodayOpen()
-
-        if (todayOpenInfo) {
-            setOpenTimeText(`${todayOpenInfo.startTime} - ${todayOpenInfo.endTime}`);
+            setOpenTimeText(`${todayOpenTime.startTime} - ${todayOpenTime.endTime}`);
         } else {
             setOpenTimeText("오늘은 휴무일입니당 !ㅠ");
         }
-    }
+    };
 
     const getRestaurantImg = () => {
         if (restaurantInfo.menuImageList[0]?.fileName != null) {
-            setRestaurantImg(restaurantInfo.menuImageList[0])
+            setRestaurantImg(restaurantInfo.menuImageList[0]);
         }
-        console.log("@@@@!!!!!!!@: ", restaurantInfo.menuImageList[0])
-    }
+    };
 
     useEffect(() => {
-        getOpenTimeText()
-        getRestaurantImg()
-    }, [])
+        setTodayOpenTimeText();
+        getRestaurantImg();
+    }, []);
 
 
     return (

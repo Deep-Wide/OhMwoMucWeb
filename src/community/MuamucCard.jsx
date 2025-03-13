@@ -41,7 +41,6 @@ const MuamucCard = ({
         }
         if (data?.length > 0)
             setImage(data[0])
-        console.log("data: ", data[0])
     }
 
 

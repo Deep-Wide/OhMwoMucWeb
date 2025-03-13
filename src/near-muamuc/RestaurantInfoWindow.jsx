@@ -3,11 +3,15 @@ import FoodCarousel from "../common/FoodCarousel.jsx";
 import React, {useEffect, useState} from "react";
 import RestaurantInfoBox from "../community/RestaurantInfoBox.jsx";
 import RestaurantTaste from "./RestaurantTaste.jsx";
+import {addTaste} from "../service/TasteService.js";
+import UserStore from "../store/UserStore.js";
 
 const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
 
     const [images, setImages] = useState(null)
     const [comments, setComments] = useState(null)
+
+    const {loginUser} = UserStore()
 
     const getRestaurantImage = async () => {
         if (restaurant?.menuImageList[0]?.uniqueFileName !== null)
@@ -15,6 +19,20 @@ const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
         else
             setImages(null)
     }
+
+    const onChangeTaste = async (tasteCode) => {
+        const newTaste = {
+            restaurantId: restaurant?.restaurantId,
+            userId: loginUser?.id,
+            tasteCode: tasteCode,
+        }
+        const {data, isError} = await addTaste(newTaste)
+        if (isError) {
+            alert(data.errorMessage)
+            return
+        }
+
+    };
 
     // const getComments = async () => {
     //     const {data, isError} = await fetchGetCommentList()
@@ -49,7 +67,7 @@ const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
                             {/*<IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={true ? "onfork" : "offfork"}/>*/}
                         </div>
                         {images && <FoodCarousel images={images}/>}
-                        <RestaurantTaste title={"내 입맛 적합도"}/>
+                        <RestaurantTaste title={"내 입맛 적합도"} onChangeTaste={onChangeTaste} selectedTastedCode={restaurant?.tasteCode}/>
                         <RestaurantInfoBox info={restaurant}/>
                         {/*{comments && <CommentWrapper comments={comments}/>}*/}
                     </div>

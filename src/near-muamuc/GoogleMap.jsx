@@ -10,20 +10,11 @@ import ForkBubble from "/src/assets/icon/bubble/forkBubble.svg?react"
 import {throttle} from "lodash";
 import {Map} from "@vis.gl/react-google-maps";
 
-
-const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange}) => {
-
-    let curlMarker, setCurlMarker;
-    [curlMarker, setCurlMarker] = useState(null);
-
+const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange, onClickMarker}) => {
     const onBoundsChange = useCallback(
         throttle((data) => {
             onChange(data?.detail?.bounds);
-            console.log("$$$$: ",data?.detail?.bounds?.west);
-            console.log("$$$$: ",data?.detail?.bounds?.east);
-            console.log("$$$$: ",data?.detail?.bounds?.south);
-            console.log("$$$$: ",data?.detail?.bounds?.north);
-        }, 1500), [onChange])
+        }, 1500), [])
 
     const constMarkerType = {
         0: YumBubble,
@@ -33,9 +24,6 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange}) => {
         4: NoneBadBubble,
         5: ForkBubble
     }
-
-    console.log("#### ", markers)
-
 
     return (
         <>
@@ -48,18 +36,12 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange}) => {
                 mapId={"9ef6f7f0425fa870"}
                 onBoundsChanged={onBoundsChange}
             >
-                {curlMarker &&
-                    <InfoWindow position={{lat: curlMarker.lat, lng: curlMarker.lng}}
-                                onClose={() => setCurlMarker(null)}>
-                        {curlMarker.name}
-                    </InfoWindow>
-                }
                 {
                     markers.map((marker, index) => {
                         const MarkerIcon = constMarkerType[marker.type]
                         return (
                             <AdvancedMarker position={{lat: marker.lat, lng: marker.lng}} key={index}
-                                            onClick={() => setCurlMarker(marker)}>
+                                            onClick={() => onClickMarker(marker.restaurantInfo)}>
                                 <div className={"flex justify-center items-center"}>
                                     {marker.name}<MarkerIcon className={"w-[50px]"}/>
                                 </div>
