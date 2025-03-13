@@ -3,7 +3,6 @@ import TasteGood from "/src/assets/emoji/tasteGood.svg?react";
 import TasteBad from "/src/assets/emoji/404_icon.svg?react";
 import {useNavigate} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
-import {addTaste} from "../service/TasteService.js";
 
 const RestaurantTaste = ({title,  onChangeTaste, selectedTastedCode}) => {
     console.log(selectedTastedCode);

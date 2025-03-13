@@ -17,12 +17,12 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange, onClickMar
         }, 1500), [])
 
     const constMarkerType = {
-        0: YumBubble,
-        1: BadBubble,
-        2: NoneGoodBubble,
+        1: YumBubble,
+        2: BadBubble,
         3: NoneSosoBubble,
-        4: NoneBadBubble,
-        5: ForkBubble
+        4: NoneGoodBubble,
+        5: NoneBadBubble,
+        6: ForkBubble
     }
 
     return (

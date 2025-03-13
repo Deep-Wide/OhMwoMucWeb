@@ -31,10 +31,13 @@ const NearMuamuc = () => {
                 return;
             }
             setSearchResults(data)
-            //임시
             setMarkers(data.map(((d, idx) => {
                 return {
-                    restaurantInfo: d, type: idx % 5, name: d.name, lat: d.lat, lng: d.lng
+                    restaurantInfo: d,
+                    type: d.tasteCode? d.tasteCode: 3,
+                    name: d.name,
+                    lat: d.lat,
+                    lng: d.lng
                 }
             })));
             return
