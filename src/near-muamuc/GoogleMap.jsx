@@ -9,8 +9,14 @@ import ForkBubble from "/src/assets/icon/bubble/forkBubble.svg?react"
 
 import {throttle} from "lodash";
 import {Map} from "@vis.gl/react-google-maps";
+import RestaurantStore from "../store/RestaurantStore.js";
 
-const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange, onClickMarker}) => {
+const GoogleMap = ({width, height, lat, lng, zoom, onChange, onClickMarker}) => {
+
+    const {restaurantList} = RestaurantStore();
+
+    const [markers, setMarkers] = useState([])
+
     const onBoundsChange = useCallback(
         throttle((data) => {
             onChange(data?.detail?.bounds);
@@ -24,6 +30,18 @@ const GoogleMap = ({width, height, lat, lng, zoom, markers, onChange, onClickMar
         5: NoneBadBubble,
         6: ForkBubble
     }
+
+    useEffect(() => {
+        setMarkers(restaurantList.map(((d) => {
+            return {
+                restaurantInfo: d,
+                type: d.tasteCode? d.tasteCode: 3,
+                name: d.name,
+                lat: d.lat,
+                lng: d.lng
+            }
+        })))
+    }, [restaurantList])
 
     return (
         <>

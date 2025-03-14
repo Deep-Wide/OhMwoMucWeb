@@ -5,6 +5,7 @@ import RestaurantInfoBox from "../community/RestaurantInfoBox.jsx";
 import RestaurantTaste from "./RestaurantTaste.jsx";
 import {addTaste} from "../service/TasteService.js";
 import UserStore from "../store/UserStore.js";
+import RestaurantStore from "../store/RestaurantStore.js";
 
 const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
 
@@ -12,6 +13,7 @@ const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
     const [comments, setComments] = useState(null)
 
     const {loginUser} = UserStore()
+    const {updateRestaurantList} = RestaurantStore()
 
     const getRestaurantImage = async () => {
         if (restaurant?.menuImageList[0]?.uniqueFileName !== null)
@@ -31,6 +33,11 @@ const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
             alert(data.errorMessage)
             return
         }
+        const newRestaurantInfo = {
+            ...restaurant,
+            tasteCode,
+        }
+        updateRestaurantList(newRestaurantInfo)
 
     };
 

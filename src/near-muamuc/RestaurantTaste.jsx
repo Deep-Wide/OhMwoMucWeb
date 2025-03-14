@@ -5,14 +5,13 @@ import {useNavigate} from "react-router-dom";
 import UserStore from "../store/UserStore.js";
 
 const RestaurantTaste = ({title,  onChangeTaste, selectedTastedCode}) => {
-    console.log(selectedTastedCode);
     const [selectedTaste, setSelectedTaste] = useState(null)
     const navigate = useNavigate()
 
     const {loginUser} = UserStore()
 
 
-    const setTaste = async (tasteCode) => {
+    const setTaste = (tasteCode) => {
         if (!loginUser?.id) {
             navigate("/login")
             return
@@ -24,7 +23,7 @@ const RestaurantTaste = ({title,  onChangeTaste, selectedTastedCode}) => {
 
     useEffect(() => {
         setSelectedTaste(selectedTastedCode)
-    }, [selectedTaste])
+    }, [selectedTastedCode])
 
     return (
         <div className="mb-2">

@@ -5,6 +5,7 @@ import GoogleMap from "./GoogleMap.jsx";
 import useGeolocation from "../hook/useGeolocation.jsx";
 import {useEffect, useState} from "react";
 import {fetchGetRestaurantList} from "../service/RestaurantService.js";
+import RestaurantStore from "../store/RestaurantStore.js";
 
 const NearMuamuc = () => {
     const location = useGeolocation()
@@ -14,10 +15,13 @@ const NearMuamuc = () => {
 
     const [isOpenResult, setIsOpenResult] = useState(false)
     const [isOpenRestaurantInfo, setIsOpenRestaurantInfo] = useState(false)
+
     const [restaurant, setRestaurant] = useState({})
-    const [markers, setMarkers] = useState([])
+
     const [currentLocation, setCurrentLocation] = useState(null)
     const [searchKeyword, setSearchKeyword] = useState("")
+
+    const {restaurantList, setRestaurantList} = RestaurantStore()
 
 
     const onSearchRestaurant = async () => {
@@ -31,15 +35,8 @@ const NearMuamuc = () => {
                 return;
             }
             setSearchResults(data)
-            setMarkers(data.map(((d, idx) => {
-                return {
-                    restaurantInfo: d,
-                    type: d.tasteCode? d.tasteCode: 3,
-                    name: d.name,
-                    lat: d.lat,
-                    lng: d.lng
-                }
-            })));
+            setRestaurantList(data)
+
             return
         }
         setSearchResults([])
@@ -69,7 +66,7 @@ const NearMuamuc = () => {
             <RestaurantInfoWindow restaurant={restaurant} isOpen={isOpenRestaurantInfo}
                                   onClose={() => setIsOpenRestaurantInfo(false)}/>
         </div>
-        {currentLagLng ? <GoogleMap width={"100%"} height={"80vh"} lat={currentLagLng.lat} lng={currentLagLng.lng} zoom={18} markers={markers}
+        {currentLagLng ? <GoogleMap width={"100%"} height={"80vh"} lat={currentLagLng.lat} lng={currentLagLng.lng} zoom={18}
                                     onChange={setCurrentLocation}
                                       onClickMarker={openRestaurantInfo}
             /> :
