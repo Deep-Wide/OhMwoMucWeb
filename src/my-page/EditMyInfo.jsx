@@ -96,6 +96,8 @@ const EditMyInfo = () => {
         getUserImage(userInfo.id)
     }, [userInfo])
 
+    console.log("####### ", loginUser)
+
     return (
         <div className={"flex flex-col gap-y-10 items-center"}>
             <div className={"gap-y-3 flex flex-col items-center w-[223px]"}>

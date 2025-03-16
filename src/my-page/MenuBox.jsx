@@ -15,6 +15,7 @@ const Body = function ({children}) {
 }
 
 const MenuBox = ({children}) => {
+    console.log("####### ", children)
 
     const [arrayChildren, setArrayChildren] = useState([])
 
@@ -35,10 +36,13 @@ const MenuBox = ({children}) => {
             borderRadius: "13.69px",
             padding: "30px"
         }}>
-            {arrayChildren.find(c => c.type.name === 'Title')}
-            {arrayChildren.find(c => c.type.name === 'Body')}
+            {arrayChildren.find(c => c.type.displayName === 'Title')}
+            {arrayChildren.find(c => c.type.displayName === 'Body')}
         </div>
     )
 }
+
+Title.displayName = "Title"
+Body.displayName = "Body"
 
 export default Object.assign(MenuBox, {Title, Body})

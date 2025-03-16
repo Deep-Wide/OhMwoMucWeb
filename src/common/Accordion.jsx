@@ -1,4 +1,3 @@
-import IconWrapper from "./IconWrapper.jsx";
 import React, {useEffect, useState} from "react";
 
 const Title = function ({ children }) {
@@ -68,15 +67,20 @@ const Accordion = ({children}) => {
                                 d="M19 9l-7 7-7-7"
                             />
                         </svg>
-                        {arrayChildren.find(c => c.type.name === 'Title')}
-                        {arrayChildren.find(c => c.type.name === 'Count')}
+                        {arrayChildren.find(c => c.type.displayName === 'Title')}
+                        {arrayChildren.find(c => c.type.displayName === 'Count')}
                     </div>
-                    {arrayChildren.find(c => c.type.name === 'TitleRightArea')}
+                    {arrayChildren.find(c => c.type.displayName === 'TitleRightArea')}
                 </div>
-                {isActive && arrayChildren.find(c => c.type.name === 'Body')}
+                {isActive && arrayChildren.find(c => c.type.displayName === 'Body')}
             </div>
         </div>
     )
 }
+
+Title.displayName = "Title"
+Body.displayName = "Body"
+Count.displayName = "Count"
+TitleRightArea.displayName = "TitleRightArea"
 
 export default Object.assign(Accordion, {Title: Title, Body: Body, Count, TitleRightArea});

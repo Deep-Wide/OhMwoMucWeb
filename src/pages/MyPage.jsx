@@ -33,15 +33,6 @@ const MyPage = () => {
         setUser(null)
     }
 
-    const testUser = {
-        userName: "테스트 유저",
-        imageId: 1,
-        naver: 123,
-        kakao: null,
-        google: null,
-        email: "test@naver.com"
-    }
-
     const onClickMenu = (targetMenuIndex) => {
         setTargetMenuIndex(targetMenuIndex)
     }
@@ -53,7 +44,7 @@ const MyPage = () => {
                 <MenuBox.Title>{menus[targetMenuIndex].name}</MenuBox.Title>
                 <MenuBox.Body>
                     {targetMenuIndex === 0 &&
-                    <EditMyInfo userInfo={testUser} />
+                        <EditMyInfo  />
                     }
                 </MenuBox.Body>
             </MenuBox>

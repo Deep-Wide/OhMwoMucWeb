@@ -62,7 +62,7 @@ const Content = () => {
     }
 
     const getRestaurant = async () => {
-        if (muamuc?.restaurantId != null) {
+        if (muamuc?.restaurantId) {
             const {isError, data} = await fetchGetRestaurantInfo(muamuc.restaurantId)
             if (isError) {
                 alert(data.errorMessage)
