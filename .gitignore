@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 
 .env.development
+.env.local
+
+/bin
 
 #api key
 .env
