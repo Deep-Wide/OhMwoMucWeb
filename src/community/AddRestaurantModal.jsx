@@ -11,6 +11,7 @@ import {Modal} from "flowbite-react";
 import {RESTAURANT_CATEGORY, RESTAURANT_OPEN_DATE, RESTAURANT_OPEN_TIME_TYPE} from "../constant/Restaurant.js";
 import RestaurantInputLabel from "./RestaurantInputLabel.jsx";
 import _ from "lodash";
+import TimeInput from "../common/TimeInput.jsx";
 
 const AddRestaurantModal = ({openModal, onAdded, onClose}) => {
     const [name, setName] = useState("")
@@ -39,21 +40,21 @@ const AddRestaurantModal = ({openModal, onAdded, onClose}) => {
 
 
     const initializeModal = () => {
-            setName("")
-            setCategory(null)
-            setTel("")
-            setWritePostCode(false)
-            setDaumPostCodeRes(false)
-            setAddressDetail(null)
-            setOpenTimeType(1)
-            setStartTime("")
-            setEndTime("")
-            setOpenDateList(RESTAURANT_OPEN_DATE)
-            setImages([])
-            setMenuList([])
+        setName("")
+        setCategory(null)
+        setTel("")
+        setWritePostCode(false)
+        setDaumPostCodeRes(false)
+        setAddressDetail(null)
+        setOpenTimeType(1)
+        setStartTime("")
+        setEndTime("")
+        setOpenDateList(RESTAURANT_OPEN_DATE)
+        setImages([])
+        setMenuList([])
 
-            if (startTimeRef.current) startTimeRef.current.value = ""
-            if (endTimeRef.current) endTimeRef.current.value = ""
+        if (startTimeRef.current) startTimeRef.current.value = ""
+        if (endTimeRef.current) endTimeRef.current.value = ""
     }
 
     const createRestaurantInfo = async () => {
@@ -153,7 +154,6 @@ const AddRestaurantModal = ({openModal, onAdded, onClose}) => {
         onClose()
     }
 
-
     return (
         <Modal show={openModal} onClose={closeModal}>
             <Modal.Header>신규 식당 등록</Modal.Header>
@@ -184,13 +184,9 @@ const AddRestaurantModal = ({openModal, onAdded, onClose}) => {
                         {openTimeType === 2 &&
                             <div className={"flex flex-col gap-y-2"}>
                                 <div className={"flex gap-x-16 ml-8 mr-8"}>
-                                    <LineInput placeholder={"시작 시각 입력"} value={startTime}
-                                               onChange={(event) => setStartTime(event.target.value)}
-                                               ref={startTimeRef}/>
+                                    <TimeInput onChangeTime={(time) => setStartTime(time)}></TimeInput>
                                     <div className="flex items-center">-</div>
-                                    <LineInput placeholder={"종료 시각 입력"} value={endTime}
-                                               onChange={(event) => setEndTime(event.target.value)}
-                                               ref={endTimeRef}/>
+                                    <TimeInput onChangeTime={(time) => setEndTime(time)}></TimeInput>
                                 </div>
                             </div>
                         }
@@ -205,18 +201,16 @@ const AddRestaurantModal = ({openModal, onAdded, onClose}) => {
                                     </div>
                                     {openTimeType == 3 && openDate.isChecked &&
                                         <div className={"flex gap-x-16 ml-8 mr-8"}>
-                                            <LineInput placeholder={"시작 시각 입력"} value={openDate.startTime}
-                                                       onChange={(event) => {
-                                                           openDate.startTime = event.target.value
-                                                           changeOpenDateList(openDate)
-                                                       }} openDate={startTimeRef}/>
+                                            <TimeInput onChangeTime={(time) => {
+                                                openDate.startTime = time
+                                                changeOpenDateList(openDate)
+                                            }}
+                                            />
                                             <div className="flex items-center">-</div>
-                                            <LineInput placeholder={"종료 시각 입력"} value={openDate.endTime}
-                                                       onChange={(event) => {
-                                                           openDate.endTime = event.target.value
-                                                           changeOpenDateList(openDate)
-                                                       }}
-                                                       ref={endTimeRef}/>
+                                            <TimeInput onChangeTime={(time) => {
+                                                openDate.endTime = time
+                                                changeOpenDateList(openDate)
+                                            }}/>
                                         </div>}
                                 </div>
                             ))

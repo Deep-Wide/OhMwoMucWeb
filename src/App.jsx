@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 import './App.css'
-import {Outlet, useSearchParams} from "react-router-dom";
+import {Outlet, useLocation, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {Topbar} from "./common/Topbar.jsx";
 import {getLoginUserAction} from "./service/LoginService.js";
 import UserStore from "./store/UserStore.js";
@@ -18,6 +18,10 @@ function App() {
     const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
     const [searchParams, setSearchParams] = useSearchParams()
     const KAKAO_JS_KEY = import.meta.env.VITE_KAKAO_JS_KEY
+
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const KAKAO_MAP_SCRIPT = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&libraries=services,clusterer`;
 
 
@@ -52,6 +56,12 @@ function App() {
     useEffect(() => {
         getLoginUser()
     }, [])
+
+    useEffect(() => {
+       if (location.pathname === "/") {
+           navigate("/near-muamuc")
+       }
+    }, [location])
 
 
     return (

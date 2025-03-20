@@ -1,51 +1,60 @@
 import Accordion from "../common/Accordion.jsx";
 import RestaurantInfoBox from "./RestaurantInfoBox.jsx";
 import IconWrapper from "../common/IconWrapper.jsx";
-import React, {useEffect, useState} from "react";
+import React from "react";
+import {useNavigate} from "react-router-dom";
+import {fetchPostReverseFork} from "../service/forkService.js";
+import userStore from "../store/UserStore.js";
+import restaurantStore from "../store/RestaurantStore.js";
 
-// let accordionItems = {
-//     title: "꾸리네 족발곱창",
-//     time: "13:00 - 22:00",
-//     menu: [
-//         {
-//             name: "족발(대)",
-//             price: "31,000"
-//         },
-//         {
-//             name: "족발(중)",
-//             price: "20,000"
-//         },
-//         {
-//             name: "족발(소)",
-//             price: "13,000"
-//         },
-//         {
-//             name: "돼지곱창",
-//             price: "8,000"
-//         },
-//         {
-//             name: "사이다",
-//             price: "3,000"
-//         }
-//     ],
-//     telNum: "02-9090-9090",
-//     address: "서울시 관악구 관악대로 16길 1층 꾸리네족발곱창"
-// }
-//
-// useEffect(() => {
-//     setRestaurantInfo
-// }, []);
 
 
 const RestaurantInfoWrapper = ({restaurant}) => {
+
+    const {loginUser} = userStore()
+    const {updateRestaurantList} = restaurantStore();
+    const navigate = useNavigate()
+
+    const onClickFork = async () => {
+        if (!loginUser?.id) {
+            navigate("/login")
+            return
+        }
+
+        const fork = {userId: loginUser.id, restaurantId: restaurant.restaurantId}
+
+        const {isError, data} = await fetchPostReverseFork(fork)
+        if (isError) {
+            console.log(data.errorMessage)
+            return
+        }
+
+        if (restaurant.liked = data) {
+            restaurant.forkCount++
+            restaurant.isForked = true
+        } else {
+            restaurant.forked = data
+            restaurant.forkCount--
+            restaurant.isForked = false
+        }
+
+        updateRestaurantList(restaurant)
+
+    }
+        console.log(restaurant)
     return (
         <Accordion>
             <Accordion.Title>{restaurant.name}</Accordion.Title>
             <Accordion.TitleRightArea>
-                {/*<IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={"onfork"}></IconWrapper>*/}
+                <IconWrapper className={"w-7 h-7 me-4 rounded-full"}
+                             icon={restaurant.isForked ? "onfork" : "offfork"}
+                             hoverIcon={"onfork"}
+                             num={restaurant.forkCount}
+                            onClickIcon={onClickFork}
+                />
             </Accordion.TitleRightArea>
             <Accordion.Body>
-                <RestaurantInfoBox info={restaurant} />
+                <RestaurantInfoBox info={restaurant}/>
             </Accordion.Body>
         </Accordion>
     )

@@ -109,6 +109,20 @@ textarea[type=text]:focus {
   --tw-ring-shadow: none;
 }
 
+select {
+  border: none;
+  outline: none;
+  appearance: none;
+  background: transparent;
+}
+
+select:focus {
+  border: none;
+  outline: none;
+  appearance: none;
+  background: transparent;
+}
+
 * {
   scrollbar-width: none; /* Firefox 전용 */
   -ms-overflow-style: none; /* IE & Edge 전용 */

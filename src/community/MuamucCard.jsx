@@ -52,6 +52,7 @@ const MuamucCard = ({
 
     useEffect(() => {
         getMuamucImages()
+        console.log("muamuc: ", muamuc)
     }, [muamuc])
 
     const onClickLikes = async () => {
@@ -90,7 +91,7 @@ const MuamucCard = ({
             <div className={"flex justify-between"}
                  style={{width: "100%"}}>
                 <div className={"flex justify-between items-center"}>
-                    <img className={"w-10 h-10 me-3 rounded-full"}
+                    <img className={"w-10 h-10 me-3 rounded-full object-cover"}
                          src={Object.keys(userImg).length !== 0 ? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
                     <span className={"text-sm"}> {muamuc.writerName} </span>
                 </div>
@@ -103,9 +104,10 @@ const MuamucCard = ({
                 </div>
             </div>
             <div style={{width: "100%"}}>
-                <span className={"text-lg font-semibold cursor-pointer overflow-hidden text-ellipsis line-clamp-1 break-words"}
-                      onClick={() => navigate(`./content/${muamuc.muamucId}`)}
-                      style={{wordBreak: "break-all"}}> {muamuc.title} </span>
+                <span
+                    className={"text-lg font-semibold cursor-pointer overflow-hidden text-ellipsis line-clamp-1 break-words"}
+                    onClick={() => navigate(`./content/${muamuc.muamucId}`)}
+                    style={{wordBreak: "break-all"}}> {muamuc.title} </span>
             </div>
             <div className="flex flex-col justify-center cursor-pointer w-full items-center"
                  style={{height: "206px"}}
@@ -113,7 +115,8 @@ const MuamucCard = ({
                 {
                     image &&
                     <div className={"flex justify-center h-[170px]"}>
-                        <img className="w-auto h-auto" src={`${FILE_API_URL}/images/${image?.uniqueFileName}`}/>
+                        <img className="w-auto h-auto object-cover"
+                             src={`${FILE_API_URL}/images/${image?.uniqueFileName}`}/>
                     </div>
                 }
                 {
@@ -136,12 +139,15 @@ const MuamucCard = ({
 
             <div className={"flex justify-between"}
                  style={{width: "169px"}}>
-                {/*<div className={"flex justify-between items-center"}>*/}
-                {/*    <IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={forkStatus ? "onfork" : "offfork"}/>*/}
-                {/*</div>*/}
                 <div className={"flex justify-between items-center"}>
-                    <IconWrapper className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={muamuc.commentCount}/>
+                    <IconWrapper className={"w-54 h-54 me-4 rounded-full"} icon={"chat"} num={muamuc?.commentCount}/>
                 </div>
+                {
+                    muamuc?.restaurantId !== 0 &&
+                    <div className={"flex justify-between items-center"}>
+                        <IconWrapper className={"w-7 h-7 me-4 rounded-full"} icon={muamuc?.forked ? "onfork" : "offfork"} num={muamuc?.forkCount}/>
+                    </div>
+                }
             </div>
 
         </div>)

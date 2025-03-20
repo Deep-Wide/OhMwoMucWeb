@@ -32,7 +32,7 @@ const IconWrapper = ({icon, hoverIcon, className, num = 0, onClickIcon}) => {
     }, [ icon ]);
 
     return (
-        <div className="flex justify-between items-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <div className="flex justify-between items-center cursor-pointer" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <img
                 className={className}
                 src={emoji[currentIcon]}
