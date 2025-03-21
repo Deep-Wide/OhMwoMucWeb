@@ -80,6 +80,7 @@ export default function Information() {
     }
 
     const updateUserInfo = async () => {
+        console.log(id)
         if (!nickname) {
             nicknameRef.current.focus()
             return
@@ -197,7 +198,7 @@ export default function Information() {
                     </div>
 
                     <Button disable={btnDisabled} color={btnColor} border={btnDisabled} name={"완료"} width={"100%"}
-                            onBtnClick={id !== null ? updateUserInfo : signupNewUser}/>
+                            onBtnClick={id !== 0 ? updateUserInfo : signupNewUser}/>
                 </div>
             </div>
         </div>
