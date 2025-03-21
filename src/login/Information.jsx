@@ -71,7 +71,8 @@ export default function Information() {
             return
         }
         setToastStatus("success")
-        setToastMessage(`${data.nickname}님 반가워용! 로그인 창에서 입력하신 정보로 로그인을 진행해주세요.`)
+        setToastMessage(`${data.nickname}님 반가워용!
+        로그인 창에서 입력하신 정보로 로그인을 진행해주세요.`)
         setTimeout(() => {
             setToastMessage(null)
             setToastStatus(null)
