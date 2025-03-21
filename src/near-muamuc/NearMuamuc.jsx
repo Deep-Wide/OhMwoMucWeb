@@ -54,7 +54,7 @@ const NearMuamuc = () => {
     useEffect(() => {
         if (!location?.loaded) return;
         setCurrentLagLng(location.coordinates);
-    }, [ location ])
+    }, [location])
 
     return (<>
         <div className={"z-10 absolute ml-5 mt-5 flex gap-x-7 pointer-events-none"}>
@@ -66,9 +66,10 @@ const NearMuamuc = () => {
             <RestaurantInfoWindow restaurant={restaurant} isOpen={isOpenRestaurantInfo}
                                   onClose={() => setIsOpenRestaurantInfo(false)}/>
         </div>
-        {currentLagLng ? <GoogleMap width={"100%"} height={"80vh"} lat={currentLagLng.lat} lng={currentLagLng.lng} zoom={18}
-                                    onChange={setCurrentLocation}
-                                      onClickMarker={openRestaurantInfo}
+        {currentLagLng ?
+            <GoogleMap width={"100%"} height={"80vh"} lat={currentLagLng.lat} lng={currentLagLng.lng} zoom={18}
+                       onChange={setCurrentLocation}
+                       onClickMarker={openRestaurantInfo}
             /> :
             <div className={"flex flex-col justify-center mt-7"}>
                 <div className={"flex font-semibold text-lg text-blue-600 justify-center mt-5"}>위치 정보 이용을

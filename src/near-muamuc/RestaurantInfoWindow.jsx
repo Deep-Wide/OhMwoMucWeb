@@ -16,7 +16,7 @@ const RestaurantInfoWindow = ({isOpen, restaurant, onClose}) => {
     const {updateRestaurantList} = RestaurantStore()
 
     const getRestaurantImage = async () => {
-        if (restaurant?.menuImageList[0]?.uniqueFileName !== null)
+        if (restaurant?.menuImageList && restaurant?.menuImageList[0]?.uniqueFileName)
             setImages(restaurant.menuImageList)
         else
             setImages(null)

@@ -2,27 +2,6 @@ import SearchResultRestaurant from "./SearchResultRestaurant.jsx";
 import {useEffect, useState} from "react";
 import SearchIcon from "../assets/emoji/search-icon.svg";
 
-// const searchResults = [
-//     {
-//         id: 1,
-//         name: "유니아케이크",
-//         category: "카페/디저트",
-//         time: "11:00 - 19:00",
-//         forks: 20,
-//         forked: true,
-//         comment: "떡케이크가 맛있는 집"
-//     },
-//     {
-//         id: 2,
-//         name: "유니아 분식",
-//         category: "분식",
-//         time: "12:00 - 19:00",
-//         forks: 18,
-//         forked: false,
-//         comment: "떡볶이가 맛있는 집"
-//     },
-// ]
-
 const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeyword, onSearch}) => {
 
     const [searchKeyword, setSearchKeyword] = useState("");
@@ -41,11 +20,12 @@ const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeywo
         <>
             {
                 isOpen &&
-                <div className={"flex rounded-md bg-white p-0 pointer-events-auto"} style={{
+                <div className={"flex rounded-md bg-white p-0 pointer-events-auto h-[65.5vh]"} style={{
                     borderWidth: "1.37px",
                     borderStyle: "solid",
                     borderColor: "#E4E4E4",
                     borderRadius: "13.69px",
+                    minWidth: "367.18px"
                 }}>
                     <div className={"w-full flex flex-col"}>
                         <div className={"w-full p-3"}>
@@ -68,7 +48,7 @@ const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeywo
                                 </div>
                             </div>
                         </div>
-                        <div className={"flex flex-col"}>
+                        <div className={"flex flex-col overflow-y-auto"} style={{ maxHeight: "calc(65.5vh - 80px)" }}>
                             {
                                 searchResults.map((item) => (
                                     <div key={item.id} className={"hover:bg-gray-100 p-3"}>
