@@ -126,9 +126,9 @@ const EditMyInfo = () => {
                 <div className={"w-[223px] flex flex-col items-center gap-y-5"}>
                     <div className={"font-semibold text-color text-lg"}>연동된 SNS 계정</div>
                     <div className={"flex justify-between w-full"}>
-                        <ImageToggle imagePath={naverIcon} size={57} hoverMessage={"연동하기"}/>
-                        <ImageToggle imagePath={googleIcon} size={57} hoverMessage={"연동끊기"}/>
                         <ImageToggle imagePath={kakaoIcon} size={57} hoverMessage={"연동하기"}/>
+                        <ImageToggle imagePath={googleIcon} size={57} hoverMessage={"연동끊기"}/>
+                        <ImageToggle imagePath={naverIcon} size={57} hoverMessage={"연동하기"}/>
                     </div>
                     <div className="relative w-full  items-center flex">
                         <LineInput ref={emailRef} textSize={"text-base"} color={"secondary-color"} value={email}
