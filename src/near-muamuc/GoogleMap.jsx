@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {AdvancedMarker, InfoWindow} from "@vis.gl/react-google-maps";
 import YumBubble from "/src/assets/icon/bubble/yumBubble.svg?react"
 import BadBubble from "/src/assets/icon/bubble/badBubble.svg?react"
@@ -13,13 +13,14 @@ import RestaurantStore from "../store/RestaurantStore.js";
 
 const GoogleMap = ({width, height, lat, lng, zoom, onChange, onClickMarker}) => {
 
-    const {restaurantList} = RestaurantStore();
+    const {restaurantList} = RestaurantStore()
+    const mapInstance = useRef(null)
 
     const [markers, setMarkers] = useState([])
 
     const onBoundsChange = useCallback(
         throttle((data) => {
-            onChange(data?.detail?.bounds);
+            onChange(data?.detail?.bounds)
         }, 1500), [])
 
     const constMarkerType = {
@@ -53,6 +54,7 @@ const GoogleMap = ({width, height, lat, lng, zoom, onChange, onClickMarker}) => 
                 disableDefaultUI={true}
                 mapId={"9ef6f7f0425fa870"}
                 onBoundsChanged={onBoundsChange}
+                center={[lat, lng]}
             >
                 {
                     markers.map((marker, index) => {
