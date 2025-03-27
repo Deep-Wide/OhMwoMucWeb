@@ -11,11 +11,10 @@ import {throttle} from "lodash";
 import {Map} from "@vis.gl/react-google-maps";
 import RestaurantStore from "../store/RestaurantStore.js";
 
-const GoogleMap = ({width, height, lat, lng, zoom, onChange, onClickMarker}) => {
-
+const GoogleMap = ({width, height, currentPosition, zoom, onChange, onClickMarker}) => {
     const {restaurantList} = RestaurantStore();
-
-    const [markers, setMarkers] = useState([])
+    const [markers, setMarkers] = useState([]);
+    const [center, setCenter] = useState(currentPosition);
 
     const onBoundsChange = useCallback(
         throttle((data) => {
@@ -43,16 +42,22 @@ const GoogleMap = ({width, height, lat, lng, zoom, onChange, onClickMarker}) => 
         })))
     }, [restaurantList])
 
+    useEffect(() => {
+        setCenter(currentPosition);
+    }, [ currentPosition ]);
+
     return (
         <>
             <Map
                 style={{width: width, height: height}}
-                defaultCenter={{lat, lng}}
+                defaultCenter={currentPosition}
                 defaultZoom={zoom}
                 gestureHandling={'greedy'}
                 disableDefaultUI={true}
+                center={center}
                 mapId={"9ef6f7f0425fa870"}
                 onBoundsChanged={onBoundsChange}
+                onCenterChanged={data => setCenter(data.detail.center)}
             >
                 {
                     markers.map((marker, index) => {

@@ -48,14 +48,6 @@ const NearMuamuc = () => {
         setIsOpenRestaurantInfo(true)
     }
 
-    const goCurrentLocation = () => {
-        if (location.loaded && location.coordinates) {
-            setCurrentLagLng(location.coordinates)
-        } else {
-            alert("현재 위치를 가져올 수 없습니다.")
-        }
-    }
-
     useEffect(() => {
         onSearchRestaurant();
     }, [currentLocation]);
@@ -66,7 +58,7 @@ const NearMuamuc = () => {
     }, [location])
 
     return (<>
-    <div className={"w-[1060px] h-[80vh] z-10 absolute"}>
+    <div className={"w-[1060px] h-[80vh] z-10 absolute pointer-events-none"}>
         <div className={"ml-5 mt-5 flex gap-x-7 pointer-events-none"}>
             <div className={"flex flex-col gap-y-5 pointer-events-none"}>
                 <TopFilter onClickSearchIcon={() => setIsOpenResult(!isOpenResult)}/>
@@ -77,13 +69,13 @@ const NearMuamuc = () => {
                                   onClose={() => setIsOpenRestaurantInfo(false)}/>
         </div>
 
-        <div className={"absolute bottom-3 right-3"}>
-            <PositionWrapper onClickCurrentPositionIcon={goCurrentLocation}/>
+        <div className={"absolute bottom-3 right-3 pointer-events-auto"}>
+            <PositionWrapper onClickCurrentPositionIcon={setCurrentLagLng}/>
         </div>
     </div>
 
     {currentLagLng ?
-        <GoogleMap width={"100%"} height={"80vh"} lat={currentLagLng.lat} lng={currentLagLng.lng} zoom={18}
+        <GoogleMap width={"100%"} height={"80vh"} currentPosition={currentLagLng} zoom={18}
                    onChange={setCurrentLocation}
                    onClickMarker={openRestaurantInfo}
         /> :
