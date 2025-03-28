@@ -2,7 +2,7 @@ import SearchResultRestaurant from "./SearchResultRestaurant.jsx";
 import {useEffect, useState} from "react";
 import SearchIcon from "../assets/emoji/search-icon.svg";
 
-const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeyword, onSearch}) => {
+const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeyword, onSearch, onUpdateFork}) => {
 
     const [searchKeyword, setSearchKeyword] = useState("");
 
@@ -52,7 +52,7 @@ const SearchResult = ({searchResults, isOpen, onClickResult, onChangeSearchKeywo
                             {
                                 searchResults.map((item) => (
                                     <div key={item.id} className={"hover:bg-gray-100 p-3"}>
-                                        <SearchResultRestaurant restaurantInfo={item} onClickResult={onClickResult} />
+                                        <SearchResultRestaurant restaurantInfo={item} onClickResult={onClickResult} onUpdateFork={onUpdateFork}/>
                                     </div>
                                 ))
                             }

@@ -49,6 +49,7 @@ const NearMuamuc = () => {
     }
 
     const onFilterSearchResults = () => {
+        console.log("###: ", restaurantList)
         const filters = {
             0: () => restaurantList,
             1: () => restaurantList.filter(item => item?.tasteCode === 1),
@@ -86,7 +87,7 @@ const NearMuamuc = () => {
             <div className={"ml-5 mt-5 flex gap-x-7 pointer-events-none"}>
                 <div className={"flex flex-col gap-y-5 pointer-events-none"}>
                     <TopFilter onClickSearchIcon={() => setIsOpenResult(!isOpenResult)} onClickBubble={setFilterIndex}/>
-                    <SearchResult searchResults={searchResults} isOpen={isOpenResult} onSearch={onSearchRestaurant}
+                    <SearchResult searchResults={searchResults} isOpen={isOpenResult} onSearch={onSearchRestaurant} onUpdateFork={(newRestaurantInfo) => setRestaurant(newRestaurantInfo)}
                                   onClickResult={openRestaurantInfo} onChangeSearchKeyword={setSearchKeyword}/>
                 </div>
                 <RestaurantInfoWindow restaurant={restaurant} isOpen={isOpenRestaurantInfo}

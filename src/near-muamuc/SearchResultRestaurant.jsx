@@ -6,7 +6,7 @@ import userStore from "../store/UserStore.js";
 import restaurantStore from "../store/RestaurantStore.js";
 import {useNavigate} from "react-router-dom";
 
-const SearchResultRestaurant = ({restaurantInfo, onClickResult}) => {
+const SearchResultRestaurant = ({restaurantInfo, onClickResult, onUpdateFork}) => {
 
     const [openTimeText, setOpenTimeText] = useState("")
     const [restaurantImg, setRestaurantImg] = useState(null)
@@ -51,7 +51,7 @@ const SearchResultRestaurant = ({restaurantInfo, onClickResult}) => {
         }
     };
 
-    const onClickFork = async (e) => {
+    const onClickForkStatus = async (e) => {
         e.stopPropagation()
 
         if (!loginUser?.id) {
@@ -75,9 +75,8 @@ const SearchResultRestaurant = ({restaurantInfo, onClickResult}) => {
             restaurantInfo.forkCount--
             restaurantInfo.isForked = false
         }
-
+        onUpdateFork(restaurantInfo)
         updateRestaurantList(restaurantInfo)
-
     }
 
     useEffect(() => {
@@ -107,12 +106,12 @@ const SearchResultRestaurant = ({restaurantInfo, onClickResult}) => {
                                 <div className={"font-semibold main-color"}>{restaurantInfo.forkCount}</div>
                             </div>
                             {restaurantInfo.isForked ?
-                                <div className={"flex gap-x-1"}>
+                                <div className={"flex gap-x-1"} onClick={(e) => onClickForkStatus(e)}>
                                     <div className={"text-color text-sm"}>내가</div>
                                     <div className={"main-color text-sm font-semibold"}>포킹한</div>
                                     <div className={"text-color text-sm"}>맛집</div>
                                 </div> :
-                                <div className={"flex gap-x-1"} onClick={(e) => onClickFork(e)}>
+                                <div className={"flex gap-x-1"} onClick={(e) => onClickForkStatus(e)}>
                                     <div className={"text-color text-sm"}>나도</div>
                                     <div className={"main-color text-sm font-semibold"}>포킹하기</div>
                                 </div>
