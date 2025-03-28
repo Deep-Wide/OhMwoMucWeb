@@ -9,10 +9,8 @@ import ForkBubble from "/src/assets/icon/bubble/forkBubble.svg?react"
 
 import {throttle} from "lodash";
 import {Map} from "@vis.gl/react-google-maps";
-import RestaurantStore from "../store/RestaurantStore.js";
 
-const GoogleMap = ({width, height, currentPosition, zoom, onChange, onClickMarker}) => {
-    const {restaurantList} = RestaurantStore();
+const GoogleMap = ({width, height, currentPosition, zoom, onChange, onClickMarker, searchResults}) => {
     const [markers, setMarkers] = useState([]);
     const [center, setCenter] = useState(currentPosition);
 
@@ -31,20 +29,20 @@ const GoogleMap = ({width, height, currentPosition, zoom, onChange, onClickMarke
     }
 
     useEffect(() => {
-        setMarkers(restaurantList.map(((d) => {
+        setMarkers(searchResults.map(((d) => {
             return {
                 restaurantInfo: d,
-                type: d.tasteCode? d.tasteCode: 3,
+                type: d.tasteCode ? d.tasteCode : 3,
                 name: d.name,
                 lat: d.lat,
                 lng: d.lng
             }
         })))
-    }, [restaurantList])
+    }, [searchResults])
 
     useEffect(() => {
         setCenter(currentPosition);
-    }, [ currentPosition ]);
+    }, [currentPosition]);
 
     return (
         <>
@@ -57,7 +55,10 @@ const GoogleMap = ({width, height, currentPosition, zoom, onChange, onClickMarke
                 center={center}
                 mapId={"9ef6f7f0425fa870"}
                 onBoundsChanged={onBoundsChange}
-                onCenterChanged={data => setCenter(data.detail.center)}
+                onCenterChanged={data => {
+                    console.log(data.detail.center)
+                    setCenter(data.detail.center)
+                }}
             >
                 {
                     markers.map((marker, index) => {

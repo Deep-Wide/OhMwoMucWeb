@@ -7,9 +7,12 @@ import {useEffect, useState} from "react";
 import {fetchGetRestaurantList} from "../service/RestaurantService.js";
 import RestaurantStore from "../store/RestaurantStore.js";
 import PositionWrapper from "./PositionWrapper.jsx";
+import searchResult from "./SearchResult.jsx";
 
 const NearMuamuc = () => {
     const location = useGeolocation()
+
+    const [isAcceptedLocation, setIsAcceptedLocation] = useState(false)
 
     const [currentLagLng, setCurrentLagLng] = useState(null);
     const [searchResults, setSearchResults] = useState([])
@@ -22,7 +25,9 @@ const NearMuamuc = () => {
     const [currentLocation, setCurrentLocation] = useState(null)
     const [searchKeyword, setSearchKeyword] = useState("")
 
-    const {setRestaurantList} = RestaurantStore()
+    const [filterIndex, setFilterIndex] = useState(0)
+
+    const {restaurantList, setRestaurantList} = RestaurantStore()
 
 
     const onSearchRestaurant = async () => {
@@ -35,7 +40,7 @@ const NearMuamuc = () => {
                 alert(data.errorMessage)
                 return;
             }
-            setSearchResults(data)
+            // setSearchResults(data)
             setRestaurantList(data)
 
             return
@@ -43,47 +48,82 @@ const NearMuamuc = () => {
         setSearchResults([])
     }
 
+    const onFilterSearchResults = () => {
+        const filters = {
+            0: () => restaurantList,
+            1: () => restaurantList.filter(item => item?.tasteCode === 1),
+            2: () => restaurantList.filter(item => item?.tasteCode === 2),
+            3: () => restaurantList.filter(item => item?.tasteCode === 0),
+            4: () => restaurantList.filter(item => item?.isForked === true),
+        }
+
+        setSearchResults(filters[filterIndex]?.() || restaurantList)
+    }
+
     const openRestaurantInfo = (restaurantInfo) => {
         setRestaurant(restaurantInfo)
         setIsOpenRestaurantInfo(true)
     }
 
-    useEffect(() => {
-        onSearchRestaurant();
-    }, [currentLocation]);
 
     useEffect(() => {
-        if (!location?.loaded) return;
-        setCurrentLagLng(location.coordinates);
+        onSearchRestaurant()
+    }, [currentLocation])
+
+    useEffect(() => {
+        if (!location?.loaded) return
+        setCurrentLagLng(location.coordinates)
+        setIsAcceptedLocation(location?.location?.loaded)
     }, [location])
 
+    useEffect(() => {
+       onFilterSearchResults()
+    }, [restaurantList, filterIndex])
+
+
     return (<>
-    <div className={"w-[1060px] h-[80vh] z-10 absolute pointer-events-none"}>
-        <div className={"ml-5 mt-5 flex gap-x-7 pointer-events-none"}>
-            <div className={"flex flex-col gap-y-5 pointer-events-none"}>
-                <TopFilter onClickSearchIcon={() => setIsOpenResult(!isOpenResult)}/>
-                <SearchResult searchResults={searchResults} isOpen={isOpenResult} onSearch={onSearchRestaurant}
-                              onClickResult={openRestaurantInfo} onChangeSearchKeyword={setSearchKeyword}/>
+        <div className={"w-[1060px] h-[80vh] z-10 absolute pointer-events-none"}>
+            <div className={"ml-5 mt-5 flex gap-x-7 pointer-events-none"}>
+                <div className={"flex flex-col gap-y-5 pointer-events-none"}>
+                    <TopFilter onClickSearchIcon={() => setIsOpenResult(!isOpenResult)} onClickBubble={setFilterIndex}/>
+                    <SearchResult searchResults={searchResults} isOpen={isOpenResult} onSearch={onSearchRestaurant}
+                                  onClickResult={openRestaurantInfo} onChangeSearchKeyword={setSearchKeyword}/>
+                </div>
+                <RestaurantInfoWindow restaurant={restaurant} isOpen={isOpenRestaurantInfo}
+                                      onClose={() => setIsOpenRestaurantInfo(false)}/>
             </div>
-            <RestaurantInfoWindow restaurant={restaurant} isOpen={isOpenRestaurantInfo}
-                                  onClose={() => setIsOpenRestaurantInfo(false)}/>
+
+            <div className={"absolute bottom-3 right-3 pointer-events-auto"}>
+                <PositionWrapper onClickCurrentPositionIcon={setCurrentLagLng}/>
+            </div>
         </div>
 
-        <div className={"absolute bottom-3 right-3 pointer-events-auto"}>
-            <PositionWrapper onClickCurrentPositionIcon={setCurrentLagLng}/>
-        </div>
-    </div>
-
-    {currentLagLng ?
-        <GoogleMap width={"100%"} height={"80vh"} currentPosition={currentLagLng} zoom={18}
-                   onChange={setCurrentLocation}
-                   onClickMarker={openRestaurantInfo}
-        /> :
-        <div className={"flex flex-col justify-center mt-7"}>
-            <div className={"flex font-semibold text-lg text-blue-600 justify-center mt-5"}>위치 정보 이용을
-                동의해주세요
-            </div>
-        </div>}
+        {currentLagLng ?
+            <GoogleMap width={"100%"} height={"80vh"} currentPosition={currentLagLng} zoom={18}
+                       onChange={setCurrentLocation}
+                       onClickMarker={openRestaurantInfo}
+                       searchResults={searchResults}
+            /> :
+            isAcceptedLocation ?
+                <div role="status" className={"w-[100%] h-[80vh] flex items-center justify-center"}>
+                    <svg aria-hidden="true"
+                         className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-pink-600"
+                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor"/>
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill"/>
+                    </svg>
+                    <span className="sr-only">Loading...</span>
+                </div> :
+                <GoogleMap width={"100%"} height={"80vh"} currentPosition={{lat: 37.473353593821095, lng: 126.91875755799725}} zoom={18}
+                           onChange={setCurrentLocation}
+                           onClickMarker={openRestaurantInfo}
+                           searchResults={searchResults}
+                />
+        }
     </>)
 }
 
