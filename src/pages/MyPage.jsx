@@ -5,6 +5,7 @@ import MenuBox from "../my-page/MenuBox.jsx";
 import EditMyInfo from "../my-page/EditMyInfo.jsx";
 import UserStore from "../store/UserStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
+import MyMuamuc from "../my-page/MyMuamuc.jsx";
 
 const MyPage = () => {
 
@@ -38,13 +39,16 @@ const MyPage = () => {
     }
 
     return (
-        <div className={"mt-6 flex gap-x-20"}>
+        <div className={"mt-6 flex justify-between p-[16px]"}>
             <SideMenuBar menus={menus} onClickMenu={onClickMenu} targetMenuIndex={targetMenuIndex}/>
             <MenuBox>
                 <MenuBox.Title>{menus[targetMenuIndex].name}</MenuBox.Title>
                 <MenuBox.Body>
                     {targetMenuIndex === 0 &&
                         <EditMyInfo  />
+                    }
+                    {targetMenuIndex === 1 &&
+                        <MyMuamuc />
                     }
                 </MenuBox.Body>
             </MenuBox>

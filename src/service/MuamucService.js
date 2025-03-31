@@ -40,3 +40,7 @@ export const fetchAddMuamucImage = (muamucImages, muamuc_id) => {
 export const fetchGetMuamucImages = (muamucId) => {
     return fetchGet(`${MUAMUC_API_URL}/${muamucId}/images`)
 }
+
+export const fetchGetMyMuamuc = () => {
+    return fetchGet(`${MUAMUC_API_URL}/my`)
+}

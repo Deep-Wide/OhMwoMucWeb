@@ -15,7 +15,6 @@ const Body = function ({children}) {
 }
 
 const MenuBox = ({children}) => {
-    console.log("####### ", children)
 
     const [arrayChildren, setArrayChildren] = useState([])
 
@@ -29,7 +28,7 @@ const MenuBox = ({children}) => {
     }, [ children ]);
 
     return (
-        <div className={"border gap-y-4 flex flex-col w-[521px]"} style={{
+        <div className={"border gap-y-4 flex flex-col w-[550px]"} style={{
             borderWidth: "1.37px",
             borderStyle: "solid",
             borderColor: "#E4E4E4",

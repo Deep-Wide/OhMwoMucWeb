@@ -252,7 +252,7 @@ const Content = () => {
                 <div className={"flex justify-between"}
                      style={{width: "100%"}}>
                     <div className={"flex justify-between items-center"}>
-                        <img className={"w-10 h-10 me-4 rounded-full"}
+                        <img className={"w-10 h-10 object-cover me-4 rounded-full"}
                              src={Object.keys(userImg).length !== 0 ? `${FILE_API_URL}/images/${userImg?.uniqueFileName}` : defaultImg}/>
                         <span className={"text-ml"}> {muamuc.writerName} </span>
                     </div>
