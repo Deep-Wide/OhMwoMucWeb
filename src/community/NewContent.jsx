@@ -16,8 +16,11 @@ import MuamucStore from "../store/MuamucStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
 import FileUploader from "../common/FileUploader.jsx";
 import ImageViewer from "../common/ImageViewer.jsx";
-import {fetchGetRestaurantList, fetchPostCreateRestaurant} from "../service/RestaurantService.js";
-import _, {isError} from "lodash";
+import {
+    fetchGetSearchResultRestaurantList,
+    fetchPostCreateRestaurant
+} from "../service/RestaurantService.js";
+import _ from "lodash";
 
 const NewContent = ({isUpdate = false}) => {
     const [selectedTag, setSelectedTag] = useState(null)
@@ -77,12 +80,12 @@ const NewContent = ({isUpdate = false}) => {
         if (!selectedTag) {
             setValidateModal("글 태그를 선택해주세요")
             return false
-        } else if (title.trim() === "") {
+        } else if (title?.trim() === "" || title?.length === 0) {
             setValidateModal("글 제목을 입력해주세요", () => {
                 titleRef.current.focus()
             })
             return false
-        } else if (content.trim() === "") {
+        } else if (content?.trim() === "" || content?.length === 0) {
             setValidateModal("글 내용을 작성해주세요", () => {
                 contentRef.current.focus()
             })
@@ -172,8 +175,9 @@ const NewContent = ({isUpdate = false}) => {
     }
 
     const getRestaurantSearchResult = async () => {
+        console.log(":###")
         if (searchKeyword?.trim()) {
-            const {data, isError} = await fetchGetRestaurantList(`?searchKeyword=${searchKeyword}`)
+            const {data, isError} = await fetchGetSearchResultRestaurantList(`?searchKeyword=${searchKeyword}`)
             if (isError) {
                 alert(data.errorMessage)
                 return;

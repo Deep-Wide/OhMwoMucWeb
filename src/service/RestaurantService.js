@@ -21,3 +21,7 @@ export const fetchGetMyRestaurantList = () => {
 export const fetchGetYumRestaurantList = () => {
     return fetchGet(`${RESTUARANT_API_URL}/yum`)
 }
+
+export const fetchGetSearchResultRestaurantList = (requestParam) => {
+    return fetchGet(`${RESTUARANT_API_URL}/search${requestParam}`)
+}

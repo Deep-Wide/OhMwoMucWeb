@@ -21,7 +21,7 @@ const MyPage = () => {
         {name: "내 정보 수정"},
         {name: "내가 작성한 뭐먹뭐먹"},
         {name: "내가 찜한 식당"},
-        {name: "내가 맛있었던 식당리스트"},
+        {name: "내가 맛있었던 식당"},
         {name: "로그아웃", onClickFn: ()=>{setAlertModalInfo({
                 isOpen: true,
                 message: (`${loginUser?.nickname}님 로그아웃할까요?`),
