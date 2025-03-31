@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
-import {AdvancedMarker, InfoWindow} from "@vis.gl/react-google-maps";
+import {AdvancedMarker} from "@vis.gl/react-google-maps";
 import YumBubble from "/src/assets/icon/bubble/yumBubble.svg?react"
 import BadBubble from "/src/assets/icon/bubble/badBubble.svg?react"
 import NoneBadBubble from "/src/assets/icon/bubble/noneBadBubble.svg?react"

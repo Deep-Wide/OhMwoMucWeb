@@ -7,13 +7,17 @@ const PositionWrapper = ({onClickCurrentPositionIcon}) => {
 
     const goCurrentPosition = () => {
         if (location.loaded && location.coordinates) {
-            onClickCurrentPositionIcon({ ...location.coordinates });
+            onClickCurrentPositionIcon({ ...location.coordinates })
         }
-    };
+    }
+
+    const goMainPosition = () => {
+        onClickCurrentPositionIcon({lat: 37.473353593821095, lng: 126.91875755799725})
+    }
 
     return (
         <div>
-            <PlacePositionIcon className={"w-[50px] cursor-pointer"}/>
+            <PlacePositionIcon className={"w-[50px] cursor-pointer"} onClick={goMainPosition}/>
             <CurrentPositionIcon className={"w-[50px] cursor-pointer"} onClick={goCurrentPosition}/>
         </div>
     )
