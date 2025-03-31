@@ -12,7 +12,7 @@ const FoodCarousel = ({images}) => {
 
     return (
         <>
-            {images.length > 0 &&
+            {images?.length > 0 &&
                 <Swiper
                     slidesPerView={1}
                     spaceBetween={30}

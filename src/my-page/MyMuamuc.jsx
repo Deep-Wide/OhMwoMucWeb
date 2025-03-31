@@ -34,8 +34,8 @@ const MyMuamuc = ({}) => {
                     borderRadius: "13.69px",
                     paddingTop: "20px",
                     paddingBottom: "20px",
-                    paddingLeft: "33px",
-                    paddingRight: "33px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
                     overflow: "visible"
                 }}
                      onClick={() => navigate(`/muamuc/content/${myMuamuc?.muamucId}`)}

@@ -14,6 +14,10 @@ export const fetchPostCreateRestaurant =  (info) => {
     return fetchPost(RESTUARANT_API_URL, info)
 }
 
+export const fetchGetMyRestaurantList = () => {
+    return fetchGet(`${RESTUARANT_API_URL}/my`)
+}
 
-
-
+export const fetchGetYumRestaurantList = () => {
+    return fetchGet(`${RESTUARANT_API_URL}/yum`)
+}

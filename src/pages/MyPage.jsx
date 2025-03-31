@@ -6,6 +6,8 @@ import EditMyInfo from "../my-page/EditMyInfo.jsx";
 import UserStore from "../store/UserStore.js";
 import AlertModalStore from "../store/AlertModalStore.js";
 import MyMuamuc from "../my-page/MyMuamuc.jsx";
+import ForkedRestaurant from "../my-page/ForkedRestaurant.jsx";
+import YumRestaurant from "../my-page/YumRestaurant.jsx";
 
 const MyPage = () => {
 
@@ -19,7 +21,7 @@ const MyPage = () => {
         {name: "내 정보 수정"},
         {name: "내가 작성한 뭐먹뭐먹"},
         {name: "내가 찜한 식당"},
-        {name: "내가 등록한 입맛별 식당리스트"},
+        {name: "내가 맛있었던 식당리스트"},
         {name: "로그아웃", onClickFn: ()=>{setAlertModalInfo({
                 isOpen: true,
                 message: (`${loginUser?.nickname}님 로그아웃할까요?`),
@@ -49,6 +51,12 @@ const MyPage = () => {
                     }
                     {targetMenuIndex === 1 &&
                         <MyMuamuc />
+                    }
+                    {targetMenuIndex === 2 &&
+                        <ForkedRestaurant />
+                    }
+                    {targetMenuIndex === 3 &&
+                        <YumRestaurant />
                     }
                 </MenuBox.Body>
             </MenuBox>

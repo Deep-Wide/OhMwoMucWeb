@@ -26,19 +26,19 @@ export function Topbar() {
             name: "주변뭐먹",
             link: '/near-muamuc'
         }
-        ,
-        {
-            id: 1,
-            name: "우리뭐먹",
-            link: '#'
-
-        }
-        ,
-        {
-            id: 2,
-            name: "이거먹",
-            link: '#'
-        }
+        // ,
+        // {
+        //     id: 1,
+        //     name: "우리뭐먹",
+        //     link: '#'
+        //
+        // }
+        // ,
+        // {
+        //     id: 2,
+        //     name: "이거먹",
+        //     link: '#'
+        // }
         ,
         {
             id: 3,
